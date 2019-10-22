@@ -1,0 +1,58 @@
+{
+  "libraries": {
+    "vamp-plugin-sdk": {
+      "pin": "569fc23fa37a"
+    },
+    "icons/scalable": {
+      "pin": "be45984f7915"
+    },
+    "vamp-aubio-plugins": {
+      "pin": "be4c729d6549"
+    },
+    "qm-vamp-plugins": {
+      "pin": "7aa2536321769ece0873c072200b8183c899c924"
+    },
+    "qm-vamp-plugins/lib/qm-dsp": {
+      "pin": "6bc10532c581a14bd26361249789100e771638cf"
+    },
+    "constant-q-cpp": {
+      "pin": "1b02461c83a8dc977023f36aafe3d13906dfaaf9"
+    },
+    "segmentino": {
+      "pin": "093eebe15c24"
+    },
+    "nnls-chroma": {
+      "pin": "89099872c87b"
+    },
+    "silvet": {
+      "pin": "426ce52ef096"
+    },
+    "tipic": {
+      "pin": "6ca3c80e1f43"
+    },
+    "tuning-difference": {
+      "pin": "8fd1c994f937"
+    },
+    "pyin": {
+      "pin": "81f025823a5c"
+    },
+    "azi": {
+      "pin": "06d2dd60a1b2"
+    },
+    "vamp-simple-cepstrum": {
+      "pin": "f021dc97da29"
+    },
+    "cepstral-pitchtracker": {
+      "pin": "759ea6e988fe"
+    },
+    "match-vamp": {
+      "pin": "4b272c839f7e"
+    },
+    "bbc-vamp-plugins": {
+      "pin": "be50e19670d7702b706581d71f84d55c5ade290e"
+    },
+    "vamp-tempogram": {
+      "pin": "02721bb9c4f0"
+    }
+  }
+}
