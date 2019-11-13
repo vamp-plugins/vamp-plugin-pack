@@ -11,7 +11,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = tuning-difference
+TARGET = out/tuning-difference
 
 OBJECTS_DIR = tuning-difference/o
 
@@ -32,6 +32,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/tuning-difference/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp tuning-difference/tuning-difference.cat tuning-difference/tuning-difference.n3 out/
 }
 
 SOURCES += \

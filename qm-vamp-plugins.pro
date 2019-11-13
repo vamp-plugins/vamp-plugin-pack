@@ -12,7 +12,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = qm-vamp-plugins
+TARGET = out/qm-vamp-plugins
 
 OBJECTS_DIR = qm-vamp-plugins/o
 
@@ -36,13 +36,16 @@ win32-g++* {
 }
 linux* {
     DEFINES += USE_PTHREADS
-    LIBS += -Wl,--version-script=$$PWD/qm-vamp-plugins/vamp-plugin.map
+    LIBS += -Wl,--version-script=$$PWD/qm-vamp-plugins/vamp-plugin.map -lpthread
 }
 macx* {
     DEFINES += USE_PTHREADS
-    LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list
+    LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list -lpthread
 }
-
+!win* {
+    QMAKE_POST_LINK += cp qm-vamp-plugins/qm-vamp-plugins.* out/
+}
+    
 SOURCES += \
     qm-vamp-plugins/g2cstubs.c \
     qm-vamp-plugins/plugins/AdaptiveSpectrogram.cpp \

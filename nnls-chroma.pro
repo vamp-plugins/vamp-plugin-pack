@@ -12,7 +12,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = nnls-chroma
+TARGET = out/nnls-chroma
 
 OBJECTS_DIR = nnls-chroma/o
 
@@ -31,6 +31,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/nnls-chroma/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp nnls-chroma/nnls-chroma.* out/
 }
 
 SOURCES += \

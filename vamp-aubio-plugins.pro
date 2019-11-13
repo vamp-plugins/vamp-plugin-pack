@@ -12,7 +12,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = vamp-aubio
+TARGET = out/vamp-aubio
 
 OBJECTS_DIR = vamp-aubio-plugins/o
 
@@ -33,6 +33,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-aubio-plugins/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp vamp-aubio-plugins/vamp-aubio.* out/
 }
 
 SOURCES += \

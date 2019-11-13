@@ -12,7 +12,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = match-vamp-plugin
+TARGET = out/match-vamp-plugin
 
 OBJECTS_DIR = match-vamp/o
 
@@ -33,6 +33,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/match-vamp/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp match-vamp/match-vamp-plugin.* out/
 }
 
 SOURCES += \

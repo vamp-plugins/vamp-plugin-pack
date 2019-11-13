@@ -12,7 +12,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = azi
+TARGET = out/azi
 
 OBJECTS_DIR = azi/o
 
@@ -31,6 +31,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/azi/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp azi/azi.* out/
 }
 
 SOURCES += \

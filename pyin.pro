@@ -11,7 +11,7 @@ exists(config.pri) {
 CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
-TARGET = pyin
+TARGET = out/pyin
 
 OBJECTS_DIR = pyin/o
 
@@ -30,6 +30,9 @@ linux* {
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
+}
+!win* {
+    QMAKE_POST_LINK += cp pyin/pyin.* out/
 }
 
 SOURCES += \
