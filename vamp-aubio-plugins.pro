@@ -13,10 +13,9 @@ CONFIG -= qt
 CONFIG += plugin no_plugin_name_prefix release warn_on
 
 TARGET = out/vamp-aubio
-
 OBJECTS_DIR = vamp-aubio-plugins/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/aubio $$PWD/aubio/src
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/aubio $$PWD/aubio-link $$PWD/aubio/src
 
 QMAKE_CXXFLAGS -= -Werror
 
@@ -91,7 +90,6 @@ SOURCES += \
     vamp-aubio-plugins/plugins/Tempo.cpp \
     vamp-aubio-plugins/plugins/Types.cpp \
     vamp-aubio-plugins/libmain.cpp \
-    vamp-plugin-sdk/src/vamp-sdk/FFT.cpp \
     vamp-plugin-sdk/src/vamp-sdk/PluginAdapter.cpp \
     vamp-plugin-sdk/src/vamp-sdk/RealTime.cpp
 
