@@ -1,13 +1,10 @@
 {
   "libraries": {
     "vamp-plugin-sdk": {
-      "pin": "569fc23fa37a"
+      "pin": "c42e50a5c297"
     },
     "icons/scalable": {
       "pin": "be45984f7915"
-    },
-    "vamp-aubio-plugins": {
-      "pin": "be4c729d6549"
     },
     "qm-vamp-plugins": {
       "pin": "7aa2536321769ece0873c072200b8183c899c924"
@@ -53,6 +50,12 @@
     },
     "vamp-tempogram": {
       "pin": "02721bb9c4f0"
+    },
+    "vamp-aubio-plugins": {
+      "pin": "7a8e644aa81f0a3672b4e140396f9afe17eb2627"
+    },
+    "aubio": {
+      "pin": "63fc1dfb73714cac40869e4469cb6eac1b37beab"
     }
   }
 }

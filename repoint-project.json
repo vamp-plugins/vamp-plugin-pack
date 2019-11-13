@@ -7,6 +7,10 @@
 	    "vcs": ["hg", "git"],
 	    "anonymous": "https://code.soundsoftware.ac.uk/{vcs}/{repository}",
 	    "authenticated": "https://{account}@code.soundsoftware.ac.uk/{vcs}/{repository}"
+	},
+	"aubio": {
+	    "vcs": ["git"],
+	    "anonymous": "https://git.aubio.org/aubio/{repository}"
 	}
     },
     "libraries": {
@@ -18,10 +22,6 @@
             "vcs": "hg",
 	    "service": "soundsoftware",
 	    "repository": "sv-iconset"
-        },
-        "vamp-aubio-plugins": {
-            "vcs": "hg",
-            "service": "soundsoftware"
         },
         "qm-vamp-plugins": {
             "vcs": "git",
@@ -87,6 +87,14 @@
         "vamp-tempogram": {
             "vcs": "hg",
             "service": "soundsoftware"
+        },
+        "vamp-aubio-plugins": {
+            "vcs": "git",
+            "service": "aubio"
+        },
+        "aubio": {
+            "vcs": "git",
+            "service": "aubio"
         }
     }
 }
