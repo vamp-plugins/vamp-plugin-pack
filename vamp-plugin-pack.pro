@@ -9,7 +9,9 @@ SUBDIRS += \
         sub_nnls_chroma \
         sub_qm_vamp_plugins \
         sub_azi \
-        sub_aubio
+        sub_aubio \
+        sub_silvet \
+        sub_tipic
 
 sub_sdk.file = vamp-plugin-sdk.pro
 sub_match.file = match-vamp.pro
@@ -19,6 +21,8 @@ sub_nnls_chroma.file = nnls-chroma.pro
 sub_qm_vamp_plugins.file = qm-vamp-plugins.pro
 sub_azi.file = azi.pro
 sub_aubio.file = vamp-aubio-plugins.pro
+sub_silvet.file = silvet.pro
+sub_tipic.file = tipic.pro
 
 repoint.target = $$PWD/.repoint.point
 repoint.depends = $$PWD/repoint-project.json $$PWD/repoint-lock.json

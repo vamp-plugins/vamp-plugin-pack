@@ -95,6 +95,3 @@ SOURCES += \
     vamp-plugin-sdk/src/vamp-sdk/PluginAdapter.cpp \
     vamp-plugin-sdk/src/vamp-sdk/RealTime.cpp
 
-HEADERS += \
-    azi/Azi.h
-
