@@ -18,8 +18,6 @@ win32-msvc* {
     }
 
     DEFINES += NOMINMAX _USE_MATH_DEFINES
-
-    QMAKE_CXXFLAGS_RELEASE += -fp:fast
 }
 
 macx* {
@@ -31,12 +29,12 @@ macx* {
 
     INCLUDEPATH += /usr/local/opt/boost/include
 
-    QMAKE_CXXFLAGS_RELEASE += -O3 -ffast-math -flto
+    QMAKE_CXXFLAGS_RELEASE += -O3 -flto
     QMAKE_LFLAGS_RELEASE += -O3 -flto
 }
 
 linux* {
-    QMAKE_CXXFLAGS_RELEASE += -O3 -ffast-math
+    QMAKE_CXXFLAGS_RELEASE += -O3
     QMAKE_LFLAGS_RELEASE += -O3
 }
 
