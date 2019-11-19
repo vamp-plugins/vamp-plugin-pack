@@ -15,7 +15,7 @@ CONFIG += plugin no_plugin_name_prefix release warn_on
 TARGET = out/vamp-aubio
 OBJECTS_DIR = vamp-aubio-plugins/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/aubio $$PWD/aubio-link $$PWD/aubio/src
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/aubio $$PWD/aubio-link $$PWD/aubio/src $$PWD/vamp-aubio-plugins/plugins
 
 QMAKE_CXXFLAGS -= -Werror
 
@@ -80,14 +80,14 @@ SOURCES += \
     aubio/src/utils/log.c \
     aubio/src/utils/parameter.c \
     aubio/src/utils/scale.c \
-    vamp-aubio-plugins/plugins/MelEnergy.cpp \
-    vamp-aubio-plugins/plugins/Mfcc.cpp \
-    vamp-aubio-plugins/plugins/Notes.cpp \
-    vamp-aubio-plugins/plugins/Onset.cpp \
-    vamp-aubio-plugins/plugins/Pitch.cpp \
-    vamp-aubio-plugins/plugins/Silence.cpp \
-    vamp-aubio-plugins/plugins/SpecDesc.cpp \
-    vamp-aubio-plugins/plugins/Tempo.cpp \
+    aubio-link/MelEnergyPlugin.cpp \
+    aubio-link/MfccPlugin.cpp \
+    aubio-link/NotesPlugin.cpp \
+    aubio-link/OnsetPlugin.cpp \
+    aubio-link/PitchPlugin.cpp \
+    aubio-link/SilencePlugin.cpp \
+    aubio-link/SpecDescPlugin.cpp \
+    aubio-link/TempoPlugin.cpp \
     vamp-aubio-plugins/plugins/Types.cpp \
     vamp-aubio-plugins/libmain.cpp \
     vamp-plugin-sdk/src/vamp-sdk/PluginAdapter.cpp \
