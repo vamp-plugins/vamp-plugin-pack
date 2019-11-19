@@ -34,7 +34,10 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/tuning-difference/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp tuning-difference/tuning-difference.cat tuning-difference/tuning-difference.n3 out/
+    QMAKE_POST_LINK += \
+        cp tuning-difference/tuning-difference.cat tuning-difference/tuning-difference.n3 out/ && \
+        cp tuning-difference/COPYING out/tuning-difference_COPYING.txt && \
+        cp tuning-difference/README.md out/tuning-difference_README.txt
 }
 
 SOURCES += \

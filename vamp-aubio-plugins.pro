@@ -34,7 +34,10 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-aubio-plugins/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp vamp-aubio-plugins/vamp-aubio.cat vamp-aubio-plugins/vamp-aubio.n3 out/
+    QMAKE_POST_LINK += \
+        cp vamp-aubio-plugins/vamp-aubio.cat vamp-aubio-plugins/vamp-aubio.n3 out/ && \
+        cp vamp-aubio-plugins/COPYING out/vamp-aubio-plugins_COPYING.txt && \
+        cp vamp-aubio-plugins/README.md out/vamp-aubio-plugins_README.txt
 }
 
 SOURCES += \

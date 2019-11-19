@@ -43,7 +43,10 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list -lpthread
 }
 !win* {
-    QMAKE_POST_LINK += cp qm-vamp-plugins/qm-vamp-plugins.cat qm-vamp-plugins/qm-vamp-plugins.n3 out/
+    QMAKE_POST_LINK += \
+        cp qm-vamp-plugins/qm-vamp-plugins.cat qm-vamp-plugins/qm-vamp-plugins.n3 out/ && \
+        cp qm-vamp-plugins/README.md out/qm-vamp-plugins_README.txt && \
+        cp qm-vamp-plugins/COPYING out/qm-vamp-plugins_COPYING.txt
 }
     
 SOURCES += \

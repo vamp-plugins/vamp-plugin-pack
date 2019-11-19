@@ -18,6 +18,7 @@ cepstral-pitchtracker
 match-vamp
 bbc-vamp-plugins
 vamp-tempogram
+ua-vamp-plugins
 Makefile
 Makefile.*
 *.so
@@ -29,4 +30,6 @@ Makefile.*
 aubio
 out/*.cat
 out/*.n3
-
+out/*_README.txt
+out/*_CITATION.txt
+out/*_COPYING.txt

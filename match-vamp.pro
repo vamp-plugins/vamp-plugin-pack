@@ -35,7 +35,11 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/match-vamp/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp match-vamp/match-vamp-plugin.cat match-vamp/match-vamp-plugin.n3 out/
+    QMAKE_POST_LINK += \
+        cp match-vamp/match-vamp-plugin.cat match-vamp/match-vamp-plugin.n3 out/ && \
+        cp match-vamp/README   out/match-vamp-plugin_README.txt && \
+        cp match-vamp/CITATION out/match-vamp-plugin_CITATION.txt && \
+        cp match-vamp/COPYING  out/match-vamp-plugin_COPYING.txt
 }
 
 SOURCES += \

@@ -33,7 +33,9 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/azi/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp azi/azi.cat azi/azi.n3 out/
+    QMAKE_POST_LINK += \
+        cp azi/azi.cat out/ && \
+        cp azi/COPYING out/azi_COPYING.txt
 }
 
 SOURCES += \

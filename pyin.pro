@@ -34,7 +34,10 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp pyin/pyin.cat pyin/pyin.n3 out/
+    QMAKE_POST_LINK += \
+        cp pyin/pyin.cat pyin/pyin.n3 out/ && \
+        cp pyin/README  out/pyin_README.txt && \
+        cp pyin/COPYING out/pyin_COPYING.txt
 }
 
 SOURCES += \

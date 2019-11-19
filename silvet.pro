@@ -33,7 +33,11 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/silvet/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp silvet/silvet.n3 silvet/silvet.cat out/
+    QMAKE_POST_LINK += \
+        cp silvet/silvet.n3 silvet/silvet.cat out/ && \
+        cp silvet/README   out/silvet_README.txt && \
+        cp silvet/CITATION out/silvet_CITATION.txt && \
+        cp silvet/COPYING  out/silvet_COPYING.txt
 }
 
 SOURCES += \

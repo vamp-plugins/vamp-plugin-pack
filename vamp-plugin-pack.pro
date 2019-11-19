@@ -13,7 +13,8 @@ SUBDIRS += \
         sub_silvet \
         sub_tipic \
         sub_segmentino \
-        sub_examples
+        sub_examples \
+        sub_ua
 
 sub_sdk.file = vamp-plugin-sdk.pro
 sub_match.file = match-vamp.pro
@@ -27,6 +28,7 @@ sub_silvet.file = silvet.pro
 sub_tipic.file = tipic.pro
 sub_segmentino.file = segmentino.pro
 sub_examples.file = vamp-example-plugins.pro
+sub_ua.file = ua-vamp-plugins.pro
 
 repoint.target = $$PWD/.repoint.point
 repoint.depends = $$PWD/repoint-project.json $$PWD/repoint-lock.json
