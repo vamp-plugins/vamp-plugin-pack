@@ -35,7 +35,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/segmentino/segmentino/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp segmentino/segmentino.* out/
+    QMAKE_POST_LINK += cp segmentino/segmentino.cat segmentino/segmentino.n3 out/
 }
 
 SOURCES += \

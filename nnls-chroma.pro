@@ -33,7 +33,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/nnls-chroma/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp nnls-chroma/nnls-chroma.* out/
+    QMAKE_POST_LINK += cp nnls-chroma/nnls-chroma.cat nnls-chroma/nnls-chroma.n3 out/
 }
 
 SOURCES += \

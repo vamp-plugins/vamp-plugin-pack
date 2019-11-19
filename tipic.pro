@@ -35,7 +35,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/tipic/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp tipic/tipic.* out/
+    QMAKE_POST_LINK += cp tipic/tipic.cat tipic/tipic.n3 out/
 }
 
 SOURCES += \

@@ -26,13 +26,15 @@ win32-g++* {
     LIBS += -Wl,--version-script=$$PWD/pyin/vamp-plugin.map
 }
 linux* {
+    QMAKE_CXXFLAGS_RELEASE += -ffast-math
     LIBS += -Wl,--version-script=$$PWD/pyin/vamp-plugin.map
 }
 macx* {
+    QMAKE_CXXFLAGS_RELEASE += -ffast-math
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
 }
 !win* {
-    QMAKE_POST_LINK += cp pyin/pyin.* out/
+    QMAKE_POST_LINK += cp pyin/pyin.cat pyin/pyin.n3 out/
 }
 
 SOURCES += \
