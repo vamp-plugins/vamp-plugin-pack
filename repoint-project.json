@@ -95,6 +95,16 @@
         "aubio": {
             "vcs": "git",
             "service": "aubio"
+        },
+        "ua-vamp-plugins": {
+            "vcs": "git",
+            "service": "github",
+            "owner": "pertusa",
+            "repository": "UAVampPlugins"
+        },
+        "sv-dependency-builds": {
+            "vcs": "hg",
+            "service": "soundsoftware"
         }
     }
 }
