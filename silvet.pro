@@ -16,7 +16,7 @@ TARGET = out/silvet
 
 OBJECTS_DIR = silvet/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/silvet $$PWD/silvet/bqvec $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools $$PWD/silvet/flattendynamics
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/silvet $$PWD/silvet/bqvec $$PWD/silvet/bqvec/bqvec $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools $$PWD/silvet/flattendynamics
 
 DEFINES += kiss_fft_scalar=double
 
