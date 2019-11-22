@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/Onset.cpp
+#include "../vamp-aubio-plugins/plugins/Onset.cpp"

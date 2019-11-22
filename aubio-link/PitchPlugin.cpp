@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/Pitch.cpp
+#include "../vamp-aubio-plugins/plugins/Pitch.cpp"

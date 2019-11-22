@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/Tempo.cpp
+#include "../vamp-aubio-plugins/plugins/Tempo.cpp"

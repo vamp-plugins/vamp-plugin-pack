@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/Notes.cpp
+#include "../vamp-aubio-plugins/plugins/Notes.cpp"

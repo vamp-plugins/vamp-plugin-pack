@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/Silence.cpp
+#include "../vamp-aubio-plugins/plugins/Silence.cpp"

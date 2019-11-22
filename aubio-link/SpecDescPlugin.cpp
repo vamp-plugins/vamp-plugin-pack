@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/SpecDesc.cpp
+#include "../vamp-aubio-plugins/plugins/SpecDesc.cpp"

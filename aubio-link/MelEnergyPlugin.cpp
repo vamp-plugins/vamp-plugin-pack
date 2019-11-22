@@ -1,1 +1,1 @@
-../vamp-aubio-plugins/plugins/MelEnergy.cpp
+#include "../vamp-aubio-plugins/plugins/MelEnergy.cpp"
