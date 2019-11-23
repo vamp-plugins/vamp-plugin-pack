@@ -33,3 +33,4 @@ out/*.n3
 out/*_README.txt
 out/*_CITATION.txt
 out/*_COPYING.txt
+build_win64
