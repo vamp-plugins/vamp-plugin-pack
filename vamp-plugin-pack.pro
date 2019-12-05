@@ -18,7 +18,8 @@ SUBDIRS += \
         sub_bbc \
         sub_cq \
         sub_cepstral_pitchtracker \
-        sub_simple_cepstrum
+        sub_simple_cepstrum \
+        sub_libxtract
 
 sub_sdk.file = vamp-plugin-sdk.pro
 sub_match.file = match-vamp.pro
@@ -37,6 +38,7 @@ sub_bbc.file = bbc-vamp-plugins.pro
 sub_cq.file = constant-q-cpp.pro
 sub_cepstral_pitchtracker.file = cepstral-pitchtracker.pro
 sub_simple_cepstrum.file = vamp-simple-cepstrum.pro
+sub_libxtract.file = vamp-libxtract-plugins.pro
 
 repoint.target = $$PWD/.repoint.point
 repoint.depends = $$PWD/repoint-project.json $$PWD/repoint-lock.json

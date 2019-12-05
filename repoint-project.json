@@ -102,6 +102,10 @@
             "owner": "pertusa",
             "repository": "UAVampPlugins"
         },
+        "vamp-libxtract-plugins": {
+            "vcs": "hg",
+            "service": "soundsoftware"
+        },
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"

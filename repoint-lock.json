@@ -60,6 +60,9 @@
     "ua-vamp-plugins": {
       "pin": "d2a57e002f5a3a0cf5311e1f77a8b21bf932f7bb"
     },
+    "vamp-libxtract-plugins": {
+      "pin": "81146373f024"
+    },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"
     }
