@@ -36,7 +36,7 @@ macx* {
     QMAKE_POST_LINK += \
         cp ua-vamp-plugins/ua-vamp-plugins.cat out/ && \
         cp ua-vamp-plugins/LICENSE out/ua-vamp-plugins_COPYING.txt && \
-        cp ua-vamp-plugins/readme.md out/ua-vamp-plugins_README.txt
+        cp ua-vamp-plugins/readme.md out/ua-vamp-plugins_README.md
 }
 
 SOURCES += \

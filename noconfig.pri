@@ -35,6 +35,6 @@ macx* {
 
 linux* {
     QMAKE_CXXFLAGS_RELEASE += -O3 -flto
-    QMAKE_LFLAGS_RELEASE += -O3 -flto
+    QMAKE_LFLAGS_RELEASE += -O3 -flto -Wl,--no-undefined
 }
 

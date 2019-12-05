@@ -37,7 +37,7 @@ macx* {
     QMAKE_POST_LINK += \
         cp vamp-aubio-plugins/vamp-aubio.cat vamp-aubio-plugins/vamp-aubio.n3 out/ && \
         cp vamp-aubio-plugins/COPYING out/vamp-aubio-plugins_COPYING.txt && \
-        cp vamp-aubio-plugins/README.md out/vamp-aubio-plugins_README.txt
+        cp vamp-aubio-plugins/README.md out/vamp-aubio-plugins_README.md
 }
 
 SOURCES += \
