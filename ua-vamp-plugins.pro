@@ -30,7 +30,7 @@ linux* {
     LIBS += -Wl,-Bstatic -Lsv-dependency-builds/linux/lib/fftw-3.3.8-x86_64 -lfftw3 -Wl,-Bdynamic -Wl,--version-script=$$PWD/ua-vamp-plugins/vamp-plugin.map -Wl,-no-undefined
 }
 macx* {
-    LIBS += -exported_symbols_list $$PWD/ua-vamp-plugins/vamp-plugin.list
+    LIBS += -exported_symbols_list $$PWD/ua-vamp-plugins/vamp-plugin.list -lfftw3
 }
 !win* {
     QMAKE_POST_LINK += \

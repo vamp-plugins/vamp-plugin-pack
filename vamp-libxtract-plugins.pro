@@ -32,7 +32,7 @@ linux* {
 }
 macx* {
     DEFINES += XTRACT_FFT=1 NDEBUG
-    LIBS += -exported_symbols_list $$PWD/vamp-libxtract-plugins/vamp-plugin.list
+    LIBS += -exported_symbols_list $$PWD/vamp-libxtract-plugins/vamp-plugin.list -framework Accelerate
 }
 !win* {
     QMAKE_POST_LINK += \
