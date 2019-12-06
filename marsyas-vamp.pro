@@ -32,7 +32,7 @@ linux* {
     LIBS += -Wl,--version-script=$$PWD/marsyas/src/mvamp/vamp-plugin.map
 }
 macx* {
-    LIBS += -exported_symbols_list $$PWD/marsyas/src/mvamp/vamp-plugin.list
+    LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/skeleton/vamp-plugin.list
 }
 !win* {
     QMAKE_POST_LINK += \
