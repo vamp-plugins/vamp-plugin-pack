@@ -115,6 +115,10 @@
             "service": "github",
             "owner": "marsyas"
         },
+        "vamp-fanchirp": {
+            "vcs": "hg",
+            "service": "soundsoftware"
+        },
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"

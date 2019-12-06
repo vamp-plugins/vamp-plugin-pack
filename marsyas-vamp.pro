@@ -20,8 +20,6 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/marsyas-link $$PWD/marsyas/src $$PWD/
 
 QMAKE_CXXFLAGS -= -Werror
 
-DEFINES += USE_COMPACT_TYPES
-
 win32-msvc* {
     LIBS += -EXPORT:vampGetPluginDescriptor
 }

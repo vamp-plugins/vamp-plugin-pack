@@ -69,6 +69,9 @@
     "marsyas": {
       "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
     },
+    "vamp-fanchirp": {
+      "pin": "cdf7cb06049c"
+    },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"
     }

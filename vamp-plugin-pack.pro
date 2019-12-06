@@ -21,7 +21,8 @@ SUBDIRS += \
         sub_simple_cepstrum \
         sub_libxtract \
         sub_beatroot \
-        sub_marsyas
+        sub_marsyas \
+        sub_fanchirp
 
 sub_sdk.file = vamp-plugin-sdk.pro
 sub_match.file = match-vamp.pro
@@ -43,6 +44,7 @@ sub_simple_cepstrum.file = vamp-simple-cepstrum.pro
 sub_libxtract.file = vamp-libxtract-plugins.pro
 sub_beatroot.file = beatroot-vamp.pro
 sub_marsyas.file = marsyas-vamp.pro
+sub_fanchirp.file = vamp-fanchirp.pro
 
 repoint.target = $$PWD/.repoint.point
 repoint.depends = $$PWD/repoint-project.json $$PWD/repoint-lock.json
