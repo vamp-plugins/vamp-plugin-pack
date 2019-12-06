@@ -63,6 +63,12 @@
     "vamp-libxtract-plugins": {
       "pin": "81146373f024"
     },
+    "beatroot-vamp": {
+      "pin": "1f175ae200a6"
+    },
+    "marsyas": {
+      "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
+    },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"
     }

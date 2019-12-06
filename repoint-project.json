@@ -106,6 +106,15 @@
             "vcs": "hg",
             "service": "soundsoftware"
         },
+        "beatroot-vamp": {
+            "vcs": "hg",
+            "service": "soundsoftware"
+        },
+        "marsyas": {
+            "vcs": "git",
+            "service": "github",
+            "owner": "marsyas"
+        },
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"

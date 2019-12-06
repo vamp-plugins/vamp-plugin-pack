@@ -19,6 +19,7 @@ match-vamp
 bbc-vamp-plugins
 vamp-tempogram
 ua-vamp-plugins
+marsyas
 Makefile
 Makefile.*
 *.so
