@@ -16,13 +16,14 @@ TARGET = out/tipic
 
 OBJECTS_DIR = tipic/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/tipic/qm-dsp $$(PWD)/tipic/qm-dsp/ext/kissfft $$PWD/tipic/qm-dsp/ext/kissfft/tools
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/tipic/qm-dsp $$PWD/tipic/qm-dsp/ext/kissfft $$PWD/tipic/qm-dsp/ext/kissfft/tools
 
 QMAKE_CXXFLAGS -= -Werror
 
 DEFINES += kiss_fft_scalar=double
 
 win32-msvc* {
+    DEFINES += __restrict__=__restrict
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {

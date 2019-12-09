@@ -11,7 +11,8 @@ win32-msvc* {
 
     # This config is actually used only for 64-bit Windows builds.
     
-    INCLUDEPATH += /Libraries/boost_1_69_0 $$PWD/../boost_1_69_0/
+    INCLUDEPATH += /Libraries/boost_1_69_0 $$PWD/../boost_1_69_0/ $$PWD/sv-dependency-builds/win64-msvc/include
+    LIBS += -L$$PWD -L$$PWD/sv-dependency-builds/win64-msvc/lib
 
     CONFIG(release) {
         LIBS += -NODEFAULTLIB:LIBCMT -Lrelease

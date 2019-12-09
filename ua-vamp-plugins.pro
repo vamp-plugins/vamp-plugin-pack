@@ -21,6 +21,7 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/ua-vamp-plugins/src
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
+    LIBS += -L$$PWD/sv-dependency-builds/win64-msvc/lib -lfftw3
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {

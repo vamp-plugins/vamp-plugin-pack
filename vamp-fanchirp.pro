@@ -16,11 +16,12 @@ TARGET = out/fanchirp
 
 OBJECTS_DIR = vamp-fanchirp/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/vamp-fanchirp/bqvec
 
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
+    LIBS += -L$$PWD/sv-dependency-builds/win64-msvc/lib -lfftw3
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
@@ -44,6 +45,7 @@ SOURCES += \
     vamp-fanchirp/FChTransformF0gram.cpp \
     vamp-fanchirp/FChTransformUtils.cpp \
     vamp-fanchirp/plugins.cpp \
+    vamp-plugin-sdk/src/vamp-sdk/FFT.cpp \
     vamp-plugin-sdk/src/vamp-sdk/PluginAdapter.cpp \
     vamp-plugin-sdk/src/vamp-sdk/RealTime.cpp
 

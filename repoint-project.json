@@ -117,7 +117,13 @@
         },
         "vamp-fanchirp": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "branch": "spect"
+        },
+        "vamp-fanchirp/bqvec": {
+            "vcs": "hg",
+            "service": "sourcehut",
+            "owner": "breakfastquay"
         },
         "sv-dependency-builds": {
             "vcs": "hg",

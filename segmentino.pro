@@ -16,7 +16,7 @@ TARGET = out/segmentino
 
 OBJECTS_DIR = segmentino/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/qm-vamp-plugins/lib $$PWD/qm-vamp-plugins/lib/qm-dsp $$(PWD)/qm-vamp-plugins/lib/qm-dsp/ext/kissfft $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft/tools $$(PWD)/segmentino/armadillo-3.900.4/include
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/qm-vamp-plugins/lib $$PWD/qm-vamp-plugins/lib/qm-dsp $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft/tools $$PWD/segmentino/armadillo-3.900.4/include
 
 QMAKE_CXXFLAGS -= -Werror
 

@@ -21,9 +21,11 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/vamp-libxtract-plugins/LibXtract
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
+    DEFINES += XTRACT_FFT=1 USE_OOURA=1 NDEBUG
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
+    DEFINES += XTRACT_FFT=1 USE_OOURA=1 NDEBUG
     LIBS += -Wl,--version-script=$$PWD/vamp-libxtract-plugins/vamp-plugin.map
 }
 linux* {

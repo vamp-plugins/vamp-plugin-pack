@@ -21,9 +21,11 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/marsyas-link $$PWD/marsyas/src $$PWD/
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
+    DEFINES += MARSYAS_WIN32
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
+    DEFINES += MARSYAS_WIN32
     LIBS += -Wl,--version-script=$$PWD/marsyas/src/mvamp/vamp-plugin.map
 }
 linux* {
@@ -58,14 +60,16 @@ SOURCES += \
 
 SOURCES += \
     marsyas/src/marsyas/sched/Scheduler.cpp \
-    marsyas/src/marsyas/sched/TmVirtualTime.cpp \
     marsyas/src/marsyas/sched/Repeat.cpp \
+    marsyas/src/marsyas/sched/TmTime.cpp \
+    marsyas/src/marsyas/sched/TmVirtualTime.cpp \
     marsyas/src/marsyas/sched/TmTimer.cpp \
     marsyas/src/marsyas/sched/TmParam.cpp \
     marsyas/src/marsyas/sched/TmTimerManager.cpp \
     marsyas/src/marsyas/sched/TmControlValue.cpp \
     marsyas/src/marsyas/sched/TmRealTime.cpp \
     marsyas/src/marsyas/sched/EvEvent.cpp \
+    marsyas/src/marsyas/sched/EvValUpd.cpp \
     marsyas/src/marsyas/system/MarControl.cpp \
     marsyas/src/marsyas/system/MarControlValue.cpp \
     marsyas/src/marsyas/system/MarControlManager.cpp \
@@ -88,8 +92,20 @@ SOURCES += \
     marsyas/src/marsyas/basis.cpp \
     marsyas/src/marsyas/vmblock.cpp \
     marsyas/src/marsyas/lu.cpp \
+    marsyas/src/marsyas/expr/Expr.cpp \
+    marsyas/src/marsyas/expr/ExNode.cpp \
+    marsyas/src/marsyas/expr/ExParser.cpp \
+    marsyas/src/marsyas/expr/ExScanner.cpp \
+    marsyas/src/marsyas/expr/ExCommon.cpp \
+    marsyas/src/marsyas/expr/ExVal.cpp \
+    marsyas/src/marsyas/expr/ExSymTbl.cpp \
     marsyas/src/otherlibs/libsvm/svm.cpp \
-    marsyas/src/otherlibs/liblinear/linear.cpp
+    marsyas/src/otherlibs/liblinear/linear.cpp \
+    marsyas/src/otherlibs/liblinear/tron.cpp \
+    marsyas/src/otherlibs/liblinear/blas/dnrm2.c \
+    marsyas/src/otherlibs/liblinear/blas/ddot.c \
+    marsyas/src/otherlibs/liblinear/blas/daxpy.c \
+    marsyas/src/otherlibs/liblinear/blas/dscal.c
 
 # All the systems included into MarSystemManager must be compiled in,
 # otherwise we'll have undefined symbols for their dtors at least even
