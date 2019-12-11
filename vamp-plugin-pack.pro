@@ -23,7 +23,8 @@ SUBDIRS += \
         sub_beatroot \
         sub_marsyas \
         sub_fanchirp \
-        sub_vampy
+        sub_vampy \
+        sub_tempogram
 
 sub_sdk.file = vamp-plugin-sdk.pro
 sub_match.file = match-vamp.pro
@@ -47,6 +48,7 @@ sub_beatroot.file = beatroot-vamp.pro
 sub_marsyas.file = marsyas-vamp.pro
 sub_fanchirp.file = vamp-fanchirp.pro
 sub_vampy.file = vampy.pro
+sub_tempogram.file = vamp-tempogram.pro
 
 repoint.target = $$PWD/.repoint.point
 repoint.depends = $$PWD/repoint-project.json $$PWD/repoint-lock.json
