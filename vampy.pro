@@ -35,7 +35,11 @@ linux* {
     LIBS += -lpython2.7 -ldl -Wl,--version-script=$$PWD/vampy/vamp-plugin.map
 }
 macx* {
-    LIBS += -exported_symbols_list $$PWD/vampy/vamp-plugin.list
+    QMAKE_CXXFLAGS += -DHAVE_NUMPY \
+        -D_DEBUG \
+        -I/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 \
+        -I/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/include
+    LIBS += -lpython2.7 -lpthread -exported_symbols_list $$PWD/vampy/vamp-plugin.list
 }
 !win* {
     QMAKE_POST_LINK += \
