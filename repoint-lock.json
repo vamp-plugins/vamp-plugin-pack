@@ -25,7 +25,7 @@
       "pin": "af71cbdab621"
     },
     "tipic": {
-      "pin": "6ca3c80e1f43"
+      "pin": "14823d51a573"
     },
     "tuning-difference": {
       "pin": "8fd1c994f937"
@@ -34,7 +34,7 @@
       "pin": "3faac48d491d"
     },
     "azi": {
-      "pin": "230562aa012d"
+      "pin": "39a06bc19a36"
     },
     "vamp-simple-cepstrum": {
       "pin": "a488dd5e4fb8"
@@ -70,10 +70,13 @@
       "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
     },
     "vamp-fanchirp": {
-      "pin": "337005419d92"
+      "pin": "297eb6a19824"
     },
     "vamp-fanchirp/bqvec": {
       "pin": "cd235ecbeb31"
+    },
+    "vampy": {
+      "pin": "e1d65734d953"
     },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"

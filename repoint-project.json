@@ -125,6 +125,10 @@
             "service": "sourcehut",
             "owner": "breakfastquay"
         },
+        "vampy": {
+            "vcs": "hg",
+            "service": "soundsoftware"
+        },
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"
