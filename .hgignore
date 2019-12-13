@@ -41,3 +41,7 @@ out/.something-to-sign
 out/.signed
 vamp-plugin-pack-installer
 o/
+.notarization-status
+.notarization-uuid
+*.dmg
+*.app
