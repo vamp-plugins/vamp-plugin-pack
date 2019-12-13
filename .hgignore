@@ -39,3 +39,5 @@ build_win64
 *.orig
 out/.something-to-sign
 out/.signed
+vamp-plugin-pack-installer
+o/
