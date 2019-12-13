@@ -109,5 +109,47 @@
   <file>out/vampy_COPYING.txt</file>
   <file>out/vampy_README.txt</file>
   <file>out/vampy.so</file>
+  <file>rdf/vamp.n3</file>
+  <file>rdf/vamp.rdf</file>
+  <file>rdf/plugins/availability.n3</file>
+  <file>rdf/plugins/bbc-vamp-plugins.n3</file>
+  <file>rdf/plugins/beatroot-vamp.n3</file>
+  <file>rdf/plugins/cepstral-pitchtracker.n3</file>
+  <file>rdf/plugins/cqvamp.n3</file>
+  <file>rdf/plugins/extra-categories.n3</file>
+  <file>rdf/plugins/FChT_f0gram.n3</file>
+  <file>rdf/plugins/featured.n3</file>
+  <file>rdf/plugins/index.txt</file>
+  <file>rdf/plugins/match-vamp-plugin.n3</file>
+  <file>rdf/plugins/mazurka-plugins.n3</file>
+  <file>rdf/plugins/mfs.n3</file>
+  <file>rdf/plugins/mir-edu.n3</file>
+  <file>rdf/plugins/mtg-melodia.n3</file>
+  <file>rdf/plugins/mvamp-ibt.n3</file>
+  <file>rdf/plugins/mvamp.n3</file>
+  <file>rdf/plugins/nnls-chroma.n3</file>
+  <file>rdf/plugins/ofa-vamp-plugin.n3</file>
+  <file>rdf/plugins/pyin.n3</file>
+  <file>rdf/plugins/qm-vamp-plugins.n3</file>
+  <file>rdf/plugins/segmentino.n3</file>
+  <file>rdf/plugins/silvet.n3</file>
+  <file>rdf/plugins/simple-cepstrum.n3</file>
+  <file>rdf/plugins/tempogram.n3</file>
+  <file>rdf/plugins/tipic.n3</file>
+  <file>rdf/plugins/ua-vamp-plugins.n3</file>
+  <file>rdf/plugins/vamp-aubio.n3</file>
+  <file>rdf/plugins/vamp-example-plugins.n3</file>
+  <file>rdf/plugins/vamp-hpcp-mtg.n3</file>
+  <file>rdf/plugins/vamp-libxtract.n3</file>
+  <file>rdf/plugins/vamp-onsetsds.n3</file>
+  <file>rdf/plugins/makers/bbc.png</file>
+  <file>rdf/plugins/makers/bbc-rd.png</file>
+  <file>rdf/plugins/makers/qm-logo.png</file>
+  <file>rdf/plugins/makers/qm.png</file>
+  <file>rdf/plugins/makers/rgu.png</file>
+  <file>rdf/plugins/makers/smc.png</file>
+  <file>rdf/plugins/makers/ua.png</file>
+  <file>rdf/plugins/makers/udelar.png</file>
+  <file>rdf/plugins/makers/upf.png</file>
 </qresource>
 </RCC>
