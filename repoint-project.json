@@ -132,6 +132,11 @@
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"
+        },
+        "rdf": {
+            "vcs": "hg",
+            "service": "soundsoftware",
+            "repository": "vamp-known-plugins-rdf"
         }
     }
 }

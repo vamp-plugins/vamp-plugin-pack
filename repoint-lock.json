@@ -80,6 +80,9 @@
     },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"
+    },
+    "rdf": {
+      "pin": "a1dd981a7ea8"
     }
   }
 }
