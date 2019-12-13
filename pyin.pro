@@ -34,7 +34,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
 }
 
-QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+QMAKE_POST_LINK += touch $$PWD/out/.something-to-sign
 
 !win* {
     QMAKE_POST_LINK += && \

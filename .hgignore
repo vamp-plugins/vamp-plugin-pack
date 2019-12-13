@@ -37,3 +37,5 @@ out/*_CITATION.txt
 out/*_COPYING.txt
 build_win64
 *.orig
+out/.something-to-sign
+out/.signed
