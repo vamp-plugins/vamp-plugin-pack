@@ -36,8 +36,11 @@ macx* {
     DEFINES += XTRACT_FFT=1 NDEBUG
     LIBS += -exported_symbols_list $$PWD/vamp-libxtract-plugins/vamp-plugin.list -framework Accelerate
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp vamp-libxtract-plugins/vamp-libxtract.cat vamp-libxtract-plugins/vamp-libxtract.n3 out/ && \
         cp vamp-libxtract-plugins/COPYING out/vamp-libxtract_COPYING.txt && \
         cp vamp-libxtract-plugins/README out/vamp-libxtract_README.txt

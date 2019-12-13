@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/cepstral-pitchtracker/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp cepstral-pitchtracker/cepstral-pitchtracker.cat out/ && \
         cp cepstral-pitchtracker/cepstral-pitchtracker.n3 out/ && \
         cp cepstral-pitchtracker/README out/cepstral-pitchtracker_README.txt

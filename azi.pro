@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/azi/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp azi/azi.cat out/ && \
         cp azi/COPYING out/azi_COPYING.txt
 }

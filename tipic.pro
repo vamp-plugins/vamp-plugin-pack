@@ -35,8 +35,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/tipic/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp tipic/tipic.cat tipic/tipic.n3 out/ &&\
         cp tipic/COPYING out/tipic_COPYING.txt && \
         cp tipic/CITATION out/tipic_CITATION.txt && \

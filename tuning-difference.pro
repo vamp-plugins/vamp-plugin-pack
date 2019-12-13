@@ -33,8 +33,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/tuning-difference/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp tuning-difference/tuning-difference.cat tuning-difference/tuning-difference.n3 out/ && \
         cp tuning-difference/COPYING out/tuning-difference_COPYING.txt && \
         cp tuning-difference/README.md out/tuning-difference_README.md

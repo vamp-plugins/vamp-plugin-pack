@@ -33,8 +33,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-fanchirp/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp vamp-fanchirp/fanchirp.cat out/ && \
         cp vamp-fanchirp/README.md out/fanchirp_README.md && \
         cp vamp-fanchirp/CITATION  out/fanchirp_CITATION.txt && \

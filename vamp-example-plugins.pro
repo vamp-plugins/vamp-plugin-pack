@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/build/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp vamp-plugin-sdk/examples/vamp-example-plugins.cat vamp-plugin-sdk/examples/vamp-example-plugins.n3 out/ && \
         cp vamp-plugin-sdk/COPYING out/vamp-example-plugins_COPYING.txt
 }

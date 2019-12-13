@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/constant-q-cpp/vamp/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp constant-q-cpp/cqvamp.cat out/ && \
         cp constant-q-cpp/cqvamp.n3 out/ && \
         cp constant-q-cpp/COPYING out/cqvamp_COPYING.txt && \

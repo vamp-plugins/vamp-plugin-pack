@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/beatroot-vamp/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp beatroot-vamp/beatroot-vamp.cat beatroot-vamp/beatroot-vamp.n3 out/ && \
         cp beatroot-vamp/README   out/beatroot-vamp_README.txt && \
         cp beatroot-vamp/CITATION out/beatroot-vamp_CITATION.txt && \

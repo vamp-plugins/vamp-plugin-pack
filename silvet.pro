@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/silvet/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp silvet/silvet.n3 silvet/silvet.cat out/ && \
         cp silvet/README   out/silvet_README.txt && \
         cp silvet/CITATION out/silvet_CITATION.txt && \

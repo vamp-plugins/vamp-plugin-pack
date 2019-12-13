@@ -41,8 +41,11 @@ macx* {
         -I/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/include
     LIBS += -lpython2.7 -lpthread -exported_symbols_list $$PWD/vampy/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp vampy/COPYING out/vampy_COPYING.txt && \
         cp vampy/README out/vampy_README.txt
 }

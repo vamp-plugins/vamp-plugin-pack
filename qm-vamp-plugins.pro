@@ -42,8 +42,11 @@ macx* {
     DEFINES += USE_PTHREADS
     LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list -lpthread
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp qm-vamp-plugins/qm-vamp-plugins.cat qm-vamp-plugins/qm-vamp-plugins.n3 out/ && \
         cp qm-vamp-plugins/README.md out/qm-vamp-plugins_README.md && \
         cp qm-vamp-plugins/COPYING out/qm-vamp-plugins_COPYING.txt

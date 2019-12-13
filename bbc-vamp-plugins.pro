@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/bbc-vamp-plugins/src/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp bbc-vamp-plugins/bbc-vamp-plugins.cat bbc-vamp-plugins/bbc-vamp-plugins.n3 out/ && \
         cp bbc-vamp-plugins/COPYING out/bbc-vamp-plugins_COPYING.txt && \
         cp bbc-vamp-plugins/README.md out/bbc-vamp-plugins_README.md

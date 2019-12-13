@@ -32,8 +32,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-tempogram/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp vamp-tempogram/tempogram.cat vamp-tempogram/tempogram.n3 out/ && \
         cp vamp-tempogram/README out/tempogram_README.txt && \
         cp vamp-tempogram/CITATION out/tempogram_CITATION.txt && \

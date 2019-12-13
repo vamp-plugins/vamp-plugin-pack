@@ -34,8 +34,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/skeleton/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp marsyas/src/mvamp/mvamp.n3 out/ && \
         cp marsyas/README out/mvamp_README.txt && \
         cp marsyas/COPYING out/mvamp_COPYING.txt && \

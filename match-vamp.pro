@@ -34,8 +34,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/match-vamp/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp match-vamp/match-vamp-plugin.cat match-vamp/match-vamp-plugin.n3 out/ && \
         cp match-vamp/README   out/match-vamp-plugin_README.txt && \
         cp match-vamp/CITATION out/match-vamp-plugin_CITATION.txt && \

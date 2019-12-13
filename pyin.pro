@@ -33,8 +33,11 @@ macx* {
     QMAKE_CXXFLAGS_RELEASE += -ffast-math
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp pyin/pyin.cat pyin/pyin.n3 out/ && \
         cp pyin/README  out/pyin_README.txt && \
         cp pyin/COPYING out/pyin_COPYING.txt

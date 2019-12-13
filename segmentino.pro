@@ -34,8 +34,11 @@ linux* {
 macx* {
     LIBS += -exported_symbols_list $$PWD/segmentino/segmentino/vamp-plugin.list
 }
+
+QMAKE_POST_LINK += $$PWD/deploy/sign-plugin $${PWD}/$${TARGET}.$${QMAKE_EXTENSION_SHLIB}
+
 !win* {
-    QMAKE_POST_LINK += \
+    QMAKE_POST_LINK += && \
         cp segmentino/segmentino.cat segmentino/segmentino.n3 out/ && \
         cp segmentino/CITATION out/segmentino_CITATION.txt && \
         cp segmentino/README out/segmentino_README.txt && \
