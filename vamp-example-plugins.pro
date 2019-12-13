@@ -33,7 +33,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/build/vamp-plugin.list
 }
 
-QMAKE_POST_LINK += touch $$PWD/out/.something-to-sign
+QMAKE_POST_LINK += $$PWD/deploy/mark-for-signing $$PWD/out
 
 !win* {
     QMAKE_POST_LINK += && \

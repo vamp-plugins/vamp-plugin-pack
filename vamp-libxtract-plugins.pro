@@ -37,7 +37,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-libxtract-plugins/vamp-plugin.list -framework Accelerate
 }
 
-QMAKE_POST_LINK += touch $$PWD/out/.something-to-sign
+QMAKE_POST_LINK += $$PWD/deploy/mark-for-signing $$PWD/out
 
 !win* {
     QMAKE_POST_LINK += && \
