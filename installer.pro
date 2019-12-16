@@ -27,7 +27,7 @@ RESOURCES += installer.qrc
 
 sign.target = $$PWD/out/.signed
 sign.depends = $$PWD/out/.something-to-sign
-sign.commands = $$PWD/deploy/sign-plugins $$PWD/out
+sign.commands = $$DEPLOYDIR/sign-plugins $$PWD/out
 
 QMAKE_EXTRA_TARGETS += sign
 PRE_TARGETDEPS += $$sign.target

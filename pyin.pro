@@ -34,7 +34,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/pyin/vamp-plugin.list
 }
 
-QMAKE_POST_LINK += $$PWD/deploy/mark-for-signing $$PWD/out
+QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing $$PWD/out
 
 !win* {
     QMAKE_POST_LINK += && \

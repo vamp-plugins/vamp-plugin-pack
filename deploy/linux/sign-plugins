@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This is purely a stub - we have no actual signing on Linux yet
+
 set -e
 
 usage() {
@@ -24,9 +26,7 @@ set -u
 
 sign() {
     path="$1"
-    if [ -d /Applications ]; then
-        codesign -s "Developer ID Application: Chris Cannam" -fv --options runtime "$path"
-    fi
+    echo "$path"
 }
 
 if [ -d "$first_arg" ]; then

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+    echo "Usage: $0 <plugin-dir>" 1>&2
+    exit 2
+}    
+
+dir="$1"
+
+if [ ! -d "$dir" ]; then
+    usage
+fi
+
+if [ -n "$2" ]; then
+    usage
+fi
+
+set -u
+
+touch "$dir"/.something-to-sign
+
