@@ -2,113 +2,113 @@
 <qresource>
   <file>out/azi.cat</file>
   <file>out/azi_COPYING.txt</file>
-  <file>out/azi.so</file>
+  <file>out/azi.@SUFFIX@</file>
   <file>out/bbc-vamp-plugins.cat</file>
   <file>out/bbc-vamp-plugins_COPYING.txt</file>
   <file>out/bbc-vamp-plugins.n3</file>
   <file>out/bbc-vamp-plugins_README.md</file>
-  <file>out/bbc-vamp-plugins.so</file>
+  <file>out/bbc-vamp-plugins.@SUFFIX@</file>
   <file>out/beatroot-vamp.cat</file>
   <file>out/beatroot-vamp_CITATION.txt</file>
   <file>out/beatroot-vamp_COPYING.txt</file>
   <file>out/beatroot-vamp.n3</file>
   <file>out/beatroot-vamp_README.txt</file>
-  <file>out/beatroot-vamp.so</file>
+  <file>out/beatroot-vamp.@SUFFIX@</file>
   <file>out/cepstral-pitchtracker.cat</file>
   <file>out/cepstral-pitchtracker.n3</file>
   <file>out/cepstral-pitchtracker_README.txt</file>
-  <file>out/cepstral-pitchtracker.so</file>
+  <file>out/cepstral-pitchtracker.@SUFFIX@</file>
   <file>out/cqvamp.cat</file>
   <file>out/cqvamp_CITATION.txt</file>
   <file>out/cqvamp_COPYING.txt</file>
   <file>out/cqvamp.n3</file>
   <file>out/cqvamp_README.txt</file>
-  <file>out/cqvamp.so</file>
+  <file>out/cqvamp.@SUFFIX@</file>
   <file>out/fanchirp.cat</file>
   <file>out/fanchirp_CITATION.txt</file>
   <file>out/fanchirp_COPYING.txt</file>
   <file>out/fanchirp_README.md</file>
-  <file>out/fanchirp.so</file>
+  <file>out/fanchirp.@SUFFIX@</file>
   <file>out/match-vamp-plugin.cat</file>
   <file>out/match-vamp-plugin_CITATION.txt</file>
   <file>out/match-vamp-plugin_COPYING.txt</file>
   <file>out/match-vamp-plugin.n3</file>
   <file>out/match-vamp-plugin_README.txt</file>
-  <file>out/match-vamp-plugin.so</file>
+  <file>out/match-vamp-plugin.@SUFFIX@</file>
   <file>out/mvamp.cat</file>
   <file>out/mvamp_COPYING.txt</file>
   <file>out/mvamp.n3</file>
   <file>out/mvamp_README.txt</file>
-  <file>out/mvamp.so</file>
+  <file>out/mvamp.@SUFFIX@</file>
   <file>out/nnls-chroma.cat</file>
   <file>out/nnls-chroma_CITATION.txt</file>
   <file>out/nnls-chroma_COPYING.txt</file>
   <file>out/nnls-chroma.n3</file>
   <file>out/nnls-chroma_README.txt</file>
-  <file>out/nnls-chroma.so</file>
+  <file>out/nnls-chroma.@SUFFIX@</file>
   <file>out/pyin.cat</file>
   <file>out/pyin_COPYING.txt</file>
   <file>out/pyin.n3</file>
   <file>out/pyin_README.txt</file>
-  <file>out/pyin.so</file>
+  <file>out/pyin.@SUFFIX@</file>
   <file>out/qm-vamp-plugins.cat</file>
   <file>out/qm-vamp-plugins_COPYING.txt</file>
   <file>out/qm-vamp-plugins.n3</file>
   <file>out/qm-vamp-plugins_README.md</file>
-  <file>out/qm-vamp-plugins.so</file>
+  <file>out/qm-vamp-plugins.@SUFFIX@</file>
   <file>out/segmentino.cat</file>
   <file>out/segmentino_CITATION.txt</file>
   <file>out/segmentino_COPYING.txt</file>
   <file>out/segmentino.n3</file>
   <file>out/segmentino_README.txt</file>
-  <file>out/segmentino.so</file>
+  <file>out/segmentino.@SUFFIX@</file>
   <file>out/silvet.cat</file>
   <file>out/silvet_CITATION.txt</file>
   <file>out/silvet_COPYING.txt</file>
   <file>out/silvet.n3</file>
   <file>out/silvet_README.txt</file>
-  <file>out/silvet.so</file>
+  <file>out/silvet.@SUFFIX@</file>
   <file>out/simple-cepstrum.cat</file>
   <file>out/simple-cepstrum.n3</file>
-  <file>out/simple-cepstrum.so</file>
+  <file>out/simple-cepstrum.@SUFFIX@</file>
   <file>out/tempogram.cat</file>
   <file>out/tempogram_CITATION.txt</file>
   <file>out/tempogram_COPYING.txt</file>
   <file>out/tempogram.n3</file>
   <file>out/tempogram_README.txt</file>
-  <file>out/tempogram.so</file>
+  <file>out/tempogram.@SUFFIX@</file>
   <file>out/tipic.cat</file>
   <file>out/tipic_CITATION.txt</file>
   <file>out/tipic_COPYING.txt</file>
   <file>out/tipic.n3</file>
   <file>out/tipic_README.txt</file>
-  <file>out/tipic.so</file>
+  <file>out/tipic.@SUFFIX@</file>
   <file>out/tuning-difference.cat</file>
   <file>out/tuning-difference_COPYING.txt</file>
   <file>out/tuning-difference.n3</file>
   <file>out/tuning-difference_README.md</file>
-  <file>out/tuning-difference.so</file>
+  <file>out/tuning-difference.@SUFFIX@</file>
   <file>out/ua-vamp-plugins.cat</file>
   <file>out/ua-vamp-plugins_COPYING.txt</file>
   <file>out/ua-vamp-plugins_README.md</file>
-  <file>out/ua-vamp-plugins.so</file>
+  <file>out/ua-vamp-plugins.@SUFFIX@</file>
   <file>out/vamp-aubio.cat</file>
   <file>out/vamp-aubio.n3</file>
   <file>out/vamp-aubio-plugins_COPYING.txt</file>
   <file>out/vamp-aubio-plugins_README.md</file>
-  <file>out/vamp-aubio.so</file>
+  <file>out/vamp-aubio.@SUFFIX@</file>
   <file>out/vamp-example-plugins.cat</file>
   <file>out/vamp-example-plugins_COPYING.txt</file>
   <file>out/vamp-example-plugins.n3</file>
-  <file>out/vamp-example-plugins.so</file>
+  <file>out/vamp-example-plugins.@SUFFIX@</file>
   <file>out/vamp-libxtract.cat</file>
   <file>out/vamp-libxtract_COPYING.txt</file>
   <file>out/vamp-libxtract.n3</file>
   <file>out/vamp-libxtract_README.txt</file>
-  <file>out/vamp-libxtract.so</file>
+  <file>out/vamp-libxtract.@SUFFIX@</file>
   <file>out/vampy_COPYING.txt</file>
   <file>out/vampy_README.txt</file>
-  <file>out/vampy.so</file>
+  <file>out/vampy.@SUFFIX@</file>
   <file>rdf/vamp.n3</file>
   <file>rdf/vamp.rdf</file>
   <file>rdf/plugins/availability.n3</file>

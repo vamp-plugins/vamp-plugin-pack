@@ -23,8 +23,6 @@ OBJECTS_DIR = o
 MOC_DIR = o
 RCC_DIR = o
 
-RESOURCES += installer.qrc
-
 sign.target = $$PWD/out/.signed
 sign.depends = $$PWD/out/.something-to-sign
 sign.commands = $$DEPLOYDIR/sign-plugins $$PWD/out
@@ -32,5 +30,25 @@ sign.commands = $$DEPLOYDIR/sign-plugins $$PWD/out
 QMAKE_EXTRA_TARGETS += sign
 PRE_TARGETDEPS += $$sign.target
 
-SOURCES += installer.cpp
+qrc.target = $$PWD/installer.qrc
+qrc.depends = $$PWD/installer.qrc.in
+qrc.commands = $$DEPLOYDIR/generate-qrc $$PWD/installer.qrc
 
+QMAKE_EXTRA_TARGETS += qrc
+PRE_TARGETDEPS += $$qrc.target
+
+# We can't use use RESOURCES += installer.qrc here, as qmake will
+# reject a resource file that hasn't been generated yet
+
+qrc_cpp.target = $${RCC_DIR}/qrc_installer.cpp
+qrc_cpp.depends = $$qrc.target
+qrc_cpp.commands = rcc $$qrc.target -o $$qrc_cpp.target
+
+QMAKE_EXTRA_TARGETS += qrc_cpp
+PRE_TARGETDEPS += $$qrc_cpp.target
+
+SOURCES += installer.cpp $$qrc_cpp.target
+
+macx* {
+    QMAKE_POST_LINK += deploy/osx/deploy.sh $$shell_quote($$TARGET)
+}
