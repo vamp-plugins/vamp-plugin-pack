@@ -45,3 +45,4 @@ o/
 .notarization-uuid
 *.dmg
 *.app
+installer.qrc

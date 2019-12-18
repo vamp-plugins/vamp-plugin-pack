@@ -28,6 +28,9 @@ cd %STARTPWD%
 call .\repoint install
 if %errorlevel% neq 0 exit /b %errorlevel%
 
+call .\deploy\win64\generate-qrc installer.qrc
+if %errorlevel% neq 0 exit /b %errorlevel%
+
 mkdir build_win64
 cd build_win64
 
