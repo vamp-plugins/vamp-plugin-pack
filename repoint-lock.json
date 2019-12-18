@@ -49,7 +49,7 @@
       "pin": "be50e19670d7702b706581d71f84d55c5ade290e"
     },
     "vamp-tempogram": {
-      "pin": "02721bb9c4f0"
+      "pin": "ac1a75151fc9"
     },
     "vamp-aubio-plugins": {
       "pin": "7a8e644aa81f0a3672b4e140396f9afe17eb2627"
@@ -76,7 +76,7 @@
       "pin": "cd235ecbeb31"
     },
     "vampy": {
-      "pin": "e1d65734d953"
+      "pin": "a38d318c85a9"
     },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"

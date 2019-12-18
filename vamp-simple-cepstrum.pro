@@ -33,7 +33,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-simple-cepstrum/vamp-plugin.list
 }
 
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing $$PWD/out
+QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

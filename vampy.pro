@@ -41,8 +41,15 @@ macx* {
         -I/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/include
     LIBS += -lpython2.7 -lpthread -exported_symbols_list $$PWD/vampy/vamp-plugin.list
 }
+win* {
+    QMAKE_CXXFLAGS += -DHAVE_NUMPY \
+        -DNDEBUG \
+        -DVAMPY_EXPORTS \
+        -I/Python27-64/include -I/Python27-64/Lib/site-packages/numpy-1.16.1-py2.7-win-amd64.egg/numpy/core/include
+    LIBS += -L/Python27-64/libs -lpython27
+}
 
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing $$PWD/out
+QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

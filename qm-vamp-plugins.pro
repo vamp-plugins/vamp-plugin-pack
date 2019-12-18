@@ -43,7 +43,7 @@ macx* {
     LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list -lpthread
 }
 
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing $$PWD/out
+QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \
