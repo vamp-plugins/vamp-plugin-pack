@@ -40,9 +40,11 @@ PRE_TARGETDEPS += $$qrc.target
 # We can't use use RESOURCES += installer.qrc here, as qmake will
 # reject a resource file that hasn't been generated yet
 
+qtPrepareTool(QMAKE_RCC, rcc)
+
 qrc_cpp.target = $${RCC_DIR}/qrc_installer.cpp
 qrc_cpp.depends = $$qrc.target
-qrc_cpp.commands = rcc $$qrc.target -o $$qrc_cpp.target
+qrc_cpp.commands = $$QMAKE_RCC $$qrc.target -o $$qrc_cpp.target
 
 QMAKE_EXTRA_TARGETS += qrc_cpp
 PRE_TARGETDEPS += $$qrc_cpp.target
