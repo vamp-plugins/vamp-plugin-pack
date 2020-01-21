@@ -18,6 +18,11 @@
             "vcs": "hg",
             "service": "soundsoftware"
         },
+        "dataquay": {
+            "vcs": "hg",
+            "service": "sourcehut",
+            "owner": "breakfastquay"
+        },
         "icons/scalable": {
             "vcs": "hg",
 	    "service": "soundsoftware",

@@ -5,7 +5,7 @@ CONFIG += release
 
 PREFIX_PATH = /usr/local
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk
+INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/dataquay $$PWD/dataquay/dataquay
 
 win32-msvc* {
 

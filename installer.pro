@@ -61,10 +61,25 @@ SOURCES += \
         vamp-plugin-sdk/src/vamp-hostsdk/PluginWrapper.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/RealTime.cpp
 
+DATAQUAY_SOURCES=$$fromfile(dataquay/lib.pro, SOURCES)
+DATAQUAY_HEADERS=$$fromfile(dataquay/lib.pro, HEADERS)
+
+for (file, DATAQUAY_SOURCES) { SOURCES += $$sprintf("dataquay/%1", $$file) }
+for (file, DATAQUAY_HEADERS) { HEADERS += $$sprintf("dataquay/%1", $$file) }
+
+DEFINES += HAVE_SORD HAVE_SERD USE_SORD NDEBUG
+
 linux* {
-   LIBS += -ldl
+    QMAKE_CXXFLAGS += -I/usr/include/sord-0 -I/usr/include/serd-0
+    LIBS += -lsord-0 -lserd-0 -ldl
 }
 
 macx* {
+    LIBS += -lsord-0 -lserd-0
     QMAKE_POST_LINK += deploy/osx/deploy.sh $$shell_quote($$TARGET)
 }
+
+win32* {
+    LIBS += -lsord -lserd
+}
+    

@@ -12,8 +12,14 @@
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
+#include <dataquay/BasicStore.h>
+#include <dataquay/RDFException.h>
+
 #include <iostream>
+#include <set>
+
 using namespace std;
+using namespace Dataquay;
 
 QString
 getDefaultInstallDirectory()
@@ -42,6 +48,114 @@ getPluginLibraryList()
     return entries;
 }
 
+unique_ptr<BasicStore>
+loadLibrariesRdf()
+{
+    QDir dir(":out/");
+    auto entries = dir.entryList({ "*.ttl", "*.n3" });
+
+    unique_ptr<BasicStore> store(new BasicStore);
+
+    for (auto e: entries) {
+
+        QFile f(":out/" + e);
+        if (!f.open(QFile::ReadOnly | QFile::Text)) {
+            cerr << "Failed to open RDF resource file "
+                 << e.toStdString() << endl;
+            continue;
+        }
+
+        QByteArray content = f.readAll();
+        f.close();
+
+        try {
+            store->importString(QString::fromUtf8(content), 
+                                Uri("file:" + e),
+                                BasicStore::ImportIgnoreDuplicates);
+        } catch (const RDFException &ex) {
+            cerr << "Failed to import RDF resource file "
+                 << e.toStdString() << ": " << ex.what() << endl;
+        }
+    }
+
+    return store;
+}
+
+struct LibraryInfo {
+    QString id;
+    QString fileName;
+    QString title;
+    QString maker;
+    QString description;
+};
+
+vector<LibraryInfo>
+getLibraryInfo(const Store &store, QStringList libraries)
+{
+    /* e.g.
+
+       plugbase:library a vamp:PluginLibrary ;
+       vamp:identifier "qm-vamp-plugins" ; 
+       dc:title "Queen Mary plugin set"
+    */
+
+    Triples tt = store.match(Triple(Node(),
+                                    Uri("a"),
+                                    store.expand("vamp:PluginLibrary")));
+
+    std::map<QString, QString> wanted; // basename -> full lib name
+    for (auto lib: libraries) {
+        wanted[QFileInfo(lib).baseName()] = lib;
+    }
+    
+    vector<LibraryInfo> results;
+    
+    for (auto t: tt) {
+
+        Node libId = store.complete(Triple(t.subject(),
+                                           store.expand("vamp:identifier"),
+                                           Node()));
+        if (libId.type != Node::Literal) {
+            continue;
+        }
+        auto wi = wanted.find(libId.value);
+        if (wi == wanted.end()) {
+            continue;
+        }
+        
+        LibraryInfo info;
+        info.id = wi->first;
+        info.fileName = wi->second;
+        
+        Node title = store.complete(Triple(t.subject(),
+                                           store.expand("dc:title"),
+                                           Node()));
+        if (title.type == Node::Literal) {
+            info.title = title.value;
+        } else {
+            info.title = info.id;
+        }
+        
+        Node maker = store.complete(Triple(t.subject(),
+                                           store.expand("foaf:maker"),
+                                           Node()));
+        if (maker.type == Node::Literal) {
+            info.maker = maker.value;
+        }
+
+        Node desc = store.complete(Triple(t.subject(),
+                                          store.expand("dc:description"),
+                                          Node()));
+        if (desc.type == Node::Literal) {
+            info.description = desc.value;
+        }
+
+        results.push_back(info);
+    }
+
+    return results;
+}
+
 void
 installLibrary(QString library, QString target)
 {
@@ -66,17 +180,23 @@ installLibrary(QString library, QString target)
 }
 
 QStringList
-getUserApprovedPluginLibraries(QStringList libraries)
+getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 {
     QDialog dialog;
     auto layout = new QVBoxLayout;
 
-    std::map<QString, QCheckBox *> checkBoxMap;
+    map<QString, QCheckBox *> checkBoxMap;
+
+    map<QString, LibraryInfo> orderedInfo;
+    for (auto info: libraries) {
+        orderedInfo[info.title] = info;
+    }
     
-    for (auto lib: libraries) {
-        auto cb = new QCheckBox(lib);
+    for (auto ip: orderedInfo) {
+        LibraryInfo info = ip.second;
+        auto cb = new QCheckBox(info.title);
         layout->addWidget(cb);
-        checkBoxMap[lib] = cb;
+        checkBoxMap[info.fileName] = cb;
     }
 
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
@@ -114,7 +234,11 @@ int main(int argc, char **argv)
 
     QStringList libraries = getPluginLibraryList();
 
-    QStringList toInstall = getUserApprovedPluginLibraries(libraries);
+    auto rdfStore = loadLibrariesRdf();
+
+    auto info = getLibraryInfo(*rdfStore, libraries);
+    
+    QStringList toInstall = getUserApprovedPluginLibraries(info);
     
     for (auto lib: toInstall) {
         installLibrary(lib, target);

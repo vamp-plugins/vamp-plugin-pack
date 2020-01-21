@@ -3,14 +3,17 @@
     "vamp-plugin-sdk": {
       "pin": "c42e50a5c297"
     },
+    "dataquay": {
+      "pin": "c523464d1466"
+    },
     "icons/scalable": {
       "pin": "be45984f7915"
     },
     "qm-vamp-plugins": {
-      "pin": "7aa2536321769ece0873c072200b8183c899c924"
+      "pin": "b1aeb4d87b85c27a221aa2cfc436aea24eedf6d4"
     },
     "qm-vamp-plugins/lib/qm-dsp": {
-      "pin": "6bc10532c581a14bd26361249789100e771638cf"
+      "pin": "4d2a4a4e0c2dd0ddf07bf9d2a224ded912712714"
     },
     "constant-q-cpp": {
       "pin": "88464ef869d9473a22d9d5f2d23e27ba33591440"
