@@ -8,7 +8,9 @@
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QCheckBox>
+#include <QScrollArea>
 #include <QDialogButtonBox>
+#include <QLabel>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -141,8 +143,15 @@ getLibraryInfo(const Store &store, QStringList libraries)
                                            Node()));
         if (maker.type == Node::Literal) {
             info.maker = maker.value;
+        } else if (maker != Node()) {
+            maker = store.complete(Triple(maker,
+                                          store.expand("foaf:name"),
+                                          Node()));
+            if (maker.type == Node::Literal) {
+                info.maker = maker.value;
+            }
         }
-
+            
         Node desc = store.complete(Triple(t.subject(),
                                           store.expand("dc:description"),
                                           Node()));
@@ -183,7 +192,24 @@ QStringList
 getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 {
     QDialog dialog;
-    auto layout = new QVBoxLayout;
+
+    auto mainLayout = new QGridLayout;
+    dialog.setLayout(mainLayout);
+
+    int mainRow = 0;
+    
+    //!!! at top: title and check/uncheck all button
+    
+    auto scroll = new QScrollArea;
+    mainLayout->addWidget(scroll, mainRow, 0, 1, 2);
+    mainLayout->setRowStretch(mainRow, 10);
+    ++mainRow;
+
+    auto selectionFrame = new QWidget;
+    
+    auto selectionLayout = new QGridLayout;
+    selectionFrame->setLayout(selectionLayout);
+    int selectionRow = 0;
 
     map<QString, QCheckBox *> checkBoxMap;
 
@@ -193,20 +219,35 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     }
     
     for (auto ip: orderedInfo) {
+
+        auto cb = new QCheckBox;
+        selectionLayout->addWidget(cb, selectionRow, 0, Qt::AlignTop);
+
         LibraryInfo info = ip.second;
-        auto cb = new QCheckBox(info.title);
-        layout->addWidget(cb);
+
+        QString text = QObject::tr("<b>%1</b> (%2)<br><i>%3</i>")
+            .arg(info.title)
+            .arg(info.id)
+            .arg(info.maker);
+        
+        auto label = new QLabel(text);
+        
+        selectionLayout->addWidget(label, selectionRow, 1, Qt::AlignTop);
+
+        ++selectionRow;
+
         checkBoxMap[info.fileName] = cb;
     }
 
+    scroll->setWidget(selectionFrame);
+
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
                                    QDialogButtonBox::Cancel);
-    layout->addWidget(bb);
+    mainLayout->addWidget(bb, mainRow, 0, 1, 2);
+    ++mainRow;
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
-    dialog.setLayout(layout);
-    
     if (dialog.exec() == QDialog::Accepted) {
         cerr << "accepted" << endl;
     } else {
