@@ -89,6 +89,7 @@ struct LibraryInfo {
     QString title;
     QString maker;
     QString description;
+    QStringList pluginTitles;
 };
 
 vector<LibraryInfo>
@@ -159,6 +160,18 @@ getLibraryInfo(const Store &store, QStringList libraries)
             info.description = desc.value;
         }
 
+        Triples pp = store.match(Triple(t.subject(),
+                                        store.expand("vamp:available_plugin"),
+                                        Node()));
+        for (auto p: pp) {
+            Node ptitle = store.complete(Triple(p.object(),
+                                                store.expand("dc:title"),
+                                                Node()));
+            if (ptitle.type == Node::Literal) {
+                info.pluginTitles.push_back(ptitle.value);
+            }
+        }
+        
         results.push_back(info);
     }
 
@@ -194,13 +207,24 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     QDialog dialog;
 
     auto mainLayout = new QGridLayout;
+    mainLayout->setSpacing(0);
     dialog.setLayout(mainLayout);
 
     int mainRow = 0;
     
     //!!! at top: title and check/uncheck all button
     
+    auto checkAll = new QCheckBox;
+    mainLayout->addWidget(checkAll, mainRow, 0, Qt::AlignHCenter);
+    ++mainRow;
+
+    auto checkArrow = new QLabel("&#9660;");
+    checkArrow->setTextFormat(Qt::RichText);
+    mainLayout->addWidget(checkArrow, mainRow, 0, Qt::AlignHCenter);
+    ++mainRow;
+    
     auto scroll = new QScrollArea;
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mainLayout->addWidget(scroll, mainRow, 0, 1, 2);
     mainLayout->setRowStretch(mainRow, 10);
     ++mainRow;
@@ -221,16 +245,35 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     for (auto ip: orderedInfo) {
 
         auto cb = new QCheckBox;
-        selectionLayout->addWidget(cb, selectionRow, 0, Qt::AlignTop);
+        selectionLayout->addWidget(cb, selectionRow, 0,
+                                   Qt::AlignTop | Qt::AlignHCenter);
 
         LibraryInfo info = ip.second;
-
-        QString text = QObject::tr("<b>%1</b> (%2)<br><i>%3</i>")
-            .arg(info.title)
-            .arg(info.id)
-            .arg(info.maker);
+/*
+        int n = info.pluginTitles.size();
+        QString contents;
+        
+        if (n > 0) {
+            int max = 4;
+            QStringList titles;
+            for (int i = 0; i < max && i < int(info.pluginTitles.size()); ++i) {
+                titles.push_back(info.pluginTitles[i]);
+            }
+            QString titleText = titles.join(", ");
+            if (max < int(info.pluginTitles.size())) {
+                titleText = QObject::tr("%1 ...").arg(titleText);
+            }
+            contents = QObject::tr("Plugins: %1").arg(titleText);
+        }
+*/        
+        QString text = QObject::tr("<b>%1</b><br><small><i>%2</i><br>%3</small>")
+                                .arg(info.title)
+                                .arg(info.maker)
+                                .arg(info.description);
         
         auto label = new QLabel(text);
+        label->setWordWrap(true);
+        label->setMinimumWidth(800);
         
         selectionLayout->addWidget(label, selectionRow, 1, Qt::AlignTop);
 
@@ -241,10 +284,24 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
     scroll->setWidget(selectionFrame);
 
+    QObject::connect(checkAll, &QCheckBox::toggled,
+                     [=]() {
+                         bool toCheck = checkAll->isChecked();
+                         for (auto p: checkBoxMap) {
+                             p.second->setChecked(toCheck);
+                         }
+                     });
+                     
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
                                    QDialogButtonBox::Cancel);
     mainLayout->addWidget(bb, mainRow, 0, 1, 2);
     ++mainRow;
+
+    int cw = 50;
+    mainLayout->setColumnMinimumWidth(0, cw + 20); //!!!
+    mainLayout->setColumnStretch(1, 10);
+    selectionLayout->setColumnMinimumWidth(0, cw); //!!!
+
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
