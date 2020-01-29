@@ -237,7 +237,11 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
     map<QString, QCheckBox *> checkBoxMap;
 
-    map<QString, LibraryInfo> orderedInfo;
+    map<QString, LibraryInfo, std::function<bool (QString, QString)>>
+        orderedInfo
+        ([](QString k1, QString k2) {
+             return k1.localeAwareCompare(k2) < 0;
+         });
     for (auto info: libraries) {
         orderedInfo[info.title] = info;
     }
