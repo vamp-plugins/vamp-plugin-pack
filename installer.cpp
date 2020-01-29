@@ -50,33 +50,39 @@ getPluginLibraryList()
     return entries;
 }
 
+void
+loadLibraryRdf(BasicStore &store, QString filename)
+{
+    QFile f(filename);
+    if (!f.open(QFile::ReadOnly | QFile::Text)) {
+        cerr << "Failed to open RDF resource file "
+             << filename.toStdString() << endl;
+        return;
+    }
+
+    QByteArray content = f.readAll();
+    f.close();
+
+    try {
+        store.importString(QString::fromUtf8(content), 
+                           Uri("file:" + filename),
+                           BasicStore::ImportIgnoreDuplicates);
+    } catch (const RDFException &ex) {
+        cerr << "Failed to import RDF resource file "
+             << filename.toStdString() << ": " << ex.what() << endl;
+    }
+}
+
 unique_ptr<BasicStore>
 loadLibrariesRdf()
 {
-    QDir dir(":out/");
-    auto entries = dir.entryList({ "*.ttl", "*.n3" });
-
     unique_ptr<BasicStore> store(new BasicStore);
 
-    for (auto e: entries) {
+    vector<QString> dirs { ":rdf/plugins", ":out" };
 
-        QFile f(":out/" + e);
-        if (!f.open(QFile::ReadOnly | QFile::Text)) {
-            cerr << "Failed to open RDF resource file "
-                 << e.toStdString() << endl;
-            continue;
-        }
-
-        QByteArray content = f.readAll();
-        f.close();
-
-        try {
-            store->importString(QString::fromUtf8(content), 
-                                Uri("file:" + e),
-                                BasicStore::ImportIgnoreDuplicates);
-        } catch (const RDFException &ex) {
-            cerr << "Failed to import RDF resource file "
-                 << e.toStdString() << ": " << ex.what() << endl;
+    for (auto d: dirs) {
+        for (auto e: QDir(d).entryList({ "*.ttl", "*.n3" })) {
+            loadLibraryRdf(*store, d + "/" + e);
         }
     }
 
@@ -126,18 +132,17 @@ getLibraryInfo(const Store &store, QStringList libraries)
             continue;
         }
         
-        LibraryInfo info;
-        info.id = wi->first;
-        info.fileName = wi->second;
-        
         Node title = store.complete(Triple(t.subject(),
                                            store.expand("dc:title"),
                                            Node()));
-        if (title.type == Node::Literal) {
-            info.title = title.value;
-        } else {
-            info.title = info.id;
+        if (title.type != Node::Literal) {
+            continue;
         }
+
+        LibraryInfo info;
+        info.id = wi->first;
+        info.fileName = wi->second;
+        info.title = title.value;
         
         Node maker = store.complete(Triple(t.subject(),
                                            store.expand("foaf:maker"),
@@ -173,8 +178,14 @@ getLibraryInfo(const Store &store, QStringList libraries)
         }
         
         results.push_back(info);
+        wanted.erase(libId.value);
     }
 
+    for (auto wp: wanted) {
+        cerr << "Failed to find any RDF information about library "
+             << wp.second << endl;
+    }
+    
     return results;
 }
 
