@@ -1,16 +1,16 @@
 {
   "libraries": {
     "vamp-plugin-sdk": {
-      "pin": "c42e50a5c297"
+      "pin": "a7e6d747fd3f"
     },
     "dataquay": {
       "pin": "35098262cadd"
     },
     "icons/scalable": {
-      "pin": "be45984f7915"
+      "pin": "fd0ace21dce3"
     },
     "qm-vamp-plugins": {
-      "pin": "b1aeb4d87b85c27a221aa2cfc436aea24eedf6d4"
+      "pin": "8f3c51f96eb5fb2d576d1cd6cdab3449d50c3225"
     },
     "qm-vamp-plugins/lib/qm-dsp": {
       "pin": "4d2a4a4e0c2dd0ddf07bf9d2a224ded912712714"
@@ -34,10 +34,10 @@
       "pin": "8fd1c994f937"
     },
     "pyin": {
-      "pin": "3faac48d491d"
+      "pin": "2e6911badde9"
     },
     "azi": {
-      "pin": "39a06bc19a36"
+      "pin": "230562aa012d"
     },
     "vamp-simple-cepstrum": {
       "pin": "a488dd5e4fb8"
@@ -49,16 +49,16 @@
       "pin": "4b272c839f7e"
     },
     "bbc-vamp-plugins": {
-      "pin": "be50e19670d7702b706581d71f84d55c5ade290e"
+      "pin": "96c3c812c8f34910ee941521a666f37a12d93d76"
     },
     "vamp-tempogram": {
       "pin": "ac1a75151fc9"
     },
     "vamp-aubio-plugins": {
-      "pin": "7a8e644aa81f0a3672b4e140396f9afe17eb2627"
+      "pin": "07f81171b195748e5b1919fb5d24d33fb918928b"
     },
     "aubio": {
-      "pin": "63fc1dfb73714cac40869e4469cb6eac1b37beab"
+      "pin": "90bd27a23123fcc524c31787c9c8fc0ae4c79378"
     },
     "ua-vamp-plugins": {
       "pin": "d2a57e002f5a3a0cf5311e1f77a8b21bf932f7bb"
@@ -85,7 +85,7 @@
       "pin": "d0c2a83c1364"
     },
     "rdf": {
-      "pin": "a1dd981a7ea8"
+      "pin": "ec72febb78ac"
     }
   }
 }

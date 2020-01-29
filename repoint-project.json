@@ -16,7 +16,8 @@
     "libraries": {
         "vamp-plugin-sdk": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "vamp-plugin-sdk-v2.9"
         },
         "dataquay": {
             "vcs": "hg",
@@ -31,108 +32,132 @@
         "qm-vamp-plugins": {
             "vcs": "git",
             "service": "github",
-            "owner": "c4dm"
+            "owner": "c4dm",
+            "pin": "qm-vamp-plugins-v1.8.0"
         },
         "qm-vamp-plugins/lib/qm-dsp": {
             "vcs": "git",
 	    "service": "github",
-            "owner": "c4dm"
+            "owner": "c4dm",
+            "pin": "qm-vamp-plugins-v1.8.0"
         },
         "constant-q-cpp": {
             "vcs": "git",
             "service": "github",
-            "owner": "cannam"
+            "owner": "cannam",
+            "pin": "88464ef869d9473a22d9d5f2d23e27ba33591440"
         },
         "segmentino": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "repository": "segmenter-vamp-plugin"
+            "repository": "segmenter-vamp-plugin",
+            "pin": "093eebe15c24"
         },
         "nnls-chroma": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "89099872c87b"
         },
         "silvet": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "af71cbdab621"
         },
         "tipic": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "14823d51a573"
         },
         "tuning-difference": {
             "vcs": "hg",
-	    "service": "soundsoftware"
+	    "service": "soundsoftware",
+            "pin": "8fd1c994f937"
         },
         "pyin": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "2e6911badde9"
         },
         "azi": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "v1.0"
         },
         "vamp-simple-cepstrum": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "a488dd5e4fb8"
         },
         "cepstral-pitchtracker": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "759ea6e988fe"
         },
         "match-vamp": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "4b272c839f7e"
         },
         "bbc-vamp-plugins": {
             "vcs": "git",
             "service": "github",
-            "owner": "bbcrd"
+            "owner": "bbcrd",
+            "pin": "v1.1"
         },
         "vamp-tempogram": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "ac1a75151fc9"
         },
         "vamp-aubio-plugins": {
             "vcs": "git",
-            "service": "aubio"
+            "service": "aubio",
+            "pin": "0.5.1"
         },
         "aubio": {
             "vcs": "git",
-            "service": "aubio"
+            "service": "aubio",
+            "pin": "0.4.9"
         },
         "ua-vamp-plugins": {
             "vcs": "git",
             "service": "github",
             "owner": "pertusa",
-            "repository": "UAVampPlugins"
+            "repository": "UAVampPlugins",
+            "pin": "d2a57e002f5a3a0cf5311e1f77a8b21bf932f7bb"
         },
         "vamp-libxtract-plugins": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "81146373f024"
         },
         "beatroot-vamp": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "1f175ae200a6"
         },
         "marsyas": {
             "vcs": "git",
             "service": "github",
-            "owner": "marsyas"
+            "owner": "marsyas",
+            "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
         },
         "vamp-fanchirp": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "branch": "spect"
+            "branch": "spect",
+            "pin": "297eb6a19824"
         },
         "vamp-fanchirp/bqvec": {
             "vcs": "hg",
             "service": "sourcehut",
-            "owner": "breakfastquay"
+            "owner": "breakfastquay",
+            "pin": "cd235ecbeb31"
         },
         "vampy": {
             "vcs": "hg",
-            "service": "soundsoftware"
+            "service": "soundsoftware",
+            "pin": "a38d318c85a9"
         },
         "sv-dependency-builds": {
             "vcs": "hg",
