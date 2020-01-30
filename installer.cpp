@@ -196,8 +196,10 @@ getLibraryInfo(const Store &store, QStringList libraries)
 void
 installLibrary(QString library, QString target)
 {
-    QFile f(":out/" + library);
+    QString source = ":out";
+    QFile f(source + "/" + library);
     QString destination = target + "/" + library;
+    
     SVCERR << "Copying " << library.toStdString() << " to "
            << destination.toStdString() << "..." << endl;
     if (!f.copy(destination)) {
@@ -213,6 +215,21 @@ installLibrary(QString library, QString target)
         SVCERR << "Failed to set permissions on "
                << library.toStdString() << endl;
         return;
+    }
+
+    QString base = QFileInfo(library).baseName();
+    QDir dir(source);
+    auto entries = dir.entryList({ base + "*" });
+    for (auto e: entries) {
+        if (e == library) continue;
+        QString destination = target + "/" + e;
+        SVCERR << "Copying " << e.toStdString() << " to "
+               << destination.toStdString() << "..." << endl;
+        if (!QFile(source + "/" + e).copy(destination)) {
+            SVCERR << "Failed to copy " << e.toStdString()
+                   << " to target " << destination.toStdString()
+                   << " (ignoring)" << endl;
+        }
     }
 }
 
@@ -370,6 +387,12 @@ int main(int argc, char **argv)
     auto info = getLibraryInfo(*rdfStore, libraries);
     
     QStringList toInstall = getUserApprovedPluginLibraries(info);
+
+    if (!toInstall.empty()) {
+        if (!QDir(target).exists()) {
+            QDir().mkpath(target);
+        }
+    }
     
     for (auto lib: toInstall) {
         installLibrary(lib, target);
