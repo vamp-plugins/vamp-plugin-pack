@@ -159,6 +159,15 @@
             "service": "soundsoftware",
             "pin": "a38d318c85a9"
         },
+        "bqvec": {
+            "vcs": "hg",
+            "service": "sourcehut",
+            "owner": "breakfastquay"
+        },
+        "svcore": {
+            "vcs": "hg",
+            "service": "soundsoftware"
+        },
         "sv-dependency-builds": {
             "vcs": "hg",
             "service": "soundsoftware"

@@ -11,6 +11,8 @@
 #include <QScrollArea>
 #include <QDialogButtonBox>
 #include <QLabel>
+#include <QFont>
+#include <QFontInfo>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -20,6 +22,8 @@
 #include <iostream>
 #include <set>
 
+#include "base/Debug.h"
+
 using namespace std;
 using namespace Dataquay;
 
@@ -28,7 +32,7 @@ getDefaultInstallDirectory()
 {
     auto pathList = Vamp::PluginHostAdapter::getPluginPath();
     if (pathList.empty()) {
-        cerr << "Failed to look up Vamp plugin path" << endl;
+        SVCERR << "Failed to look up Vamp plugin path" << endl;
         return QString();
     }
 
@@ -44,7 +48,7 @@ getPluginLibraryList()
     auto entries = dir.entryList({ "*.so", "*.dll", "*.dylib" });
 
     for (auto e: entries) {
-        cerr << e.toStdString() << endl;
+        SVCERR << e.toStdString() << endl;
     }
 
     return entries;
@@ -55,8 +59,8 @@ loadLibraryRdf(BasicStore &store, QString filename)
 {
     QFile f(filename);
     if (!f.open(QFile::ReadOnly | QFile::Text)) {
-        cerr << "Failed to open RDF resource file "
-             << filename.toStdString() << endl;
+        SVCERR << "Failed to open RDF resource file "
+               << filename.toStdString() << endl;
         return;
     }
 
@@ -68,8 +72,8 @@ loadLibraryRdf(BasicStore &store, QString filename)
                            Uri("file:" + filename),
                            BasicStore::ImportIgnoreDuplicates);
     } catch (const RDFException &ex) {
-        cerr << "Failed to import RDF resource file "
-             << filename.toStdString() << ": " << ex.what() << endl;
+        SVCERR << "Failed to import RDF resource file "
+               << filename.toStdString() << ": " << ex.what() << endl;
     }
 }
 
@@ -182,8 +186,8 @@ getLibraryInfo(const Store &store, QStringList libraries)
     }
 
     for (auto wp: wanted) {
-        cerr << "Failed to find any RDF information about library "
-             << wp.second << endl;
+        SVCERR << "Failed to find any RDF information about library "
+               << wp.second << endl;
     }
     
     return results;
@@ -194,11 +198,11 @@ installLibrary(QString library, QString target)
 {
     QFile f(":out/" + library);
     QString destination = target + "/" + library;
-    cerr << "Copying " << library.toStdString() << " to "
-         << destination.toStdString() << "..." << endl;
+    SVCERR << "Copying " << library.toStdString() << " to "
+           << destination.toStdString() << "..." << endl;
     if (!f.copy(destination)) {
-        cerr << "Failed to copy " << library.toStdString()
-             << " to target " << destination.toStdString() << endl;
+        SVCERR << "Failed to copy " << library.toStdString()
+               << " to target " << destination.toStdString() << endl;
         return;
     }
     if (!QFile::setPermissions
@@ -206,8 +210,8 @@ installLibrary(QString library, QString target)
          QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner |
          QFile::ReadGroup | QFile::ExeGroup |
          QFile::ReadOther | QFile::ExeOther)) {
-        cerr << "Failed to set permissions on "
-             << library.toStdString() << endl;
+        SVCERR << "Failed to set permissions on "
+               << library.toStdString() << endl;
         return;
     }
 }
@@ -281,7 +285,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
             contents = QObject::tr("Plugins: %1").arg(titleText);
         }
 */        
-        QString text = QObject::tr("<b>%1</b><br><small><i>%2</i><br>%3</small>")
+        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br>%3")
                                 .arg(info.title)
                                 .arg(info.maker)
                                 .arg(info.description);
@@ -321,9 +325,9 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
     if (dialog.exec() == QDialog::Accepted) {
-        cerr << "accepted" << endl;
+        SVCERR << "accepted" << endl;
     } else {
-        cerr << "rejected" << endl;
+        SVCERR << "rejected" << endl;
     }
 
     QStringList approved;
@@ -339,6 +343,20 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+
+    QApplication::setOrganizationName("sonic-visualiser");
+    QApplication::setOrganizationDomain("sonicvisualiser.org");
+    QApplication::setApplicationName(QApplication::tr("Vamp Plugin Pack Installer"));
+
+#ifdef Q_OS_WIN32
+    QFont font(QApplication::font());
+    QString preferredFamily = "Segoe UI";
+    font.setFamily(preferredFamily);
+    if (QFontInfo(font).family() == preferredFamily) {
+        font.setPointSize(10);
+        QApplication::setFont(font);
+    }
+#endif
 
     QString target = getDefaultInstallDirectory();
     if (target == "") {

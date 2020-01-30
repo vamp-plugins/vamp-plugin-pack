@@ -5,7 +5,7 @@ CONFIG += release
 
 PREFIX_PATH = /usr/local
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/dataquay $$PWD/dataquay/dataquay
+INCLUDEPATH += $$PWD/vamp-plugin-sdk
 
 win32-msvc* {
 
@@ -20,7 +20,9 @@ win32-msvc* {
         LIBS += -NODEFAULTLIB:LIBCMT -Lrelease
     }
 
-    DEFINES += NOMINMAX _USE_MATH_DEFINES HAVE_C99_VARARGS_MACROS
+    DEFINES += NOMINMAX _USE_MATH_DEFINES HAVE_C99_VARARGS_MACROS _HAS_STD_BYTE=0
+
+    LIBS += -lWindowsApp
 }
 
 macx* {

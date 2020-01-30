@@ -94,8 +94,8 @@
   <file>out/ua-vamp-plugins.@SUFFIX@</file>
   <file>out/vamp-aubio.cat</file>
   <file>out/vamp-aubio.n3</file>
-  <file>out/vamp-aubio-plugins_COPYING.txt</file>
-  <file>out/vamp-aubio-plugins_README.md</file>
+  <file>out/vamp-aubio_COPYING.txt</file>
+  <file>out/vamp-aubio_README.md</file>
   <file>out/vamp-aubio.@SUFFIX@</file>
   <file>out/vamp-example-plugins.cat</file>
   <file>out/vamp-example-plugins_COPYING.txt</file>

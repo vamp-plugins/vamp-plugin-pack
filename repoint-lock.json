@@ -81,6 +81,12 @@
     "vampy": {
       "pin": "a38d318c85a9"
     },
+    "bqvec": {
+      "pin": "cd235ecbeb31"
+    },
+    "svcore": {
+      "pin": "1cd161242250"
+    },
     "sv-dependency-builds": {
       "pin": "d0c2a83c1364"
     },

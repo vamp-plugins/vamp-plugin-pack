@@ -9,10 +9,12 @@ exists(config.pri) {
     include(noconfig.pri)
 }
 
+INCLUDEPATH += $$PWD/svcore $$PWD/bqvec $$PWD/dataquay $$PWD/dataquay/dataquay
+
 QMAKE_CXXFLAGS_RELEASE -= -flto
 QMAKE_LFLAGS_RELEASE -= -flto
 
-CONFIG += release warn_on c++14
+CONFIG += release warn_on c++17
 
 QT += gui widgets svg
 
@@ -52,6 +54,9 @@ PRE_TARGETDEPS += $$qrc_cpp.target
 SOURCES += \
         installer.cpp \
         $$qrc_cpp.target \
+        svcore/base/Debug.cpp \
+        svcore/base/ResourceFinder.cpp \
+        svcore/system/System.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/Files.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/host-c.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/PluginBufferingAdapter.cpp \
@@ -83,5 +88,7 @@ macx* {
 
 win32* {
     LIBS += -lsord -lserd
+
+    QMAKE_LFLAGS_RELEASE += -MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\"
 }
     
