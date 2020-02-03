@@ -244,9 +244,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
     int mainRow = 0;
     
-    //!!! at top: title and check/uncheck all button
-    
     auto checkAll = new QCheckBox;
+    checkAll->setChecked(true);
     mainLayout->addWidget(checkAll, mainRow, 0, Qt::AlignHCenter);
     ++mainRow;
 
@@ -277,10 +276,12 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     for (auto info: libraries) {
         orderedInfo[info.title] = info;
     }
-    
+
     for (auto ip: orderedInfo) {
 
         auto cb = new QCheckBox;
+        cb->setChecked(true);
+        
         selectionLayout->addWidget(cb, selectionRow, 0,
                                    Qt::AlignTop | Qt::AlignHCenter);
 
@@ -337,10 +338,12 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     mainLayout->setColumnMinimumWidth(0, cw + 20); //!!!
     mainLayout->setColumnStretch(1, 10);
     selectionLayout->setColumnMinimumWidth(0, cw); //!!!
+    selectionLayout->setColumnMinimumWidth(1, 820); //!!!
+    selectionLayout->setColumnStretch(1, 10);
 
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
-
+    
     if (dialog.exec() == QDialog::Accepted) {
         SVCERR << "accepted" << endl;
     } else {
