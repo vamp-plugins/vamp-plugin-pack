@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD/svcore $$PWD/bqvec $$PWD/dataquay $$PWD/dataquay/dataquay
 QMAKE_CXXFLAGS_RELEASE -= -flto
 QMAKE_LFLAGS_RELEASE -= -flto
 
-CONFIG += release warn_on c++17
+CONFIG += release warn_on c++14 c++17
 
 QT += gui widgets svg
 
