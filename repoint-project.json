@@ -76,7 +76,7 @@
         "pyin": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "2e6911badde9"
+            "pin": "v1.2"
         },
         "azi": {
             "vcs": "hg",
