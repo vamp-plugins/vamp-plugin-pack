@@ -46,3 +46,4 @@ o/
 *.dmg
 *.app
 installer.qrc
+Dockerfile.gen
