@@ -20,6 +20,7 @@
 #include <dataquay/RDFException.h>
 
 #include <iostream>
+#include <memory>
 #include <set>
 
 #include "base/Debug.h"
