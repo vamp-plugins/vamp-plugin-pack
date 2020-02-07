@@ -146,7 +146,7 @@
             "vcs": "hg",
             "service": "soundsoftware",
             "branch": "spect",
-            "pin": "297eb6a19824"
+            "pin": "b21704074c9c"
         },
         "vamp-fanchirp/bqvec": {
             "vcs": "hg",
