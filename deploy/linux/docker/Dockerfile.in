@@ -25,6 +25,7 @@ RUN apt-get update && \
     raptor-utils \
     librubberband-dev \
     libboost-all-dev \
+    python-numpy-dev \
     git \
     mercurial \
     curl wget \
