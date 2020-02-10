@@ -14,11 +14,11 @@ bundleid="org.sonicvisualiser.VampPluginPackInstaller"
 
 set -e
 
-dmg="$1"
+target="$1"
 
-if [ ! -f "$dmg" ] || [ -n "$2" ]; then
-    echo "Usage: $0 <dmg>"
-    echo "  e.g. $0 MyApplication-1.0.dmg"
+if [ ! -f "$target" ] || [ -n "$2" ]; then
+    echo "Usage: $0 <target>"
+    echo "  e.g. $0 MyApplication-1.0.target"
     exit 2
 fi
 
@@ -32,7 +32,7 @@ statfile=.notarization-status
 rm -f "$uuidfile" "$statfile"
 
 xcrun altool --notarize-app \
-    -f "$dmg" \
+    -f "$target" \
     --primary-bundle-id "$bundleid" \
     -u "$user" \
     -p @keychain:altool 2>&1 | tee "$uuidfile"
@@ -77,7 +77,7 @@ while true ; do
 done
 
 echo
-echo "Stapling to package..."
-
-xcrun stapler staple "$dmg" || exit 1
+echo "Done, don't forget to staple the target or its contents"
+echo "(e.g. xcrun stapler staple '$target')"
+exit 0
 
