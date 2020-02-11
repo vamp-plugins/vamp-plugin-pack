@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -eu
+
+current=$(hg id | awk '{ print $1; }')
+
+case "$current" in
+    *+) echo "ERROR: Current working copy has been modified - not proceeding";exit 2;;
+    *);;
+esac
+
+version=`perl -p -e 's/^[^"]*"([^"]*)".*$/$1/' version.h`
+
+mkdir -p packages
+echo
+
+if [ -d /Applications ]; then
+
+    app="Vamp Plugin Pack Installer"
+    volume="$app"-"$version"
+    dmg="$volume".dmg
+
+    deploy/osx/build-and-package.sh
+
+    mv "$dmg" packages/
+
+else
+
+    echo "Not yet implemented for this platform"
+fi
+
+echo "Done"
+
