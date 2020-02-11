@@ -25,13 +25,6 @@ OBJECTS_DIR = o
 MOC_DIR = o
 RCC_DIR = o
 
-sign.target = $$PWD/out/.signed
-sign.depends = $$PWD/out/.something-to-sign
-sign.commands = $$DEPLOYDIR/sign-plugins $$PWD/out
-
-QMAKE_EXTRA_TARGETS += sign
-PRE_TARGETDEPS += $$sign.target
-
 qrc.target = $$PWD/installer.qrc
 qrc.depends = $$PWD/installer.qrc.in
 qrc.commands = $$DEPLOYDIR/generate-qrc $$PWD/installer.qrc

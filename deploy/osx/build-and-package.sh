@@ -113,7 +113,11 @@ echo "Done"
 
 echo
 echo "Signing installer..."
-codesign -s "$identity" -fv --deep --timestamp --options runtime "$volume"
+find "$target" -name \*.dylib -print | while read fr; do
+    codesign -s "$identity" -fv --deep --timestamp --options runtime "$fr"
+done
+codesign -s "$identity" -fv --deep --timestamp --options runtime "$target/Contents/MacOS/$app"
+codesign -s "$identity" -fv --deep --timestamp --options runtime "$target"
 echo "Done"
 
 echo

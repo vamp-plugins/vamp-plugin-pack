@@ -47,3 +47,4 @@ o/
 *.app
 installer.qrc
 Dockerfile.gen
+plugins.zip
