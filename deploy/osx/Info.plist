@@ -8,6 +8,8 @@
 	<string>Vamp Plugin Pack Installer</string>
 	<key>CFBundleExecutable</key>
 	<string>Vamp Plugin Pack Installer</string>
+	<key>CFBundleIconFile</key>
+	<string>sv-macicon.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.sonicvisualiser.VampPluginPackInstaller</string>
 	<key>CFBundleShortVersionString</key>

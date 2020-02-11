@@ -25,6 +25,9 @@ OBJECTS_DIR = o
 MOC_DIR = o
 RCC_DIR = o
 
+ICON = icons/sv-macicon.icns
+RC_FILE = icons/sv.rc
+
 qrc.target = $$PWD/installer.qrc
 qrc.depends = $$PWD/installer.qrc.in
 qrc.commands = $$DEPLOYDIR/generate-qrc $$PWD/installer.qrc
