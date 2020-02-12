@@ -3,9 +3,11 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
         sub_plugins \
+        sub_get_version \
         sub_installer
 
 sub_plugins.file = plugins.pro
+sub_get_version.file = get-version.pro
 sub_installer.file = installer.pro
 
 repoint.target = $$PWD/.repoint.point

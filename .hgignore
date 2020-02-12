@@ -48,3 +48,4 @@ o/
 installer.qrc
 Dockerfile.gen
 plugins.zip
+get-version
