@@ -41,6 +41,10 @@
 #include <QLabel>
 #include <QFont>
 #include <QFontInfo>
+#include <QTemporaryFile>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QProcess>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -50,6 +54,8 @@
 #include <iostream>
 #include <memory>
 #include <set>
+
+#include <unistd.h>
 
 #include "base/Debug.h"
 
@@ -129,6 +135,7 @@ struct LibraryInfo {
     QString maker;
     QString description;
     QStringList pluginTitles;
+    map<QString, int> pluginVersions; // id -> version
 };
 
 vector<LibraryInfo>
@@ -145,7 +152,7 @@ getLibraryInfo(const Store &store, QStringList libraries)
                                     Uri("a"),
                                     store.expand("vamp:PluginLibrary")));
 
-    std::map<QString, QString> wanted; // basename -> full lib name
+    map<QString, QString> wanted; // basename -> full lib name
     for (auto lib: libraries) {
         wanted[QFileInfo(lib).baseName()] = lib;
     }
@@ -208,6 +215,21 @@ getLibraryInfo(const Store &store, QStringList libraries)
             if (ptitle.type == Node::Literal) {
                 info.pluginTitles.push_back(ptitle.value);
             }
+
+            Node pident = store.complete(Triple(p.object(),
+                                                store.expand("vamp:identifier"),
+                                                Node()));
+            Node pversion = store.complete(Triple(p.object(),
+                                                  store.expand("owl:versionInfo"),
+                                                  Node()));
+            if (pident.type == Node::Literal &&
+                pversion.type == Node::Literal) {
+                bool ok = false;
+                int version = pversion.value.toInt(&ok);
+                if (ok) {
+                    info.pluginVersions[pident.value] = version;
+                }
+            }
         }
         
         results.push_back(info);
@@ -222,12 +244,204 @@ getLibraryInfo(const Store &store, QStringList libraries)
     return results;
 }
 
+struct TempFileDeleter {
+    ~TempFileDeleter() {
+        if (tempFile != "") {
+            QFile(tempFile).remove();
+        }
+    }
+    QString tempFile;
+};
+
+map<QString, int>
+getInstalledLibraryPluginVersions(QString libraryFilePath)
+{
+    static QMutex mutex;
+    static QString tempFileName;
+    static TempFileDeleter deleter;
+    static bool initHappened = false, initSucceeded = false;
+
+    QMutexLocker locker (&mutex);
+
+    if (!initHappened) {
+        initHappened = true;
+
+        QTemporaryFile tempFile;
+        tempFile.setAutoRemove(false);
+        if (!tempFile.open()) {
+            SVCERR << "ERROR: Failed to open a temporary file" << endl;
+            return {};
+        }
+
+        // We can't make the QTemporaryFile static, as it will hold
+        // the file open and that prevents us from executing it. Hence
+        // the separate deleter.
+        
+        tempFileName = tempFile.fileName();
+        deleter.tempFile = tempFileName;
+        
+#ifdef Q_OS_WIN32
+        QString helperPath = ":out/get-version.exe";
+#else
+        QString helperPath = ":out/get-version";
+#endif        
+        QFile helper(helperPath);
+        if (!helper.open(QFile::ReadOnly)) {
+            SVCERR << "ERROR: Failed to read helper code" << endl;
+            return {};
+        }
+        QByteArray content = helper.readAll();
+        helper.close();
+
+        if (tempFile.write(content) != content.size()) {
+            SVCERR << "ERROR: Incomplete write to temporary file" << endl;
+            return {};
+        }
+        tempFile.close();
+
+        if (!QFile::setPermissions
+            (tempFileName,
+             QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner)) {
+            SVCERR << "ERROR: Failed to set execute permission on helper "
+                   << tempFileName << endl;
+            return {};
+        }
+        
+        initSucceeded = true;
+    }
+
+    if (!initSucceeded) {
+        return {};
+    }
+
+    QProcess process;
+    process.start(tempFileName, { libraryFilePath });
+
+    if (!process.waitForStarted()) {
+        QProcess::ProcessError err = process.error();
+        if (err == QProcess::FailedToStart) {
+            SVCERR << "Unable to start helper process " << tempFileName << endl;
+        } else if (err == QProcess::Crashed) {
+            SVCERR << "Helper process " << tempFileName
+                   << " crashed on startup" << endl;
+        } else {
+            SVCERR << "Helper process " << tempFileName
+                   << " failed on startup with error code " << err << endl;
+        }
+        return {};
+    }
+    process.waitForFinished();
+
+    QByteArray stdOut = process.readAllStandardOutput();
+    QByteArray stdErr = process.readAllStandardError();
+
+    QString errStr = QString::fromUtf8(stdErr);
+    if (!errStr.isEmpty()) {
+        SVCERR << "Note: Helper process stderr follows:" << endl;
+        SVCERR << errStr << endl;
+        SVCERR << "Note: Helper process stderr ends" << endl;
+    }
+
+    QStringList lines = QString::fromUtf8(stdOut).split
+        (QRegExp("[\\r\\n]+"), QString::SkipEmptyParts);
+    map<QString, int> versions;
+    for (QString line: lines) {
+        QStringList parts = line.split(":");
+        if (parts.size() != 2) {
+            SVCERR << "Unparseable output line: " << line << endl;
+            continue;
+        }
+        bool ok = false;
+        int version = parts[1].toInt(&ok);
+        if (!ok) {
+            SVCERR << "Unparseable version number in line: " << line << endl;
+            continue;
+        }
+        versions[parts[0]] = version;
+    }
+
+    return versions;
+}
+
+bool isLibraryNewer(map<QString, int> a, map<QString, int> b)
+{
+    // a and b are maps from plugin id to plugin version for libraries
+    // A and B. (There is no overarching library version number.) We
+    // deem library A to be newer than library B if:
+    // 
+    // 1. A contains a plugin id that is also in B, whose version in
+    // A is newer than that in B, or
+    //
+    // 2. B is not newer than A according to rule 1, and neither A or
+    // B is empty, and A contains a plugin id that is not in B, and B
+    // does not contain any plugin id that is not in A
+    //
+    // (The not-empty part of rule 2 is just to avoid false positives
+    // when a library or its metadata could not be read at all.)
+
+    auto containsANewerPlugin = [](const map<QString, int> &m1,
+                                   const map<QString, int> &m2) {
+                                    for (auto p: m1) {
+                                        if (m2.find(p.first) != m2.end() &&
+                                            p.second > m2.at(p.first)) {
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                };
+
+    auto containsANovelPlugin = [](const map<QString, int> &m1,
+                                   const map<QString, int> &m2) {
+                                    for (auto p: m1) {
+                                        if (m2.find(p.first) == m2.end()) {
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                };
+
+    if (containsANewerPlugin(a, b)) {
+        return true;
+    }
+    
+    if (!containsANewerPlugin(b, a) &&
+        !a.empty() &&
+        !b.empty() &&
+        containsANovelPlugin(a, b) &&
+        !containsANovelPlugin(b, a)) {
+        return true;
+    }
+
+    return false;
+}
+
+QString
+versionsString(const map<QString, int> &vv)
+{
+    QStringList pv;
+    for (auto v: vv) {
+        pv.push_back(QString("%1:%2").arg(v.first).arg(v.second));
+    }
+    return "{ " + pv.join(", ") + " }";
+}
+
 void
-installLibrary(QString library, QString target)
+installLibrary(QString library, LibraryInfo info, QString target)
 {
     QString source = ":out";
     QFile f(source + "/" + library);
     QString destination = target + "/" + library;
+
+    if (QFileInfo(destination).exists()) {
+        auto installed = getInstalledLibraryPluginVersions(destination);
+        SVCERR << "Note: comparing installed plugin versions "
+               << versionsString(installed)
+               << " to packaged versions "
+               << versionsString(info.pluginVersions)
+               << ": isLibraryNewer(installed, packaged) returns "
+               << isLibraryNewer(installed, info.pluginVersions)
+               << endl;
+    }
     
     SVCERR << "Copying " << library.toStdString() << " to "
            << destination.toStdString() << "..." << endl;
@@ -262,7 +476,7 @@ installLibrary(QString library, QString target)
     }
 }
 
-QStringList
+map<QString, LibraryInfo>
 getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 {
     QDialog dialog;
@@ -295,9 +509,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     selectionFrame->setLayout(selectionLayout);
     int selectionRow = 0;
 
-    map<QString, QCheckBox *> checkBoxMap;
+    map<QString, QCheckBox *> checkBoxMap; // filename -> checkbox
+    map<QString, LibraryInfo> libFileInfo; // filename -> info
 
-    map<QString, LibraryInfo, std::function<bool (QString, QString)>>
+    map<QString, LibraryInfo, function<bool (QString, QString)>>
         orderedInfo
         ([](QString k1, QString k2) {
              return k1.localeAwareCompare(k2) < 0;
@@ -346,6 +561,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         ++selectionRow;
 
         checkBoxMap[info.fileName] = cb;
+        libFileInfo[info.fileName] = info;
     }
 
     scroll->setWidget(selectionFrame);
@@ -379,10 +595,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         SVCERR << "rejected" << endl;
     }
 
-    QStringList approved;
+    map<QString, LibraryInfo> approved;
     for (const auto &p: checkBoxMap) {
         if (p.second->isChecked()) {
-            approved.push_back(p.first);
+            approved[p.first] = libFileInfo[p.first];
         }
     }
     
@@ -418,7 +634,7 @@ int main(int argc, char **argv)
 
     auto info = getLibraryInfo(*rdfStore, libraries);
     
-    QStringList toInstall = getUserApprovedPluginLibraries(info);
+    map<QString, LibraryInfo> toInstall = getUserApprovedPluginLibraries(info);
 
     if (!toInstall.empty()) {
         if (!QDir(target).exists()) {
@@ -427,7 +643,7 @@ int main(int argc, char **argv)
     }
     
     for (auto lib: toInstall) {
-        installLibrary(lib, target);
+        installLibrary(lib.first, lib.second, target);
     }
     
     return 0;

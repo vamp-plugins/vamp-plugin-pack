@@ -32,6 +32,16 @@
 // Undocumented internal API
 #include <vamp-hostsdk/../src/vamp-hostsdk/Files.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <process.h>
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
+#include <fcntl.h>
+
 #include <iostream>
 #include <string>
 
@@ -59,6 +69,49 @@ void usage(const char *me)
     exit(2);
 }
 
+// We write our output to stdout, but want to ensure that the plugin
+// doesn't write anything itself. To do this we open a null file
+// descriptor and dup2() it into place of stdout in the gaps between
+// our own output activity.
+
+static int normalFd = -1;
+static int suspendedFd = -1;
+
+static void initFds()
+{
+#ifdef _WIN32
+    normalFd = _dup(1);
+    suspendedFd = _open("NUL", _O_WRONLY);
+#else
+    normalFd = dup(1);
+    suspendedFd = open("/dev/null", O_WRONLY);
+#endif
+    
+    if (normalFd < 0 || suspendedFd < 0) {
+        throw std::runtime_error
+            ("Failed to initialise fds for stdio suspend/resume");
+    }
+}
+
+static void suspendOutput()
+{
+#ifdef _WIN32
+    _dup2(suspendedFd, 1);
+#else
+    dup2(suspendedFd, 1);
+#endif
+}
+
+static void resumeOutput()
+{
+    fflush(stdout);
+#ifdef _WIN32
+    _dup2(normalFd, 1);
+#else
+    dup2(normalFd, 1);
+#endif
+}
+
 int main(int argc, char **argv)
 {
     char *scooter = argv[0];
@@ -72,6 +125,9 @@ int main(int argc, char **argv)
     if (argc != 2) usage(name);
     if (string(argv[1]) == string("-?")) usage(name);
 
+    initFds();
+    suspendOutput();
+    
     string libraryPath(argv[1]);
     
     void *handle = Files::loadLibrary(libraryPath);
@@ -95,8 +151,10 @@ int main(int argc, char **argv)
     const VampPluginDescriptor *descriptor = 0;
 
     while ((descriptor = fn(VAMP_API_VERSION, index))) {
+        resumeOutput();
         cout << descriptor->identifier << ":"
              << descriptor->pluginVersion << endl;
+        suspendOutput();
         ++index;
     }
 

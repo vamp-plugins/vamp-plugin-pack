@@ -13,4 +13,4 @@ if not exist %IN% (
 
 @echo on
 
-powershell -Command "(Get-Content %IN%) -replace '@SUFFIX@', 'dll' | Out-File -encoding ASCII %QRC%"
+powershell -Command "(Get-Content %IN%) -replace '@SUFFIX@', '.dll' -replace '@EXESUFFIX@', '.exe' | Out-File -encoding ASCII %QRC%"

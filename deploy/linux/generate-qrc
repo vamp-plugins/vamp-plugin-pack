@@ -5,4 +5,4 @@ if [ ! -f "$qrc".in ]; then
     exit 2
 fi
 set -eu
-cat "$qrc".in | sed 's/@SUFFIX@/so/g' > "$qrc"
+cat "$qrc".in | sed -e 's/@SUFFIX@/.so/g' -e 's/@EXESUFFIX@//g' > "$qrc"

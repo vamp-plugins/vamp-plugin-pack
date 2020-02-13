@@ -13,7 +13,7 @@ CONFIG += release warn_on c++14
 
 QT += gui widgets svg
 
-TARGET=get-version
+TARGET=out/get-version
 
 OBJECTS_DIR = o
 MOC_DIR = o

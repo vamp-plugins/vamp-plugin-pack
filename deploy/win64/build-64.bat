@@ -18,10 +18,34 @@ if not exist %vcvarsall% (
 @   exit /b 2
 )
 
+set SMLNJDIR=C:\Program Files (x86)\SMLNJ
+if not exist "%SMLNJDIR%\bin" (
+@   echo Could not find SML/NJ, required for Repoint
+@   exit /b 2
+)
+
 call %vcvarsall% amd64
 
 set ORIGINALPATH=%PATH%
-set PATH=%PATH%;C:\Program Files (x86)\SMLNJ\bin;%QTDIR%\bin
+set PATH=%PATH%;%SMLNJDIR%\bin;%QTDIR%\bin
+set NAME=Open Source Developer, Christopher Cannam
+
+set ARG=%1
+shift
+if "%ARG%" == "sign" (
+@   echo NOTE: sign option specified, will attempt to codesign exe and msi
+@   echo NOTE: starting by codesigning an unrelated executable, so we know
+@   echo NOTE: whether it'll work before doing the entire build
+copy "%SMLNJDIR%\bin\.run\run.x86-win32.exe" signtest.exe
+signtool sign /v /n "%NAME%" /t http://time.certum.pl /fd sha1 /a signtest.exe
+if errorlevel 1 exit /b %errorlevel%
+signtool verify /pa signtest.exe
+if errorlevel 1 exit /b %errorlevel%
+del signtest.exe
+@   echo NOTE: success
+) else (
+@   echo NOTE: sign option not specified, will not codesign anything
+)
 
 cd %STARTPWD%
 
@@ -40,13 +64,22 @@ cd build_win64
 qmake -spec win32-msvc -r -tp vc ..\plugins.pro
 if %errorlevel% neq 0 exit /b %errorlevel%
 
+mkdir o
+
+msbuild get-version.vcxproj /t:Build /p:Configuration=Release
+if %errorlevel% neq 0 exit /b %errorlevel%
+copy release\out\get-version.exe ..\out\
+
 msbuild plugins.sln /t:Build /p:Configuration=Release
 if %errorlevel% neq 0 exit /b %errorlevel%
-
-rem and sign!
 copy release\out\*.dll ..\out\
 
-mkdir o
+if "%ARG%" == "sign" (
+@echo Signing plugins and version helper
+signtool sign /v /n "%NAME%" /t http://time.certum.pl /fd sha1 /a ..\out\*.dll ..\out\*.exe
+signtool verify /pa ..\out\*.dll ..\out\*.exe
+)
+
 %QTDIR%\bin\rcc ..\installer.qrc -o o\qrc_installer.cpp
 
 qmake -spec win32-msvc -r -tp vc ..\installer.pro
@@ -66,6 +99,14 @@ copy %QTDIR%\plugins\platforms\qminimal.dll .\release
 copy %QTDIR%\plugins\platforms\qwindows.dll .\release
 copy %QTDIR%\plugins\styles\qwindowsvistastyle.dll .\release
 
+if "%ARG%" == "sign" (
+@echo Signing application
+signtool sign /v /n "%NAME%" /t http://time.certum.pl /fd sha1 /a release\*.exe release\*.dll
+signtool verify /pa "release\Vamp Plugin Pack Installer.exe"
+)
+
 cd ..
+
+rem Now what?
 
 set PATH=%ORIGINALPATH%
