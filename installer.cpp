@@ -55,8 +55,6 @@
 #include <memory>
 #include <set>
 
-#include <unistd.h>
-
 #include "base/Debug.h"
 
 using namespace std;

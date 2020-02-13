@@ -61,6 +61,9 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 mkdir build_win64
 cd build_win64
 
+qmake -spec win32-msvc -r -tp vc ..\get-version.pro
+if %errorlevel% neq 0 exit /b %errorlevel%
+
 qmake -spec win32-msvc -r -tp vc ..\plugins.pro
 if %errorlevel% neq 0 exit /b %errorlevel%
 
