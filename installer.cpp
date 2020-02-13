@@ -441,6 +441,9 @@ installLibrary(QString library, LibraryInfo info, QString target)
                << ": isLibraryNewer(installed, packaged) returns "
                << isLibraryNewer(installed, info.pluginVersions)
                << endl;
+    } else {
+        SVCERR << "Note: library " << library
+               << " is not yet installed, not comparing versions" << endl;
     }
     
     SVCERR << "Copying " << library.toStdString() << " to "
@@ -472,6 +475,17 @@ installLibrary(QString library, LibraryInfo info, QString target)
             SVCERR << "Failed to copy " << e.toStdString()
                    << " to target " << destination.toStdString()
                    << " (ignoring)" << endl;
+            continue;
+        }
+        if (!QFile::setPermissions
+            (destination,
+             QFile::ReadOwner | QFile::WriteOwner |
+             QFile::ReadGroup |
+             QFile::ReadOther)) {
+            SVCERR << "Failed to set permissions on "
+                   << destination.toStdString()
+                   << " (ignoring)" << endl;
+            continue;
         }
     }
 }
