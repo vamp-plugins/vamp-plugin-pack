@@ -254,7 +254,7 @@ struct TempFileDeleter {
 };
 
 map<QString, int>
-getInstalledLibraryPluginVersions(QString libraryFilePath)
+getLibraryPluginVersions(QString libraryFilePath)
 {
     static QMutex mutex;
     static QString tempFileName;
@@ -433,7 +433,7 @@ installLibrary(QString library, LibraryInfo info, QString target)
     QString destination = target + "/" + library;
 
     if (QFileInfo(destination).exists()) {
-        auto installed = getInstalledLibraryPluginVersions(destination);
+        auto installed = getLibraryPluginVersions(destination);
         SVCERR << "Note: comparing installed plugin versions "
                << versionsString(installed)
                << " to packaged versions "
@@ -603,10 +603,9 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
     
-    if (dialog.exec() == QDialog::Accepted) {
-        SVCERR << "accepted" << endl;
-    } else {
+    if (dialog.exec() != QDialog::Accepted) {
         SVCERR << "rejected" << endl;
+        return {};
     }
 
     map<QString, LibraryInfo> approved;
