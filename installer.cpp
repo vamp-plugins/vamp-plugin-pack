@@ -45,6 +45,8 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QProcess>
+#include <QToolButton>
+#include <QMessageBox>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -542,36 +544,29 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
                                    Qt::AlignTop | Qt::AlignHCenter);
 
         LibraryInfo info = ip.second;
-/*
-        int n = info.pluginTitles.size();
-        QString contents;
-        
-        if (n > 0) {
-            int max = 4;
-            QStringList titles;
-            for (int i = 0; i < max && i < int(info.pluginTitles.size()); ++i) {
-                titles.push_back(info.pluginTitles[i]);
-            }
-            QString titleText = titles.join(", ");
-            if (max < int(info.pluginTitles.size())) {
-                titleText = QObject::tr("%1 ...").arg(titleText);
-            }
-            contents = QObject::tr("Plugins: %1").arg(titleText);
-        }
-*/        
-        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br>%3")
-                                .arg(info.title)
-                                .arg(info.maker)
-                                .arg(info.description);
-        
-        auto label = new QLabel(text);
-        label->setWordWrap(true);
-        label->setMinimumWidth(800);
-        
-        selectionLayout->addWidget(label, selectionRow, 1, Qt::AlignTop);
+
+        auto expand = new QToolButton;
+        expand->setText("...");
+        selectionLayout->addWidget(expand, selectionRow, 1, Qt::AlignTop);
+
+        auto shortLabel = new QLabel(info.title);
+        selectionLayout->addWidget(shortLabel, selectionRow, 2, Qt::AlignTop);
 
         ++selectionRow;
 
+        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br><br>%3")
+            .arg(info.title)
+            .arg(info.maker)
+            .arg(info.description);
+        
+        QObject::connect(expand, &QAbstractButton::clicked,
+                         [=]() {
+                             QMessageBox::information
+                                 (expand,
+                                  QObject::tr("Information"),
+                                  text);
+                         });
+        
         checkBoxMap[info.fileName] = cb;
         libFileInfo[info.fileName] = info;
     }
@@ -579,8 +574,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     scroll->setWidget(selectionFrame);
 
     QObject::connect(checkAll, &QCheckBox::toggled,
-                     [=]() {
-                         bool toCheck = checkAll->isChecked();
+                     [=](bool toCheck) {
                          for (auto p: checkBoxMap) {
                              p.second->setChecked(toCheck);
                          }
@@ -595,8 +589,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
     mainLayout->setColumnMinimumWidth(0, cw + 20); //!!!
     mainLayout->setColumnStretch(1, 10);
     selectionLayout->setColumnMinimumWidth(0, cw); //!!!
-    selectionLayout->setColumnMinimumWidth(1, 820); //!!!
-    selectionLayout->setColumnStretch(1, 10);
+//    selectionLayout->setColumnMinimumWidth(2, 820); //!!!
+    selectionLayout->setColumnStretch(2, 10);
 
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
