@@ -554,10 +554,28 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
         ++selectionRow;
 
-        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br><br>%3")
+        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br><br>%3<br><br>Library contains:<ul>")
             .arg(info.title)
             .arg(info.maker)
             .arg(info.description);
+
+        int n = 0;
+        bool closed = false;
+        for (auto title: info.pluginTitles) {
+            if (n == 10 && info.pluginTitles.size() > 15) {
+                text += QObject::tr("</ul>");
+                text += QObject::tr("... and %n other plugins", "",
+                                    info.pluginTitles.size() - n);
+                closed = true;
+                break;
+            }
+            text += QObject::tr("<li>%1</li>").arg(title);
+            ++n;
+        }
+
+        if (!closed) {
+            text += QObject::tr("</ul>");
+        }
         
         QObject::connect(expand, &QAbstractButton::clicked,
                          [=]() {
