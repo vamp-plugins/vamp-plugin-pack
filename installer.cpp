@@ -36,7 +36,6 @@
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QCheckBox>
-#include <QScrollArea>
 #include <QDialogButtonBox>
 #include <QLabel>
 #include <QFont>
@@ -47,6 +46,9 @@
 #include <QProcess>
 #include <QToolButton>
 #include <QMessageBox>
+#include <QSvgRenderer>
+#include <QPainter>
+#include <QFontMetrics>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -136,7 +138,59 @@ struct LibraryInfo {
     QString description;
     QStringList pluginTitles;
     map<QString, int> pluginVersions; // id -> version
+    QString licence;
 };
+
+QString
+identifyLicence(QString libraryBasename)
+{
+    QString licenceFile = QString(":out/%1_COPYING.txt").arg(libraryBasename);
+
+    QFile f(licenceFile);
+    if (!f.open(QFile::ReadOnly | QFile::Text)) {
+        SVCERR << "Failed to open licence file "
+               << licenceFile.toStdString() << endl;
+        return {};
+    }
+
+    QByteArray content = f.readAll();
+    f.close();
+
+    QString licenceText = QString::fromUtf8(content);
+
+    QString gpl = "GNU General Public License";
+    QString agpl = "GNU Affero General Public License";
+    QString apache = "Apache License";
+    QString mit = "MIT License";
+
+    // NB these are not expected to correctly identify any licence! We
+    // know we have only a limited set here. But we do want to
+    // determine this from the actual licence text included with the
+    // plugin distribution, not just from e.g. RDF metadata
+    
+    if (licenceText.contains(gpl.toUpper(), Qt::CaseSensitive)) {
+        if (licenceText.contains("Version 3, 29 June 2007")) {
+            return QString("%1, version 3").arg(gpl);
+        } else if (licenceText.contains("Version 2, June 1991")) {
+            return QString("%1, version 2").arg(gpl);
+        } else {
+            return gpl;
+        }
+    }
+    if (licenceText.contains(agpl.toUpper(), Qt::CaseSensitive)) {
+        return agpl;
+    }
+    if (licenceText.contains(apache)) {
+        return apache;
+    }
+    if (licenceText.contains("Permission is hereby granted, free of charge, to any person")) {
+        return mit;
+    }
+
+    SVCERR << "Didn't recognise licence for " << libraryBasename << endl;
+    
+    return {};
+}
 
 vector<LibraryInfo>
 getLibraryInfo(const Store &store, QStringList libraries)
@@ -171,7 +225,7 @@ getLibraryInfo(const Store &store, QStringList libraries)
         if (wi == wanted.end()) {
             continue;
         }
-        
+
         Node title = store.complete(Triple(t.subject(),
                                            store.expand("dc:title"),
                                            Node()));
@@ -231,6 +285,9 @@ getLibraryInfo(const Store &store, QStringList libraries)
                 }
             }
         }
+
+        info.licence = identifyLicence(libId.value);
+        SVCERR << "licence = " << info.licence << endl;
         
         results.push_back(info);
         wanted.erase(libId.value);
@@ -501,27 +558,23 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
     int mainRow = 0;
     
-    auto checkAll = new QCheckBox;
-    checkAll->setChecked(true);
-    mainLayout->addWidget(checkAll, mainRow, 0, Qt::AlignHCenter);
-    ++mainRow;
-
-    auto checkArrow = new QLabel("&#9660;");
-    checkArrow->setTextFormat(Qt::RichText);
-    mainLayout->addWidget(checkArrow, mainRow, 0, Qt::AlignHCenter);
-    ++mainRow;
-    
-    auto scroll = new QScrollArea;
-    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    mainLayout->addWidget(scroll, mainRow, 0, 1, 2);
-    mainLayout->setRowStretch(mainRow, 10);
-    ++mainRow;
-
     auto selectionFrame = new QWidget;
+    mainLayout->addWidget(selectionFrame, mainRow, 0);
+    ++mainRow;
     
     auto selectionLayout = new QGridLayout;
     selectionFrame->setLayout(selectionLayout);
     int selectionRow = 0;
+    
+    auto checkAll = new QCheckBox;
+    checkAll->setChecked(true);
+    selectionLayout->addWidget(checkAll, selectionRow, 0, Qt::AlignHCenter);
+    ++selectionRow;
+
+    auto checkArrow = new QLabel("&#9660;");
+    checkArrow->setTextFormat(Qt::RichText);
+    selectionLayout->addWidget(checkArrow, selectionRow, 0, Qt::AlignHCenter);
+    ++selectionRow;
 
     map<QString, QCheckBox *> checkBoxMap; // filename -> checkbox
     map<QString, LibraryInfo> libFileInfo; // filename -> info
@@ -535,22 +588,38 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         orderedInfo[info.title] = info;
     }
 
+    int fontHeight = QFontMetrics(checkArrow->font()).height();
+    
+    QPixmap infoMap(fontHeight, fontHeight);
+    QPixmap moreMap(fontHeight * 2, fontHeight * 2);
+    infoMap.fill(Qt::transparent);
+    moreMap.fill(Qt::transparent);
+    QSvgRenderer renderer(QString(":icons/scalable/info.svg"));
+    QPainter painter;
+    painter.begin(&infoMap);
+    renderer.render(&painter);
+    painter.end();
+    painter.begin(&moreMap);
+    renderer.render(&painter);
+    painter.end();
+
     for (auto ip: orderedInfo) {
 
         auto cb = new QCheckBox;
         cb->setChecked(true);
         
-        selectionLayout->addWidget(cb, selectionRow, 0,
-                                   Qt::AlignTop | Qt::AlignHCenter);
+        selectionLayout->addWidget(cb, selectionRow, 0, Qt::AlignHCenter);
 
         LibraryInfo info = ip.second;
 
         auto expand = new QToolButton;
-        expand->setText("...");
-        selectionLayout->addWidget(expand, selectionRow, 1, Qt::AlignTop);
+        expand->setAutoRaise(true);
+        expand->setIcon(infoMap);
+        expand->setIconSize(QSize(fontHeight, fontHeight));
+        selectionLayout->addWidget(expand, selectionRow, 2);
 
         auto shortLabel = new QLabel(info.title);
-        selectionLayout->addWidget(shortLabel, selectionRow, 2, Qt::AlignTop);
+        selectionLayout->addWidget(shortLabel, selectionRow, 1);
 
         ++selectionRow;
 
@@ -564,7 +633,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         for (auto title: info.pluginTitles) {
             if (n == 10 && info.pluginTitles.size() > 15) {
                 text += QObject::tr("</ul>");
-                text += QObject::tr("... and %n other plugins", "",
+                text += QObject::tr("... and %n other plugins.<br><br>", "",
                                     info.pluginTitles.size() - n);
                 closed = true;
                 break;
@@ -576,20 +645,23 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         if (!closed) {
             text += QObject::tr("</ul>");
         }
+
+        if (info.licence != "") {
+            text += QObject::tr("Provided under the %1.<br>").arg(info.licence);
+        }
         
         QObject::connect(expand, &QAbstractButton::clicked,
                          [=]() {
-                             QMessageBox::information
-                                 (expand,
-                                  QObject::tr("Information"),
-                                  text);
+                             QMessageBox mbox;
+                             mbox.setIconPixmap(moreMap);
+                             mbox.setWindowTitle(QObject::tr("Library contents"));
+                             mbox.setText(text);
+                             mbox.exec();
                          });
         
         checkBoxMap[info.fileName] = cb;
         libFileInfo[info.fileName] = info;
     }
-
-    scroll->setWidget(selectionFrame);
 
     QObject::connect(checkAll, &QCheckBox::toggled,
                      [=](bool toCheck) {
@@ -600,15 +672,13 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
                      
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
                                    QDialogButtonBox::Cancel);
-    mainLayout->addWidget(bb, mainRow, 0, 1, 2);
+    mainLayout->addWidget(bb, mainRow, 0);
     ++mainRow;
 
-    int cw = 50;
-    mainLayout->setColumnMinimumWidth(0, cw + 20); //!!!
-    mainLayout->setColumnStretch(1, 10);
-    selectionLayout->setColumnMinimumWidth(0, cw); //!!!
-//    selectionLayout->setColumnMinimumWidth(2, 820); //!!!
-    selectionLayout->setColumnStretch(2, 10);
+    mainLayout->setRowStretch(0, 10);
+    mainLayout->setColumnStretch(0, 10);
+    selectionLayout->setColumnMinimumWidth(0, 50);
+    selectionLayout->setColumnStretch(1, 10);
 
     QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
     QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
