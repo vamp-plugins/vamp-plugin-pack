@@ -482,22 +482,72 @@ versionsString(const map<QString, int> &vv)
     return "{ " + pv.join(", ") + " }";
 }
 
-void
-installLibrary(QString library, LibraryInfo info, QString target)
+enum class RelativeStatus {
+    New,
+    Same,
+    Upgrade,
+    Downgrade,
+    TargetNotLoadable
+};
+
+QString
+relativeStatusLabel(RelativeStatus status) {
+    switch (status) {
+    case RelativeStatus::New: return "New";
+    case RelativeStatus::Same: return "Same";
+    case RelativeStatus::Upgrade: return "Upgrade";
+    case RelativeStatus::Downgrade: return "Downgrade";
+    case RelativeStatus::TargetNotLoadable: return "TargetNotLoadable";
+    }
+}
+
+RelativeStatus
+getRelativeStatus(LibraryInfo info, QString targetDir)
 {
+    QString destination = targetDir + "/" + info.fileName;
+
+    RelativeStatus status = RelativeStatus::New;
+
+    SVCERR << "\ngetRelativeStatus: " << info.fileName << ":\n";
+
+    if (QFileInfo(destination).exists()) {
+
+        auto installed = getLibraryPluginVersions(destination);
+
+        SVCERR << " * installed: " << versionsString(installed)
+               << "\n * packaged:  " << versionsString(info.pluginVersions)
+               << endl;
+
+        status = RelativeStatus::Same;
+
+        if (installed.empty()) {
+            status = RelativeStatus::TargetNotLoadable;
+        }
+
+        if (isLibraryNewer(installed, info.pluginVersions)) {
+            status = RelativeStatus::Downgrade;
+        }
+
+        if (isLibraryNewer(info.pluginVersions, installed)) {
+            status = RelativeStatus::Upgrade;
+        }
+    }
+
+    SVCERR << " - relative status: " << relativeStatusLabel(status) << endl;
+
+    return status;
+}
+
+void
+installLibrary(LibraryInfo info, QString targetDir)
+{
+    QString library = info.fileName;
     QString source = ":out";
     QFile f(source + "/" + library);
-    QString destination = target + "/" + library;
+    QString destination = targetDir + "/" + library;
 
     if (QFileInfo(destination).exists()) {
         auto installed = getLibraryPluginVersions(destination);
-        SVCERR << "Note: comparing installed plugin versions "
-               << versionsString(installed)
-               << " to packaged versions "
-               << versionsString(info.pluginVersions)
-               << ": isLibraryNewer(installed, packaged) returns "
-               << isLibraryNewer(installed, info.pluginVersions)
-               << endl;
     } else {
         SVCERR << "Note: library " << library
                << " is not yet installed, not comparing versions" << endl;
@@ -525,7 +575,7 @@ installLibrary(QString library, LibraryInfo info, QString target)
     auto entries = dir.entryList({ base + "*" });
     for (auto e: entries) {
         if (e == library) continue;
-        QString destination = target + "/" + e;
+        QString destination = targetDir + "/" + e;
         SVCERR << "Copying " << e.toStdString() << " to "
                << destination.toStdString() << "..." << endl;
         if (!QFile(source + "/" + e).copy(destination)) {
@@ -547,8 +597,9 @@ installLibrary(QString library, LibraryInfo info, QString target)
     }
 }
 
-map<QString, LibraryInfo>
-getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
+vector<LibraryInfo>
+getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
+                               QString targetDir)
 {
     QDialog dialog;
 
@@ -612,6 +663,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
 
         LibraryInfo info = ip.second;
 
+        RelativeStatus relativeStatus = getRelativeStatus(info, targetDir);
+        
         auto expand = new QToolButton;
         expand->setAutoRaise(true);
         expand->setIcon(infoMap);
@@ -688,10 +741,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries)
         return {};
     }
 
-    map<QString, LibraryInfo> approved;
+    vector<LibraryInfo> approved;
     for (const auto &p: checkBoxMap) {
         if (p.second->isChecked()) {
-            approved[p.first] = libFileInfo[p.first];
+            approved.push_back(libFileInfo[p.first]);
         }
     }
     
@@ -727,7 +780,8 @@ int main(int argc, char **argv)
 
     auto info = getLibraryInfo(*rdfStore, libraries);
     
-    map<QString, LibraryInfo> toInstall = getUserApprovedPluginLibraries(info);
+    vector<LibraryInfo> toInstall =
+        getUserApprovedPluginLibraries(info, target);
 
     if (!toInstall.empty()) {
         if (!QDir(target).exists()) {
@@ -736,7 +790,7 @@ int main(int argc, char **argv)
     }
     
     for (auto lib: toInstall) {
-        installLibrary(lib.first, lib.second, target);
+        installLibrary(lib, target);
     }
     
     return 0;
