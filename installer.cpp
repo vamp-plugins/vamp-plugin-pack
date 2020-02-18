@@ -641,9 +641,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     }
 
     int fontHeight = QFontMetrics(checkArrow->font()).height();
+    int dpratio = dialog.devicePixelRatio();
     
-    QPixmap infoMap(fontHeight, fontHeight);
-    QPixmap moreMap(fontHeight * 2, fontHeight * 2);
+    QPixmap infoMap(fontHeight * dpratio, fontHeight * dpratio);
+    QPixmap moreMap(fontHeight * dpratio * 2, fontHeight * dpratio * 2);
     infoMap.fill(Qt::transparent);
     moreMap.fill(Qt::transparent);
     QSvgRenderer renderer(QString(":icons/scalable/info.svg"));
@@ -680,35 +681,46 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         expand->setAutoRaise(true);
         expand->setIcon(infoMap);
         expand->setIconSize(QSize(fontHeight, fontHeight));
+
+#ifdef Q_OS_MAC
+        expand->setFixedSize(QSize(int(fontHeight * 1.2), 
+                                   int(fontHeight * 1.2)));
+        expand->setStyleSheet("QToolButton { border: none; }");
+#endif
+
         selectionLayout->addWidget(expand, selectionRow, 3);
 
         ++selectionRow;
 
-        QString text = QObject::tr("<b>%1</b><br><i>%2</i><br><br>%3<br><br>Library contains:<ul>")
+        QString moreTitleText = QObject::tr("<b>%1</b><br><i>%2</i>")
             .arg(info.title)
-            .arg(info.maker)
+            .arg(info.maker);
+
+        QString moreInfoText = QObject::tr("%1<br><br>Library contains:<ul>")
             .arg(info.description);
 
         int n = 0;
         bool closed = false;
         for (auto title: info.pluginTitles) {
             if (n == 10 && info.pluginTitles.size() > 15) {
-                text += QObject::tr("</ul>");
-                text += QObject::tr("... and %n other plugins.<br><br>", "",
-                                    info.pluginTitles.size() - n);
+                moreInfoText += QObject::tr("</ul>");
+                moreInfoText += QObject::tr("... and %n other plugins.<br><br>",
+                                            "",
+                                            info.pluginTitles.size() - n);
                 closed = true;
                 break;
             }
-            text += QObject::tr("<li>%1</li>").arg(title);
+            moreInfoText += QObject::tr("<li>%1</li>").arg(title);
             ++n;
         }
 
         if (!closed) {
-            text += QObject::tr("</ul>");
+            moreInfoText += QObject::tr("</ul>");
         }
 
         if (info.licence != "") {
-            text += QObject::tr("Provided under the %1.<br>").arg(info.licence);
+            moreInfoText += QObject::tr("Provided under the %1.<br>")
+                .arg(info.licence);
         }
         
         QObject::connect(expand, &QAbstractButton::clicked,
@@ -716,7 +728,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                              QMessageBox mbox;
                              mbox.setIconPixmap(moreMap);
                              mbox.setWindowTitle(QObject::tr("Library contents"));
-                             mbox.setText(text);
+                             mbox.setText(moreTitleText);
+                             mbox.setInformativeText(moreInfoText);
                              mbox.exec();
                          });
         
@@ -812,6 +825,8 @@ int main(int argc, char **argv)
     QApplication::setOrganizationDomain("sonicvisualiser.org");
     QApplication::setApplicationName(QApplication::tr("Vamp Plugin Pack Installer"));
 
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
 #ifdef Q_OS_WIN32
     QFont font(QApplication::font());
     QString preferredFamily = "Segoe UI";
@@ -820,6 +835,15 @@ int main(int argc, char **argv)
         font.setPointSize(10);
         QApplication::setFont(font);
     }
+#else
+#ifdef Q_OS_MAC
+    QFont font(QApplication::font());
+    QString preferredFamily = "Lucida Grande";
+    font.setFamily(preferredFamily);
+    if (QFontInfo(font).family() == preferredFamily) {
+        QApplication::setFont(font);
+    }
+#endif
 #endif
 
     QString target = getDefaultInstallDirectory();
