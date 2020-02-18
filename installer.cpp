@@ -493,11 +493,11 @@ enum class RelativeStatus {
 QString
 relativeStatusLabel(RelativeStatus status) {
     switch (status) {
-    case RelativeStatus::New: return "New";
-    case RelativeStatus::Same: return "Same";
-    case RelativeStatus::Upgrade: return "Upgrade";
-    case RelativeStatus::Downgrade: return "Downgrade";
-    case RelativeStatus::TargetNotLoadable: return "TargetNotLoadable";
+    case RelativeStatus::New: return QObject::tr("Not yet installed");
+    case RelativeStatus::Same: return QObject::tr("Already installed");
+    case RelativeStatus::Upgrade: return QObject::tr("Update");
+    case RelativeStatus::Downgrade: return QObject::tr("Newer version installed");
+    case RelativeStatus::TargetNotLoadable: return QObject::tr("<unknown>");
     }
 }
 
@@ -629,6 +629,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
 
     map<QString, QCheckBox *> checkBoxMap; // filename -> checkbox
     map<QString, LibraryInfo> libFileInfo; // filename -> info
+    map<QString, RelativeStatus> statuses; // filename -> status
 
     map<QString, LibraryInfo, function<bool (QString, QString)>>
         orderedInfo
@@ -654,25 +655,32 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     renderer.render(&painter);
     painter.end();
 
+    auto shouldCheck = [](RelativeStatus status) {
+                           return (status == RelativeStatus::New ||
+                                   status == RelativeStatus::Upgrade ||
+                                   status == RelativeStatus::TargetNotLoadable);
+                       };
+    
     for (auto ip: orderedInfo) {
 
         auto cb = new QCheckBox;
-        cb->setChecked(true);
-        
         selectionLayout->addWidget(cb, selectionRow, 0, Qt::AlignHCenter);
 
         LibraryInfo info = ip.second;
 
+        auto shortLabel = new QLabel(info.title);
+        selectionLayout->addWidget(shortLabel, selectionRow, 1);
+
         RelativeStatus relativeStatus = getRelativeStatus(info, targetDir);
+        auto statusLabel = new QLabel(relativeStatusLabel(relativeStatus));
+        selectionLayout->addWidget(statusLabel, selectionRow, 2);
+        cb->setChecked(shouldCheck(relativeStatus));
         
         auto expand = new QToolButton;
         expand->setAutoRaise(true);
         expand->setIcon(infoMap);
         expand->setIconSize(QSize(fontHeight, fontHeight));
-        selectionLayout->addWidget(expand, selectionRow, 2);
-
-        auto shortLabel = new QLabel(info.title);
-        selectionLayout->addWidget(shortLabel, selectionRow, 1);
+        selectionLayout->addWidget(expand, selectionRow, 3);
 
         ++selectionRow;
 
@@ -714,6 +722,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         
         checkBoxMap[info.fileName] = cb;
         libFileInfo[info.fileName] = info;
+        statuses[info.fileName] = relativeStatus;
     }
 
     QObject::connect(checkAll, &QCheckBox::toggled,
@@ -724,7 +733,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                      });
                      
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
-                                   QDialogButtonBox::Cancel);
+                                   QDialogButtonBox::Cancel |
+                                   QDialogButtonBox::Reset);
     mainLayout->addWidget(bb, mainRow, 0);
     ++mainRow;
 
@@ -733,8 +743,51 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     selectionLayout->setColumnMinimumWidth(0, 50);
     selectionLayout->setColumnStretch(1, 10);
 
-    QObject::connect(bb, SIGNAL(accepted()), &dialog, SLOT(accept()));
-    QObject::connect(bb, SIGNAL(rejected()), &dialog, SLOT(reject()));
+    QObject::connect
+        (bb, &QDialogButtonBox::clicked,
+         [&](QAbstractButton *button) {
+
+             auto role = bb->buttonRole(button);
+
+             switch (role) {
+
+             case QDialogButtonBox::AcceptRole: {
+                 bool downgrade = false;
+                 for (const auto &p: checkBoxMap) {
+                     if (p.second->isChecked() &&
+                         statuses.at(p.first) == RelativeStatus::Downgrade) {
+                         downgrade = true;
+                         break;
+                     }
+                 }
+                 if (downgrade) {
+                     if (QMessageBox::warning
+                         (bb, QObject::tr("Downgrade?"),
+                          QObject::tr("You have asked to downgrade one or more plugin libraries that are already installed.<br><br>Are you sure?"),
+                          QMessageBox::Ok | QMessageBox::Cancel,
+                          QMessageBox::Cancel) == QMessageBox::Ok) {
+                         dialog.accept();
+                     }
+                 } else {
+                     dialog.accept();
+                 }
+                 break;
+             }
+
+             case QDialogButtonBox::RejectRole:
+                 dialog.reject();
+                 break;
+
+             case QDialogButtonBox::ResetRole:
+                 for (const auto &p: checkBoxMap) {
+                     p.second->setChecked(shouldCheck(statuses.at(p.first)));
+                 }
+                 break;
+
+             default:
+                 SVCERR << "WARNING: Unexpected role " << role << endl;
+             }
+         });
     
     if (dialog.exec() != QDialog::Accepted) {
         SVCERR << "rejected" << endl;
