@@ -45,10 +45,12 @@
 #include <QMutexLocker>
 #include <QProcess>
 #include <QToolButton>
+#include <QPushButton>
 #include <QMessageBox>
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QFontMetrics>
+#include <QSpacerItem>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -60,6 +62,8 @@
 #include <set>
 
 #include "base/Debug.h"
+
+#include "version.h"
 
 using namespace std;
 using namespace Dataquay;
@@ -263,8 +267,8 @@ getLibraryInfo(const Store &store, QStringList libraries)
         Node page = store.complete(Triple(t.subject(),
                                           store.expand("foaf:page"),
                                           Node()));
-        if (desc.type == Node::Literal || desc.type == Node::URI) {
-            info.page = desc.value;
+        if (page.type == Node::URI) {
+            info.page = page.value;
         }
 
         Triples pp = store.match(Triple(t.subject(),
@@ -506,6 +510,7 @@ relativeStatusLabel(RelativeStatus status) {
     case RelativeStatus::Upgrade: return QObject::tr("Update");
     case RelativeStatus::Downgrade: return QObject::tr("Newer version installed");
     case RelativeStatus::TargetNotLoadable: return QObject::tr("<unknown>");
+    default: return {};
     }
 }
 
@@ -624,6 +629,17 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     auto selectionLayout = new QGridLayout;
     selectionFrame->setLayout(selectionLayout);
     int selectionRow = 0;
+
+    selectionLayout->addWidget
+        (new QLabel(QObject::tr("<b>Vamp Plugin Pack</b> v%1")
+                    .arg(PACK_VERSION)),
+         selectionRow, 1);
+    ++selectionRow;
+
+    selectionLayout->addWidget
+        (new QLabel(QObject::tr("Select the plugin libraries to install:")),
+         selectionRow, 1, 1, 3);
+    ++selectionRow;
     
     auto checkAll = new QCheckBox;
     checkAll->setChecked(true);
@@ -685,18 +701,18 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         selectionLayout->addWidget(statusLabel, selectionRow, 2);
         cb->setChecked(shouldCheck(relativeStatus));
         
-        auto expand = new QToolButton;
-        expand->setAutoRaise(true);
-        expand->setIcon(infoMap);
-        expand->setIconSize(QSize(fontHeight, fontHeight));
+        auto infoButton = new QToolButton;
+        infoButton->setAutoRaise(true);
+        infoButton->setIcon(infoMap);
+        infoButton->setIconSize(QSize(fontHeight, fontHeight));
 
 #ifdef Q_OS_MAC
-        expand->setFixedSize(QSize(int(fontHeight * 1.2), 
+        infoButton->setFixedSize(QSize(int(fontHeight * 1.2), 
                                    int(fontHeight * 1.2)));
-        expand->setStyleSheet("QToolButton { border: none; }");
+        infoButton->setStyleSheet("QToolButton { border: none; }");
 #endif
 
-        selectionLayout->addWidget(expand, selectionRow, 3);
+        selectionLayout->addWidget(infoButton, selectionRow, 3);
 
         ++selectionRow;
 
@@ -704,8 +720,15 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
             .arg(info.title)
             .arg(info.maker);
 
-        QString moreInfoText = QObject::tr("%1<br><br>Library contains:<ul>")
-            .arg(info.description);
+        QString moreInfoText = info.description;
+        
+        if (info.page != "") {
+            moreInfoText += QObject::tr("<br><a href=\"%1\">%2</a>")
+                .arg(info.page)
+                .arg(info.page);
+        }
+
+        moreInfoText += QObject::tr("<br><br>Library contains:<ul>");
 
         int n = 0;
         bool closed = false;
@@ -731,7 +754,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                 .arg(info.licence);
         }
         
-        QObject::connect(expand, &QAbstractButton::clicked,
+        QObject::connect(infoButton, &QAbstractButton::clicked,
                          [=]() {
                              QMessageBox mbox;
                              mbox.setIconPixmap(moreMap);
@@ -746,16 +769,29 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         statuses[info.fileName] = relativeStatus;
     }
 
+    selectionLayout->addItem(new QSpacerItem(1, (fontHeight*2) / 3),
+                             selectionRow, 0);
+    ++selectionRow;
+
+    selectionLayout->addWidget
+        (new QLabel(QObject::tr("Installation will be to: %1").arg(targetDir)),
+         selectionRow, 1, 1, 3);
+    ++selectionRow; 
+
     QObject::connect(checkAll, &QCheckBox::toggled,
                      [=](bool toCheck) {
                          for (auto p: checkBoxMap) {
                              p.second->setChecked(toCheck);
                          }
                      });
-                     
+
+    mainLayout->addItem(new QSpacerItem(1, fontHeight), mainRow, 0);
+    ++mainRow;
+    
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
                                    QDialogButtonBox::Cancel |
                                    QDialogButtonBox::Reset);
+    bb->button(QDialogButtonBox::Ok)->setText(QObject::tr("Install"));
     mainLayout->addWidget(bb, mainRow, 0);
     ++mainRow;
 
