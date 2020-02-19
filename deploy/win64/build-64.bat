@@ -110,6 +110,4 @@ signtool verify /pa "release\Vamp Plugin Pack Installer.exe"
 
 cd ..
 
-rem Now what?
-
 set PATH=%ORIGINALPATH%

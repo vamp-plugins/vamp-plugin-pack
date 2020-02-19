@@ -13,11 +13,12 @@ set VERSION=%VERSION:"=%
 @if "%YN%" neq "y" exit /b 3
 
 @echo Proceeding
-call .\deploy\win64\build-and-package.bat sign
+del /q /s build_win64
+call .\deploy\win64\build-64.bat sign
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 mkdir packages
-copy build_win64\vamp-plugin-pack.msi packages\vamp-plugin-pack-%VERSION%-win64.msi
+copy "build_win64\release\Vamp Plugin Pack Installer.exe" "packages\Vamp Plugin Pack Installer %VERSION%.exe"
 
 @echo(
 @echo Done
