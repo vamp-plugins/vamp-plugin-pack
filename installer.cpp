@@ -51,6 +51,8 @@
 #include <QPainter>
 #include <QFontMetrics>
 #include <QSpacerItem>
+#include <QProgressDialog>
+#include <QThread>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -551,7 +553,7 @@ getRelativeStatus(LibraryInfo info, QString targetDir)
     return status;
 }
 
-void
+QString
 installLibrary(LibraryInfo info, QString targetDir)
 {
     QString library = info.fileName;
@@ -571,7 +573,7 @@ installLibrary(LibraryInfo info, QString targetDir)
     if (!f.copy(destination)) {
         SVCERR << "Failed to copy " << library.toStdString()
                << " to target " << destination.toStdString() << endl;
-        return;
+        return QObject::tr("Failed to copy library to destination directory");
     }
     if (!QFile::setPermissions
         (destination,
@@ -580,7 +582,7 @@ installLibrary(LibraryInfo info, QString targetDir)
          QFile::ReadOther | QFile::ExeOther)) {
         SVCERR << "Failed to set permissions on "
                << library.toStdString() << endl;
-        return;
+        return QObject::tr("Failed to set correct permissions on installed library");
     }
 
     QString base = QFileInfo(library).baseName();
@@ -608,6 +610,8 @@ installLibrary(LibraryInfo info, QString targetDir)
             continue;
         }
     }
+
+    return {};
 }
 
 vector<LibraryInfo>
@@ -909,9 +913,55 @@ int main(int argc, char **argv)
             QDir().mkpath(target);
         }
     }
+
+    QProgressDialog progress(QObject::tr("Installing..."),
+                             QObject::tr("Stop"), 0, toInstall.size() + 1);
+    progress.setMinimumDuration(0);
+    
+    int pval = 0;
+    bool complete = true;
     
     for (auto lib: toInstall) {
-        installLibrary(lib, target);
+        progress.setValue(++pval);
+        QThread::currentThread()->msleep(40);
+        app.processEvents();
+        if (progress.wasCanceled()) {
+            complete = false;
+            break;
+        }
+        QString error = installLibrary(lib, target);
+        if (error != "") {
+            complete = false;
+            if (QMessageBox::critical
+                (&progress,
+                 QObject::tr("Install failed"),
+                 QObject::tr("Failed to install library \"%1\": %2")
+                 .arg(lib.title)
+                 .arg(error),
+                 QMessageBox::Abort | QMessageBox::Ignore,
+                 QMessageBox::Ignore) ==
+                QMessageBox::Abort) {
+                break;
+            }
+        }
+    }
+
+    progress.hide();
+
+    if (complete) {
+        QMessageBox::information
+            (&progress,
+             QObject::tr("Complete"),
+             QObject::tr("Installation completed successfully"),
+             QMessageBox::Ok,
+             QMessageBox::Ok);
+    } else {
+        QMessageBox::information
+            (&progress,
+             QObject::tr("Incomplete"),
+             QObject::tr("Installation was not complete. Exiting"),
+             QMessageBox::Ok,
+             QMessageBox::Ok);
     }
     
     return 0;
