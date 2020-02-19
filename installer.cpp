@@ -910,10 +910,12 @@ int main(int argc, char **argv)
     vector<LibraryInfo> toInstall =
         getUserApprovedPluginLibraries(info, target);
 
-    if (!toInstall.empty()) {
-        if (!QDir(target).exists()) {
-            QDir().mkpath(target);
-        }
+    if (toInstall.empty()) { // Cancelled, or nothing selected
+        return 0;
+    }
+    
+    if (!QDir(target).exists()) {
+        QDir().mkpath(target);
     }
 
     QProgressDialog progress(QObject::tr("Installing..."),
@@ -966,5 +968,5 @@ int main(int argc, char **argv)
              QMessageBox::Ok);
     }
     
-    return 0;
+    return (complete ? 0 : 2);
 }
