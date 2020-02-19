@@ -136,6 +136,7 @@ struct LibraryInfo {
     QString title;
     QString maker;
     QString description;
+    QString page;
     QStringList pluginTitles;
     map<QString, int> pluginVersions; // id -> version
     QString licence;
@@ -257,6 +258,13 @@ getLibraryInfo(const Store &store, QStringList libraries)
                                           Node()));
         if (desc.type == Node::Literal) {
             info.description = desc.value;
+        }
+            
+        Node page = store.complete(Triple(t.subject(),
+                                          store.expand("foaf:page"),
+                                          Node()));
+        if (desc.type == Node::Literal || desc.type == Node::URI) {
+            info.page = desc.value;
         }
 
         Triples pp = store.match(Triple(t.subject(),
