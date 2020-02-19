@@ -170,7 +170,7 @@ identifyLicence(QString libraryBasename)
     QString apache = "Apache License";
     QString mit = "MIT License";
 
-    // NB these are not expected to correctly identify any licence! We
+    // NB these are not expected to identify an arbitrary licence! We
     // know we have only a limited set here. But we do want to
     // determine this from the actual licence text included with the
     // plugin distribution, not just from e.g. RDF metadata
@@ -567,6 +567,8 @@ installLibrary(LibraryInfo info, QString targetDir)
         SVCERR << "Note: library " << library
                << " is not yet installed, not comparing versions" << endl;
     }
+
+    //!!! if destination exists, move it aside
     
     SVCERR << "Copying " << library.toStdString() << " to "
            << destination.toStdString() << "..." << endl;
