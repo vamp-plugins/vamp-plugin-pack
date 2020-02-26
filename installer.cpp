@@ -644,7 +644,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     int checkColumn = 0;
     int titleColumn = 1;
     int statusColumn = 2;
-    int infoColumn = 3;
+    int infoColumn = 4; // column 3 is a small sliver of spacing
 
     selectionLayout->addWidget
         (new QLabel(QObject::tr("<b>Vamp Plugin Pack</b> v%1")
@@ -663,7 +663,13 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         (checkAll, selectionRow, checkColumn, Qt::AlignHCenter);
     ++selectionRow;
 
-    auto checkArrow = new QLabel("&#9660;");
+    auto checkArrow = new QLabel(
+#ifdef Q_OS_MAC
+        "&nbsp;&nbsp;&#9660;"
+#else
+        "&#9660;"
+#endif
+        );
     checkArrow->setTextFormat(Qt::RichText);
     selectionLayout->addWidget
         (checkArrow, selectionRow, checkColumn, Qt::AlignHCenter);
@@ -814,6 +820,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     mainLayout->setRowStretch(0, 10);
     mainLayout->setColumnStretch(0, 10);
     selectionLayout->setColumnMinimumWidth(0, 50);
+#ifdef Q_OS_MAC
+    selectionLayout->setColumnMinimumWidth(3, 10);
+    selectionLayout->setColumnMinimumWidth(5, 12);
+#endif
     selectionLayout->setColumnStretch(1, 10);
 
     QObject::connect
@@ -901,6 +911,7 @@ int main(int argc, char **argv)
     QString preferredFamily = "Lucida Grande";
     font.setFamily(preferredFamily);
     if (QFontInfo(font).family() == preferredFamily) {
+        font.setPointSize(12);
         QApplication::setFont(font);
     }
 #endif
