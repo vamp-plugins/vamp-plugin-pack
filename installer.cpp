@@ -511,7 +511,7 @@ relativeStatusLabel(RelativeStatus status) {
     case RelativeStatus::Same: return QObject::tr("Already installed");
     case RelativeStatus::Upgrade: return QObject::tr("Update");
     case RelativeStatus::Downgrade: return QObject::tr("Newer version installed");
-    case RelativeStatus::TargetNotLoadable: return QObject::tr("<unknown>");
+    case RelativeStatus::TargetNotLoadable: return QObject::tr("Installed version not working");
     default: return {};
     }
 }
@@ -622,6 +622,9 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
 {
     QDialog dialog;
 
+    int fontHeight = QFontMetrics(dialog.font()).height();
+    int dpratio = dialog.devicePixelRatio();
+
     auto mainLayout = new QGridLayout;
     mainLayout->setSpacing(0);
     dialog.setLayout(mainLayout);
@@ -633,28 +636,37 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     ++mainRow;
     
     auto selectionLayout = new QGridLayout;
+    selectionLayout->setContentsMargins(0, 0, 0, 0);
+    selectionLayout->setSpacing(fontHeight / 6);
     selectionFrame->setLayout(selectionLayout);
+
     int selectionRow = 0;
+    int checkColumn = 0;
+    int titleColumn = 1;
+    int statusColumn = 2;
+    int infoColumn = 3;
 
     selectionLayout->addWidget
         (new QLabel(QObject::tr("<b>Vamp Plugin Pack</b> v%1")
                     .arg(PACK_VERSION)),
-         selectionRow, 1);
+         selectionRow, titleColumn, 1, 3);
     ++selectionRow;
 
     selectionLayout->addWidget
         (new QLabel(QObject::tr("Select the plugin libraries to install:")),
-         selectionRow, 1, 1, 3);
+         selectionRow, titleColumn, 1, 3);
     ++selectionRow;
     
     auto checkAll = new QCheckBox;
     checkAll->setChecked(true);
-    selectionLayout->addWidget(checkAll, selectionRow, 0, Qt::AlignHCenter);
+    selectionLayout->addWidget
+        (checkAll, selectionRow, checkColumn, Qt::AlignHCenter);
     ++selectionRow;
 
     auto checkArrow = new QLabel("&#9660;");
     checkArrow->setTextFormat(Qt::RichText);
-    selectionLayout->addWidget(checkArrow, selectionRow, 0, Qt::AlignHCenter);
+    selectionLayout->addWidget
+        (checkArrow, selectionRow, checkColumn, Qt::AlignHCenter);
     ++selectionRow;
 
     map<QString, QCheckBox *> checkBoxMap; // filename -> checkbox
@@ -670,9 +682,6 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         orderedInfo[info.title] = info;
     }
 
-    int fontHeight = QFontMetrics(checkArrow->font()).height();
-    int dpratio = dialog.devicePixelRatio();
-    
     QPixmap infoMap(fontHeight * dpratio, fontHeight * dpratio);
     QPixmap moreMap(fontHeight * dpratio * 2, fontHeight * dpratio * 2);
     infoMap.fill(Qt::transparent);
@@ -695,16 +704,17 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     for (auto ip: orderedInfo) {
 
         auto cb = new QCheckBox;
-        selectionLayout->addWidget(cb, selectionRow, 0, Qt::AlignHCenter);
+        selectionLayout->addWidget
+            (cb, selectionRow, checkColumn, Qt::AlignHCenter);
 
         LibraryInfo info = ip.second;
 
         auto shortLabel = new QLabel(info.title);
-        selectionLayout->addWidget(shortLabel, selectionRow, 1);
+        selectionLayout->addWidget(shortLabel, selectionRow, titleColumn);
 
         RelativeStatus relativeStatus = getRelativeStatus(info, targetDir);
         auto statusLabel = new QLabel(relativeStatusLabel(relativeStatus));
-        selectionLayout->addWidget(statusLabel, selectionRow, 2);
+        selectionLayout->addWidget(statusLabel, selectionRow, statusColumn);
         cb->setChecked(shouldCheck(relativeStatus));
         
         auto infoButton = new QToolButton;
@@ -718,7 +728,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         infoButton->setStyleSheet("QToolButton { border: none; }");
 #endif
 
-        selectionLayout->addWidget(infoButton, selectionRow, 3);
+        selectionLayout->addWidget(infoButton, selectionRow, infoColumn);
 
         ++selectionRow;
 
@@ -781,7 +791,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
 
     selectionLayout->addWidget
         (new QLabel(QObject::tr("Installation will be to: %1").arg(targetDir)),
-         selectionRow, 1, 1, 3);
+         selectionRow, titleColumn, 1, 3);
     ++selectionRow; 
 
     QObject::connect(checkAll, &QCheckBox::toggled,
