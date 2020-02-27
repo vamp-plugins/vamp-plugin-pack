@@ -51,7 +51,7 @@
             "vcs": "hg",
             "service": "soundsoftware",
             "repository": "segmenter-vamp-plugin",
-            "pin": "093eebe15c24"
+            "pin": "8e45a0652740"
         },
         "nnls-chroma": {
             "vcs": "hg",
