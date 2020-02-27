@@ -56,7 +56,7 @@
         "nnls-chroma": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "89099872c87b"
+            "pin": "580f54855bb1"
         },
         "silvet": {
             "vcs": "hg",

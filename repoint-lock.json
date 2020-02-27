@@ -19,10 +19,10 @@
       "pin": "88464ef869d9473a22d9d5f2d23e27ba33591440"
     },
     "segmentino": {
-      "pin": "8e45a0652740"
+      "pin": "093eebe15c24"
     },
     "nnls-chroma": {
-      "pin": "89099872c87b"
+      "pin": "580f54855bb1"
     },
     "silvet": {
       "pin": "af71cbdab621"
@@ -91,7 +91,7 @@
       "pin": "ae30d91d2ffe"
     },
     "rdf": {
-      "pin": "436ce6aaff28"
+      "pin": "c1eb7a7702d7"
     }
   }
 }
