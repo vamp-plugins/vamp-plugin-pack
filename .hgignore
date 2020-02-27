@@ -46,7 +46,8 @@ o/
 *.dmg
 *.app
 installer.qrc
-Dockerfile.gen
+Dockerfile*.gen
 plugins.zip
 get-version
 output.tar
+deploy/linux/docker/output

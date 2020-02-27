@@ -586,9 +586,17 @@ installLibrary(LibraryInfo info, QString targetDir)
     QString source = ":out";
     QFile f(source + "/" + library);
     QString destination = targetDir + "/" + library;
-    QString backupDir = targetDir + "/" +
-        QString("saved-%1").arg(QDateTime::currentDateTime().toString
-                                 ("yyyyMMdd-hhmmss"));
+
+    static QString backupDirName;
+    if (backupDirName == "") {
+        // Static so as to be created once - don't go creating a
+        // second directory if the clock ticks over by one second
+        // between library installs
+        backupDirName = 
+            QString("saved-%1").arg(QDateTime::currentDateTime().toString
+                                    ("yyyyMMdd-hhmmss"));
+    }
+    QString backupDir = targetDir + "/" + backupDirName;
 
     if (!QDir(targetDir).exists()) {
         QDir().mkpath(targetDir);
@@ -969,6 +977,8 @@ int main(int argc, char **argv)
         getUserApprovedPluginLibraries(info, target);
 
     if (toInstall.empty()) { // Cancelled, or nothing selected
+        SVCERR << "No libraries selected for installation, nothing to do"
+               << endl;
         return 0;
     }
     
