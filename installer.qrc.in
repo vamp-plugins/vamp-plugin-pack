@@ -90,9 +90,11 @@
   <file>out/vamp-libxtract_COPYING.txt</file>
   <file>out/vamp-libxtract_README.txt</file>
   <file>out/vamp-libxtract@SUFFIX@</file>
+<!-- No, I don't think VamPy is reliable enough to install for everyone
   <file>out/vampy_COPYING.txt</file>
   <file>out/vampy_README.txt</file>
   <file>out/vampy@SUFFIX@</file>
+-->
   <file>rdf/vamp.n3</file>
   <file>rdf/vamp.rdf</file>
   <file>rdf/plugins/availability.n3</file>
