@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Vamp Plugin Pack Installer
+Comment=Installer for a set of redistributable Vamp audio analysis plugins
+Exec=vamp-plugin-pack-installer
+Keywords=audio; sound; analysis;
+Terminal=false
+Type=Application
+Icon=vamp-plugin-pack-installer
+Categories=Audio;AudioVideo;
