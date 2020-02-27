@@ -12,13 +12,17 @@ case "$current" in
 esac
 
 echo
-echo "Building from revision $current..."
+echo "Building appimage from revision $current..."
 
 dockerdir=deploy/linux/docker
 
 cat "$dockerdir"/Dockerfile.in | \
     perl -p -e "s/\[\[REVISION\]\]/$current/g" > \
          "$dockerdir"/Dockerfile.gen
+
+cat "$dockerdir"/Dockerfile_test.in | \
+    perl -p -e "s/\[\[REVISION\]\]/$current/g" > \
+         "$dockerdir"/Dockerfile_test.gen
 
 fgrep 'hg.sr.ht' ~/.ssh/known_hosts > "$dockerdir"/known_hosts
 cp ~/.ssh/id_rsa_build "$dockerdir"/id_rsa_build
@@ -38,3 +42,5 @@ sudo docker cp "$container":output.tar "$outdir"
 sudo docker rm "$container"
 
 ( cd "$outdir" ; tar xf output.tar && rm -f output.tar )
+
+sudo docker build -f "$dockerdir"/Dockerfile_test.gen "$dockerdir"

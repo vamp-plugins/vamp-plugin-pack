@@ -61,4 +61,5 @@ RUN ./repoint install
 RUN qmake -r
 RUN make -j3
 
-RUN tar cvf output.tar vamp-plugin-pack-installer && cp output.tar ..
+RUN deploy/linux/deploy-appimage.sh
+RUN tar cvf output.tar *.AppImage && cp output.tar ..

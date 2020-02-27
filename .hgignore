@@ -49,3 +49,4 @@ installer.qrc
 Dockerfile.gen
 plugins.zip
 get-version
+output.tar
