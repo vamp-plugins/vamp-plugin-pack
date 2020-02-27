@@ -920,6 +920,12 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
 
 int main(int argc, char **argv)
 {
+    if (argc == 2 && (QString(argv[1]) == "--version" ||
+                      QString(argv[1]) == "-v")) {
+        cerr << PACK_VERSION << endl;
+        exit(0);
+    }
+    
     QApplication app(argc, argv);
 
     QApplication::setOrganizationName("sonic-visualiser");
