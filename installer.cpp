@@ -53,6 +53,7 @@
 #include <QSpacerItem>
 #include <QProgressDialog>
 #include <QThread>
+#include <QDateTime>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -553,6 +554,31 @@ getRelativeStatus(LibraryInfo info, QString targetDir)
     return status;
 }
 
+bool
+backup(QString filePath, QString backupDir)
+{
+    QFileInfo file(filePath);
+    
+    if (!file.exists()) {
+        return true;
+    }
+    
+    if (!QDir(backupDir).exists()) {
+        QDir().mkpath(backupDir);
+    }
+    
+    QString backup = backupDir + "/" + file.fileName() + ".bak";
+    SVCERR << "Note: existing file " << filePath
+           << " found, backing up to " << backup << endl;
+    if (!QFile(filePath).rename(backup)) {
+        SVCERR << "Failed to move " << filePath.toStdString()
+               << " to backup " << backup.toStdString() << endl;
+        return false;
+    }
+
+    return true;
+}
+
 QString
 installLibrary(LibraryInfo info, QString targetDir)
 {
@@ -560,15 +586,17 @@ installLibrary(LibraryInfo info, QString targetDir)
     QString source = ":out";
     QFile f(source + "/" + library);
     QString destination = targetDir + "/" + library;
+    QString backupDir = targetDir + "/" +
+        QString("saved-%1").arg(QDateTime::currentDateTime().toString
+                                 ("yyyyMMdd-hhmmss"));
 
-    if (QFileInfo(destination).exists()) {
-        auto installed = getLibraryPluginVersions(destination);
-    } else {
-        SVCERR << "Note: library " << library
-               << " is not yet installed, not comparing versions" << endl;
+    if (!QDir(targetDir).exists()) {
+        QDir().mkpath(targetDir);
     }
 
-    //!!! if destination exists, move it aside
+    if (!backup(destination, backupDir)) {
+        return QObject::tr("Failed to move aside existing library");
+    }
     
     SVCERR << "Copying " << library.toStdString() << " to "
            << destination.toStdString() << "..." << endl;
@@ -593,6 +621,9 @@ installLibrary(LibraryInfo info, QString targetDir)
     for (auto e: entries) {
         if (e == library) continue;
         QString destination = targetDir + "/" + e;
+        if (!backup(destination, backupDir)) {
+            continue;
+        }
         SVCERR << "Copying " << e.toStdString() << " to "
                << destination.toStdString() << "..." << endl;
         if (!QFile(source + "/" + e).copy(destination)) {
@@ -935,10 +966,6 @@ int main(int argc, char **argv)
         return 0;
     }
     
-    if (!QDir(target).exists()) {
-        QDir().mkpath(target);
-    }
-
     QProgressDialog progress(QObject::tr("Installing..."),
                              QObject::tr("Stop"), 0, toInstall.size() + 1);
     progress.setMinimumDuration(0);
