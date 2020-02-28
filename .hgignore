@@ -51,3 +51,4 @@ plugins.zip
 get-version
 output.tar
 deploy/linux/docker/output
+packages/
