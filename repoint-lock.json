@@ -16,13 +16,13 @@
       "pin": "4d2a4a4e0c2dd0ddf07bf9d2a224ded912712714"
     },
     "constant-q-cpp": {
-      "pin": "88464ef869d9473a22d9d5f2d23e27ba33591440"
+      "pin": "7ac84048e3e43c433d88e12d221af15e50f41591"
     },
     "segmentino": {
       "pin": "8e45a0652740"
     },
     "nnls-chroma": {
-      "pin": "580f54855bb1"
+      "pin": "1efe67570b75"
     },
     "silvet": {
       "pin": "af71cbdab621"
@@ -91,7 +91,7 @@
       "pin": "ae30d91d2ffe"
     },
     "rdf": {
-      "pin": "c1eb7a7702d7"
+      "pin": "810e0ce05d50"
     }
   }
 }

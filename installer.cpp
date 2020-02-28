@@ -145,7 +145,6 @@ struct LibraryInfo {
     QString description;
     QString page;
     QStringList pluginTitles;
-    map<QString, int> pluginVersions; // id -> version
     QString licence;
 };
 
@@ -284,21 +283,6 @@ getLibraryInfo(const Store &store, QStringList libraries)
             if (ptitle.type == Node::Literal) {
                 info.pluginTitles.push_back(ptitle.value);
             }
-
-            Node pident = store.complete(Triple(p.object(),
-                                                store.expand("vamp:identifier"),
-                                                Node()));
-            Node pversion = store.complete(Triple(p.object(),
-                                                  store.expand("owl:versionInfo"),
-                                                  Node()));
-            if (pident.type == Node::Literal &&
-                pversion.type == Node::Literal) {
-                bool ok = false;
-                int version = pversion.value.toInt(&ok);
-                if (ok) {
-                    info.pluginVersions[pident.value] = version;
-                }
-            }
         }
 
         info.licence = identifyLicence(libId.value);
@@ -324,6 +308,57 @@ struct TempFileDeleter {
     }
     QString tempFile;
 };
+
+bool
+unbundleFile(QString filePath, QString targetPath, bool isExecutable)
+{
+    SVCERR << "Copying " << filePath.toStdString() << " to "
+           << targetPath.toStdString() << "..." << endl;
+
+    // This has to be able to work even if the destination exists, and
+    // to do so without deleting it first - e.g. when copying to a
+    // temporary file. So we open the file and copy to it ourselves
+    // rather than use QFile::copy
+
+    QFile source(filePath);
+    if (!source.open(QFile::ReadOnly)) {
+        SVCERR << "ERROR: Failed to read bundled file " << filePath << endl;
+        return {};
+    }
+    QByteArray content = source.readAll();
+    source.close();
+
+    QFile target(targetPath);
+    if (!target.open(QFile::WriteOnly)) {
+        SVCERR << "ERROR: Failed to read target file " << targetPath << endl;
+        return {};
+    }
+    if (target.write(content) != content.size()) {
+        SVCERR << "ERROR: Incomplete write to target file" << endl;
+        return {};
+    }
+    target.close();
+
+    auto permissions =
+        QFile::ReadOwner | QFile::WriteOwner |
+        QFile::ReadGroup |
+        QFile::ReadOther;
+
+    if (isExecutable) {
+        permissions |=
+            QFile::ExeOwner |
+            QFile::ExeGroup |
+            QFile::ExeOther;
+    };
+    
+    if (!QFile::setPermissions(targetPath, permissions)) {
+        SVCERR << "Failed to set permissions on "
+               << targetPath.toStdString() << endl;
+        return false;
+    }
+
+    return true;
+}
 
 map<QString, int>
 getLibraryPluginVersions(QString libraryFilePath)
@@ -356,29 +391,14 @@ getLibraryPluginVersions(QString libraryFilePath)
         QString helperPath = ":out/get-version.exe";
 #else
         QString helperPath = ":out/get-version";
-#endif        
-        QFile helper(helperPath);
-        if (!helper.open(QFile::ReadOnly)) {
-            SVCERR << "ERROR: Failed to read helper code" << endl;
-            return {};
-        }
-        QByteArray content = helper.readAll();
-        helper.close();
+#endif
 
-        if (tempFile.write(content) != content.size()) {
-            SVCERR << "ERROR: Incomplete write to temporary file" << endl;
-            return {};
-        }
         tempFile.close();
-
-        if (!QFile::setPermissions
-            (tempFileName,
-             QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner)) {
-            SVCERR << "ERROR: Failed to set execute permission on helper "
-                   << tempFileName << endl;
+        if (!unbundleFile(helperPath, tempFileName, true)) {
+            SVCERR << "ERROR: Failed to unbundle helper code" << endl;
             return {};
         }
-        
+
         initSucceeded = true;
     }
 
@@ -433,6 +453,36 @@ getLibraryPluginVersions(QString libraryFilePath)
     }
 
     return versions;
+}
+
+map<QString, int>
+getBundledLibraryPluginVersions(QString libraryFileName)
+{
+    QString tempFileName;
+    TempFileDeleter deleter;
+
+    {
+        QTemporaryFile tempFile;
+        tempFile.setAutoRemove(false);
+        if (!tempFile.open()) {
+            SVCERR << "ERROR: Failed to open a temporary file" << endl;
+            return {};
+        }
+
+        // We can't use QTemporaryFile's auto-remove, as it will hold
+        // the file open and that prevents us from executing it. Hence
+        // the separate deleter.
+        
+        tempFileName = tempFile.fileName();
+        deleter.tempFile = tempFileName;
+        tempFile.close();
+    }
+
+    if (!unbundleFile(":out/" + libraryFileName, tempFileName, true)) {
+        return {};
+    }
+
+    return getLibraryPluginVersions(tempFileName);
 }
 
 bool isLibraryNewer(map<QString, int> a, map<QString, int> b)
@@ -522,31 +572,32 @@ getRelativeStatus(LibraryInfo info, QString targetDir)
 {
     QString destination = targetDir + "/" + info.fileName;
 
-    RelativeStatus status = RelativeStatus::New;
-
     SVCERR << "\ngetRelativeStatus: " << info.fileName << ":\n";
 
-    if (QFileInfo(destination).exists()) {
+    if (!QFileInfo(destination).exists()) {
+        SVCERR << " - relative status: " << relativeStatusLabel(RelativeStatus::New) << endl;
+        return RelativeStatus::New;
+    }
 
-        auto installed = getLibraryPluginVersions(destination);
+    RelativeStatus status = RelativeStatus::Same;
 
-        SVCERR << " * installed: " << versionsString(installed)
-               << "\n * packaged:  " << versionsString(info.pluginVersions)
-               << endl;
+    auto packaged = getBundledLibraryPluginVersions(info.fileName);
+    auto installed = getLibraryPluginVersions(destination);
 
-        status = RelativeStatus::Same;
+    SVCERR << " * installed: " << versionsString(installed)
+           << "\n * packaged:  " << versionsString(packaged)
+           << endl;
 
-        if (installed.empty()) {
-            status = RelativeStatus::TargetNotLoadable;
-        }
+    if (installed.empty()) {
+        status = RelativeStatus::TargetNotLoadable;
+    }
 
-        if (isLibraryNewer(installed, info.pluginVersions)) {
-            status = RelativeStatus::Downgrade;
-        }
+    if (isLibraryNewer(installed, packaged)) {
+        status = RelativeStatus::Downgrade;
+    }
 
-        if (isLibraryNewer(info.pluginVersions, installed)) {
-            status = RelativeStatus::Upgrade;
-        }
+    if (isLibraryNewer(packaged, installed)) {
+        status = RelativeStatus::Upgrade;
     }
 
     SVCERR << " - relative status: " << relativeStatusLabel(status) << endl;
@@ -584,7 +635,6 @@ installLibrary(LibraryInfo info, QString targetDir)
 {
     QString library = info.fileName;
     QString source = ":out";
-    QFile f(source + "/" + library);
     QString destination = targetDir + "/" + library;
 
     static QString backupDirName;
@@ -605,24 +655,11 @@ installLibrary(LibraryInfo info, QString targetDir)
     if (!backup(destination, backupDir)) {
         return QObject::tr("Failed to move aside existing library");
     }
-    
-    SVCERR << "Copying " << library.toStdString() << " to "
-           << destination.toStdString() << "..." << endl;
-    if (!f.copy(destination)) {
-        SVCERR << "Failed to copy " << library.toStdString()
-               << " to target " << destination.toStdString() << endl;
-        return QObject::tr("Failed to copy library to destination directory");
-    }
-    if (!QFile::setPermissions
-        (destination,
-         QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner |
-         QFile::ReadGroup | QFile::ExeGroup |
-         QFile::ReadOther | QFile::ExeOther)) {
-        SVCERR << "Failed to set permissions on "
-               << library.toStdString() << endl;
-        return QObject::tr("Failed to set correct permissions on installed library");
-    }
 
+    if (!unbundleFile(source + "/" + library, destination, true)) {
+        return QObject::tr("Failed to copy library file to target directory");
+    }
+    
     QString base = QFileInfo(library).baseName();
     QDir dir(source);
     auto entries = dir.entryList({ base + "*" });
@@ -632,22 +669,7 @@ installLibrary(LibraryInfo info, QString targetDir)
         if (!backup(destination, backupDir)) {
             continue;
         }
-        SVCERR << "Copying " << e.toStdString() << " to "
-               << destination.toStdString() << "..." << endl;
-        if (!QFile(source + "/" + e).copy(destination)) {
-            SVCERR << "Failed to copy " << e.toStdString()
-                   << " to target " << destination.toStdString()
-                   << " (ignoring)" << endl;
-            continue;
-        }
-        if (!QFile::setPermissions
-            (destination,
-             QFile::ReadOwner | QFile::WriteOwner |
-             QFile::ReadGroup |
-             QFile::ReadOther)) {
-            SVCERR << "Failed to set permissions on "
-                   << destination.toStdString()
-                   << " (ignoring)" << endl;
+        if (!unbundleFile(source + "/" + e, destination, false)) {
             continue;
         }
     }

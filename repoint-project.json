@@ -45,7 +45,7 @@
             "vcs": "git",
             "service": "github",
             "owner": "cannam",
-            "pin": "88464ef869d9473a22d9d5f2d23e27ba33591440"
+            "pin": "7ac84048e3e43c433d88e12d221af15e50f41591"
         },
         "segmentino": {
             "vcs": "hg",
@@ -56,7 +56,7 @@
         "nnls-chroma": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "580f54855bb1"
+            "pin": "1efe67570b75"
         },
         "silvet": {
             "vcs": "hg",
