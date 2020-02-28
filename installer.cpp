@@ -1083,24 +1083,17 @@ int main(int argc, char **argv)
     vector<LibraryInfo> toInstall =
         getUserApprovedPluginLibraries(info, target);
     
+    if (toInstall.empty()) { // Cancelled, or nothing selected
+        SVCERR << "No libraries selected for installation, nothing to do"
+               << endl;
+        return 0;
+    }
+    
     QProgressDialog progress(QObject::tr("Installing..."),
                              QObject::tr("Stop"), 0,
                              int(toInstall.size()) + 1);
     progress.setMinimumDuration(0);
 
-    if (toInstall.empty()) { // Cancelled, or nothing selected
-        SVCERR << "No libraries selected for installation, nothing to do"
-               << endl;
-        progress.hide();
-        QMessageBox::information
-            (&progress,
-             QObject::tr("Nothing to do"),
-             QObject::tr("No libraries selected for installation"),
-             QMessageBox::Ok,
-             QMessageBox::Ok);
-        return 0;
-    }
-    
     int pval = 0;
     bool complete = true;
     
