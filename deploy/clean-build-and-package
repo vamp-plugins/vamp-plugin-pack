@@ -26,7 +26,12 @@ if [ -d /Applications ]; then
 
 else
 
-    echo "Not yet implemented for this platform"
+    ./deploy/linux/build-and-test.sh
+
+    squashedversion=$(echo "$version" | sed 's/_-//g')
+
+    mv deploy/linux/docker/output/VampPluginPackInstaller-"$current"-x86_64.AppImage \
+	packages/vamp-plugin-pack-installer-"$squashedversion"
 fi
 
 echo "Done"
