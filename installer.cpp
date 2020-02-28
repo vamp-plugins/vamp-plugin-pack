@@ -54,6 +54,7 @@
 #include <QProgressDialog>
 #include <QThread>
 #include <QDateTime>
+#include <QTimer>
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -932,7 +933,19 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                  SVCERR << "WARNING: Unexpected role " << role << endl;
              }
          });
-    
+
+    if (QString(PACK_VERSION).contains("-pre") ||
+        QString(PACK_VERSION).contains("-alpha") ||
+        QString(PACK_VERSION).contains("-beta")) {
+        QTimer::singleShot
+            (500, [&]() {
+                      QString url = "https://code.soundsoftware.ac.uk/projects/vamp-plugin-pack";
+                      QMessageBox::information
+                          (&dialog, QObject::tr("Test release"),
+                           QObject::tr("<b>This is a test release of %1</b><p>Please send any feedback to the developers. See <a href=\"%2\">%3</a> for more information.</p>").arg(QApplication::applicationName()).arg(url).arg(url));
+                  });
+    }
+
     if (dialog.exec() != QDialog::Accepted) {
         SVCERR << "rejected" << endl;
         return {};
