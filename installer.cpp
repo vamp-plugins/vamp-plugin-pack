@@ -930,7 +930,7 @@ int main(int argc, char **argv)
 {
     if (argc == 2 && (QString(argv[1]) == "--version" ||
                       QString(argv[1]) == "-v")) {
-        cerr << PACK_VERSION << endl;
+        cerr << PACK_VERSION << std::endl; // std:: needed here for MSVC for some reason
         exit(0);
     }
     
@@ -983,7 +983,8 @@ int main(int argc, char **argv)
     }
     
     QProgressDialog progress(QObject::tr("Installing..."),
-                             QObject::tr("Stop"), 0, toInstall.size() + 1);
+                             QObject::tr("Stop"), 0,
+                             int(toInstall.size()) + 1);
     progress.setMinimumDuration(0);
     
     int pval = 0;
