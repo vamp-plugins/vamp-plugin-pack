@@ -5,7 +5,17 @@ echo on
 
 set STARTPWD=%CD%
 
-set QTDIR=C:\Qt\5.13.2\msvc2017_64
+rem  Using Qt Base module thus:
+rem  .\configure -static -release -platform win32-msvc -no-opengl -no-angle -prefix C:\Qt\5.14.1-static
+rem  nmake
+rem  nmake install
+rem 
+rem  Note you also need the Qt SVG module, in which:
+rem  c:\qt\5.14.1-static\bin\qmake.exe qtsvg.pro -r -tp vc -spec win32-msvc
+rem  nmake
+rem  nmake install
+
+set QTDIR=C:\Qt\5.14.1-static
 if not exist %QTDIR% (
 @   echo Could not find 64-bit Qt in %QTDIR%
 @   exit /b 2
@@ -91,16 +101,16 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 msbuild "Vamp Plugin Pack Installer.vcxproj" /t:Build /p:Configuration=Release
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-copy %QTDIR%\bin\Qt5Core.dll .\release
-copy %QTDIR%\bin\Qt5Gui.dll .\release
-copy %QTDIR%\bin\Qt5Widgets.dll .\release
-copy %QTDIR%\bin\Qt5Network.dll .\release
-copy %QTDIR%\bin\Qt5Xml.dll .\release
-copy %QTDIR%\bin\Qt5Svg.dll .\release
-copy %QTDIR%\bin\Qt5Test.dll .\release
-copy %QTDIR%\plugins\platforms\qminimal.dll .\release
-copy %QTDIR%\plugins\platforms\qwindows.dll .\release
-copy %QTDIR%\plugins\styles\qwindowsvistastyle.dll .\release
+rem copy %QTDIR%\bin\Qt5Core.dll .\release
+rem copy %QTDIR%\bin\Qt5Gui.dll .\release
+rem copy %QTDIR%\bin\Qt5Widgets.dll .\release
+rem copy %QTDIR%\bin\Qt5Network.dll .\release
+rem copy %QTDIR%\bin\Qt5Xml.dll .\release
+rem copy %QTDIR%\bin\Qt5Svg.dll .\release
+rem copy %QTDIR%\bin\Qt5Test.dll .\release
+rem copy %QTDIR%\plugins\platforms\qminimal.dll .\release
+rem copy %QTDIR%\plugins\platforms\qwindows.dll .\release
+rem copy %QTDIR%\plugins\styles\qwindowsvistastyle.dll .\release
 
 if "%ARG%" == "sign" (
 @echo Signing application

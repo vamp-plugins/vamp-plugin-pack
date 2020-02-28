@@ -35,6 +35,7 @@ out/*_README.txt
 out/*_README.md
 out/*_CITATION.txt
 out/*_COPYING.txt
+out/*.exe
 build_win64
 *.orig
 out/.something-to-sign
@@ -52,3 +53,6 @@ get-version
 output.tar
 deploy/linux/docker/output
 packages/
+*.vcproj
+*.sln
+signtest.exe
