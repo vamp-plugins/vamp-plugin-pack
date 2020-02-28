@@ -149,6 +149,23 @@ struct LibraryInfo {
     QString licence;
 };
 
+struct Licence
+{
+    static QString gpl;
+    static QString gpl2;
+    static QString gpl3;
+    static QString agpl;
+    static QString apache;
+    static QString mit;
+};
+
+QString Licence::gpl = "GNU General Public License";
+QString Licence::gpl2 = "GNU General Public License, version 2";
+QString Licence::gpl3 = "GNU General Public License, version 3";
+QString Licence::agpl = "GNU Affero General Public License";
+QString Licence::apache = "Apache License";
+QString Licence::mit = "MIT License";
+
 QString
 identifyLicence(QString libraryBasename)
 {
@@ -166,37 +183,51 @@ identifyLicence(QString libraryBasename)
 
     QString licenceText = QString::fromUtf8(content);
 
-    QString gpl = "GNU General Public License";
-    QString agpl = "GNU Affero General Public License";
-    QString apache = "Apache License";
-    QString mit = "MIT License";
-
     // NB these are not expected to identify an arbitrary licence! We
     // know we have only a limited set here. But we do want to
     // determine this from the actual licence text included with the
     // plugin distribution, not just from e.g. RDF metadata
     
-    if (licenceText.contains(gpl.toUpper(), Qt::CaseSensitive)) {
+    if (licenceText.contains(Licence::gpl.toUpper(), Qt::CaseSensitive)) {
         if (licenceText.contains("Version 3, 29 June 2007")) {
-            return QString("%1, version 3").arg(gpl);
+            return Licence::gpl3;
         } else if (licenceText.contains("Version 2, June 1991")) {
-            return QString("%1, version 2").arg(gpl);
+            return Licence::gpl2;
         } else {
-            return gpl;
+            return Licence::gpl;
         }
     }
-    if (licenceText.contains(agpl.toUpper(), Qt::CaseSensitive)) {
-        return agpl;
+    if (licenceText.contains(Licence::agpl.toUpper(), Qt::CaseSensitive)) {
+        return Licence::agpl;
     }
-    if (licenceText.contains(apache)) {
-        return apache;
+    if (licenceText.contains(Licence::apache)) {
+        return Licence::apache;
     }
     if (licenceText.contains("Permission is hereby granted, free of charge, to any person")) {
-        return mit;
+        return Licence::mit;
     }
 
     SVCERR << "Didn't recognise licence for " << libraryBasename << endl;
     
+    return {};
+}
+
+QString
+getLicenceURL(QString licence)
+{
+    if (licence == Licence::gpl ||
+        licence == Licence::gpl3) {
+        return "https://www.gnu.org/licenses/gpl-3.0.en.html";
+    } else if (licence == Licence::gpl2) {
+        return "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html";
+    } else if (licence == Licence::agpl) {
+        return "https://www.gnu.org/licenses/agpl-3.0.html";
+    } else if (licence == Licence::apache) {
+        return "https://www.apache.org/licenses/LICENSE-2.0";
+    } else if (licence == Licence::mit) {
+        return "https://opensource.org/licenses/MIT";
+    }
+
     return {};
 }
 
@@ -678,6 +709,35 @@ installLibrary(LibraryInfo info, QString targetDir)
     return {};
 }
 
+QString
+getHelpText(vector<LibraryInfo> libraries)
+{
+    set<QString, function<bool (QString, QString)>>
+        makers
+        ([](QString k1, QString k2) {
+             return k1.localeAwareCompare(k2) < 0;
+         });
+
+    for (auto info: libraries) {
+        makers.insert(info.maker);
+    }
+
+    QString makerList;
+    for (QString maker: makers) {
+        makerList += QObject::tr("<li>%1</li>").arg(maker);
+    }
+    
+    return QObject::tr
+        ("<p>Vamp Plugin Pack collects together a number of <a href=\"https://vamp-plugins.org\">Vamp audio analysis plugins</a> into a single installer.</p>"
+         "<p>The libraries you select will be installed into the standard Vamp plugin directory, where hosts such as <a href=\"https://sonicvisualiser.org/\">Sonic Visualiser</a> can find them.</p>"
+         "<p>The plugin libraries included here were developed and published by various different authors and institutions:</p><ul>%1</ul>"
+         "<p>All of the libraries are open source and are redistributable under open-source licences. Click the information icon to the right of each library in the main window for more details.</p>"
+         "<p>The entire pack may be redistributed under the <a href=\"%2\">GNU Affero General Public License v3</a>.</p>"
+         "<p>The plugins were collected together, and the installer was written and published, at the <a href=\"https://c4dm.eecs.qmul.ac.uk\">Centre for Digital Music</a>, Queen Mary University of London.</p>")
+        .arg(makerList)
+        .arg(getLicenceURL(Licence::agpl));
+}
+
 vector<LibraryInfo>
 getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                                QString targetDir)
@@ -834,7 +894,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
         }
 
         if (info.licence != "") {
-            moreInfoText += QObject::tr("Provided under the %1.<br>")
+            moreInfoText += QObject::tr("Provided under the <a href=\"%1\">%2</a>.<br>")
+                .arg(getLicenceURL(info.licence))
                 .arg(info.licence);
         }
         
@@ -874,7 +935,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     
     auto bb = new QDialogButtonBox(QDialogButtonBox::Ok |
                                    QDialogButtonBox::Cancel |
-                                   QDialogButtonBox::Reset);
+                                   QDialogButtonBox::Reset |
+                                   QDialogButtonBox::Help);
     bb->button(QDialogButtonBox::Ok)->setText(QObject::tr("Install"));
     mainLayout->addWidget(bb, mainRow, 0);
     ++mainRow;
@@ -929,8 +991,18 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                  }
                  break;
 
+             case QDialogButtonBox::HelpRole: {
+                 QMessageBox mbox;
+                 mbox.setWindowTitle(QApplication::applicationName());
+                 mbox.setText(QObject::tr("<b>Vamp Plugin Pack</b>"));
+                 mbox.setInformativeText(getHelpText(libraries));
+                 mbox.exec();
+                 break;
+             }
+                 
              default:
                  SVCERR << "WARNING: Unexpected role " << role << endl;
+                 break;
              }
          });
 
@@ -1010,17 +1082,24 @@ int main(int argc, char **argv)
     
     vector<LibraryInfo> toInstall =
         getUserApprovedPluginLibraries(info, target);
-
-    if (toInstall.empty()) { // Cancelled, or nothing selected
-        SVCERR << "No libraries selected for installation, nothing to do"
-               << endl;
-        return 0;
-    }
     
     QProgressDialog progress(QObject::tr("Installing..."),
                              QObject::tr("Stop"), 0,
                              int(toInstall.size()) + 1);
     progress.setMinimumDuration(0);
+
+    if (toInstall.empty()) { // Cancelled, or nothing selected
+        SVCERR << "No libraries selected for installation, nothing to do"
+               << endl;
+        progress.hide();
+        QMessageBox::information
+            (&progress,
+             QObject::tr("Nothing to do"),
+             QObject::tr("No libraries selected for installation"),
+             QMessageBox::Ok,
+             QMessageBox::Ok);
+        return 0;
+    }
     
     int pval = 0;
     bool complete = true;
