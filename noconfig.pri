@@ -17,7 +17,7 @@ win32-msvc* {
     LIBS += -L$$PWD -L$$PWD/sv-dependency-builds/win64-msvc/lib
 
     CONFIG(release) {
-        LIBS += -NODEFAULTLIB:LIBCMT -Lrelease
+        LIBS += -NODEFAULTLIB:MSVCRT -Lrelease
     }
 
     DEFINES += NOMINMAX _USE_MATH_DEFINES HAVE_C99_VARARGS_MACROS _HAS_STD_BYTE=0

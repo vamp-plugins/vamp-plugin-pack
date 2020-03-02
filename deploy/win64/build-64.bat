@@ -6,12 +6,12 @@ echo on
 set STARTPWD=%CD%
 
 rem  Using Qt Base module thus:
-rem  .\configure -static -release -platform win32-msvc -no-opengl -no-angle -prefix C:\Qt\5.14.1-static
+rem  .\configure -static -static-runtime -release -platform win32-msvc -no-opengl -no-angle -prefix C:\Qt\5.14.1-static
 rem  nmake
 rem  nmake install
 rem 
 rem  Note you also need the Qt SVG module, in which:
-rem  c:\qt\5.14.1-static\bin\qmake.exe qtsvg.pro -r -tp vc -spec win32-msvc
+rem  c:\qt\5.14.1-static\bin\qmake.exe qtsvg.pro -r -spec win32-msvc
 rem  nmake
 rem  nmake install
 

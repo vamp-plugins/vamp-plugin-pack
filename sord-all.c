@@ -1,0 +1,8 @@
+#include "sv-dependency-builds/src/serd-0.18.2/src/env.c"
+#include "sv-dependency-builds/src/serd-0.18.2/src/node.c"
+#include "sv-dependency-builds/src/serd-0.18.2/src/reader.c"
+#include "sv-dependency-builds/src/serd-0.18.2/src/string.c"
+#include "sv-dependency-builds/src/serd-0.18.2/src/uri.c"
+#include "sv-dependency-builds/src/serd-0.18.2/src/writer.c"
+#include "sv-dependency-builds/src/sord-0.12.0/src/sord.c"
+#include "sv-dependency-builds/src/sord-0.12.0/src/syntax.c"

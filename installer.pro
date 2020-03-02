@@ -62,7 +62,8 @@ SOURCES += \
         vamp-plugin-sdk/src/vamp-hostsdk/PluginLoader.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/PluginSummarisingAdapter.cpp \
         vamp-plugin-sdk/src/vamp-hostsdk/PluginWrapper.cpp \
-        vamp-plugin-sdk/src/vamp-hostsdk/RealTime.cpp
+        vamp-plugin-sdk/src/vamp-hostsdk/RealTime.cpp \
+        sord-all.c
 
 DATAQUAY_SOURCES=$$fromfile(dataquay/lib.pro, SOURCES)
 DATAQUAY_HEADERS=$$fromfile(dataquay/lib.pro, HEADERS)
@@ -72,19 +73,19 @@ for (file, DATAQUAY_HEADERS) { HEADERS += $$sprintf("dataquay/%1", $$file) }
 
 DEFINES += HAVE_SORD HAVE_SERD USE_SORD NDEBUG
 
+INCLUDEPATH += \
+        sv-dependency-builds/src/serd-0.18.2/src/ \
+        sv-dependency-builds/src/sord-0.12.0/src/
+
 linux* {
-    QMAKE_CXXFLAGS += -I/usr/include/sord-0 -I/usr/include/serd-0
-    LIBS += -lsord-0 -lserd-0 -ldl
+    LIBS += -ldl
 }
 
 macx* {
-    LIBS += -lsord-0 -lserd-0
     QMAKE_POST_LINK += deploy/osx/deploy.sh $$shell_quote($$TARGET)
 }
 
 win32* {
-    LIBS += -lsord -lserd
-
     QMAKE_LFLAGS_RELEASE += -MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\"
 }
     
