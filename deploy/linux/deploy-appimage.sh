@@ -108,5 +108,5 @@ chmod +x "$targetdir/AppRun"
 # in situations where FUSE is unavailable like in a Docker container
 export ARCH=x86_64
 sv-dependency-builds/linux/appimage/appimagetool-x86_64.AppImage --appimage-extract
-./squashfs-root/AppRun "$targetdir" "VampPluginPackInstaller-$version-x86_64.AppImage"
+./squashfs-root/AppRun --sign --sign-key 7F9AC179D24A82FD874C568C08298B40D23F60E1 "$targetdir" "VampPluginPackInstaller-$version-x86_64.AppImage"
 
