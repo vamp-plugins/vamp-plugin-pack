@@ -17,7 +17,7 @@
         "vamp-plugin-sdk": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "vamp-plugin-sdk-v2.9"
+            "pin": "45b2bd15d8ae"
         },
         "dataquay": {
             "vcs": "hg",

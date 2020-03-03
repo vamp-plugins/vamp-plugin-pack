@@ -1,7 +1,7 @@
 {
   "libraries": {
     "vamp-plugin-sdk": {
-      "pin": "a7e6d747fd3f"
+      "pin": "45b2bd15d8ae"
     },
     "dataquay": {
       "pin": "35098262cadd"
