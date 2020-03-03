@@ -42,6 +42,8 @@ linux* {
 
     DEPLOYDIR = $$PWD/deploy/linux
 
+    INCLUDEPATH += $$PWD/sv-dependency-builds/src/serd-0.18.2 $$PWD/sv-dependency-builds/src/sord-0.12.0
+    
     QMAKE_CXXFLAGS_RELEASE += -O3 -flto
     QMAKE_LFLAGS_RELEASE += -O3 -flto -Wl,--no-undefined
 }
