@@ -21,17 +21,16 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/ua-vamp-plugins/src
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
-    LIBS += -L$$PWD/sv-dependency-builds/win64-msvc/lib -lfftw3
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
     LIBS += -Wl,--version-script=$$PWD/ua-vamp-plugins/vamp-plugin.map
 }
 linux* {
-    LIBS += -Wl,-Bstatic -Lsv-dependency-builds/linux/lib/fftw-3.3.8-x86_64 -lfftw3 -Wl,-Bdynamic -Wl,--version-script=$$PWD/ua-vamp-plugins/vamp-plugin.map -Wl,-no-undefined
+    LIBS += -Wl,--version-script=$$PWD/ua-vamp-plugins/vamp-plugin.map -Wl,-no-undefined
 }
 macx* {
-    LIBS += -exported_symbols_list $$PWD/ua-vamp-plugins/vamp-plugin.list -lfftw3
+    LIBS += -exported_symbols_list $$PWD/ua-vamp-plugins/vamp-plugin.list
 }
 
 QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out

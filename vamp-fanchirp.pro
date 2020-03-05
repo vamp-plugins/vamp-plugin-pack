@@ -21,14 +21,13 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/vamp-fanchirp/bqvec
 QMAKE_CXXFLAGS -= -Werror
 
 win32-msvc* {
-    LIBS += -L$$PWD/sv-dependency-builds/win64-msvc/lib -lfftw3
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
     LIBS += -Wl,--version-script=$$PWD/vamp-fanchirp/vamp-plugin.map
 }
 linux* {
-    LIBS += -Wl,-Bstatic -Lsv-dependency-builds/linux/lib/fftw-3.3.8-x86_64 -lfftw3 -Wl,-Bdynamic -Wl,--version-script=$$PWD/vamp-fanchirp/vamp-plugin.map
+    LIBS += -Wl,--version-script=$$PWD/vamp-fanchirp/vamp-plugin.map
 }
 macx* {
     LIBS += -exported_symbols_list $$PWD/vamp-fanchirp/vamp-plugin.list
