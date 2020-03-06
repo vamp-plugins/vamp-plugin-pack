@@ -6,7 +6,7 @@ echo on
 set STARTPWD=%CD%
 
 rem  Using Qt Base module thus:
-rem  .\configure -static -static-runtime -release -platform win32-msvc -no-opengl -no-angle -prefix C:\Qt\5.14.1-static
+rem  .\configure -static -static-runtime -release -platform win32-msvc -no-opengl -no-angle -nomake examples -prefix C:\Qt\5.14.1-static
 rem  nmake
 rem  nmake install
 rem 
@@ -15,13 +15,15 @@ rem  c:\qt\5.14.1-static\bin\qmake.exe qtsvg.pro -r -spec win32-msvc
 rem  nmake
 rem  nmake install
 
-set QTDIR=C:\Qt\5.14.1-static
+set QTDIR=C:\Qt\5.14.1-static-msvc2015
 if not exist %QTDIR% (
 @   echo Could not find 64-bit Qt in %QTDIR%
 @   exit /b 2
 )
 
-set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
+rem  Not 2019! Its APIs are too new for use in our static build
+rem set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
+set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
 
 if not exist %vcvarsall% (
 @   echo "Could not find MSVC vars batch file"
@@ -35,6 +37,7 @@ if not exist "%SMLNJDIR%\bin" (
 )
 
 call %vcvarsall% amd64
+if %errorlevel% neq 0 exit /b %errorlevel%
 
 set ORIGINALPATH=%PATH%
 set PATH=%PATH%;%SMLNJDIR%\bin;%QTDIR%\bin
@@ -91,9 +94,11 @@ if "%ARG%" == "sign" (
 @echo Signing plugins and version helper
 signtool sign /v /n "%NAME%" /t http://time.certum.pl /fd sha1 /a ..\out\*.dll ..\out\*.exe
 signtool verify /pa ..\out\*.dll ..\out\*.exe
+if %errorlevel% neq 0 exit /b %errorlevel%
 )
 
 %QTDIR%\bin\rcc ..\installer.qrc -o o\qrc_installer.cpp
+if %errorlevel% neq 0 exit /b %errorlevel%
 
 qmake -spec win32-msvc -r -tp vc ..\installer.pro
 if %errorlevel% neq 0 exit /b %errorlevel%
@@ -116,6 +121,7 @@ if "%ARG%" == "sign" (
 @echo Signing application
 signtool sign /v /n "%NAME%" /t http://time.certum.pl /fd sha1 /a release\*.exe release\*.dll
 signtool verify /pa "release\Vamp Plugin Pack Installer.exe"
+if %errorlevel% neq 0 exit /b %errorlevel%
 )
 
 cd ..

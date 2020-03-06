@@ -13,6 +13,7 @@ set VERSION=%VERSION:"=%
 @if "%YN%" neq "y" exit /b 3
 
 @echo Proceeding
+del /q /s out
 del /q /s build_win64
 call .\deploy\win64\build-64.bat sign
 if %errorlevel% neq 0 exit /b %errorlevel%

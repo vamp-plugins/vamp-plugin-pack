@@ -10,7 +10,7 @@ exists(config.pri) {
 }
 
 CONFIG -= qt
-CONFIG += plugin no_plugin_name_prefix release warn_on
+CONFIG += dll no_plugin_name_prefix release warn_on
 
 TARGET = out/fanchirp
 
@@ -50,6 +50,4 @@ SOURCES += \
     vamp-plugin-sdk/src/vamp-sdk/FFT.cpp \
     vamp-plugin-sdk/src/vamp-sdk/PluginAdapter.cpp \
     vamp-plugin-sdk/src/vamp-sdk/RealTime.cpp
-
-
 
