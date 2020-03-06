@@ -38,7 +38,9 @@ QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 !win* {
     QMAKE_POST_LINK += && \
         cp vamp-simple-cepstrum/simple-cepstrum.cat out/ && \
-        cp vamp-simple-cepstrum/simple-cepstrum.n3 out/
+        cp vamp-simple-cepstrum/simple-cepstrum.n3 out/ && \
+        cp vamp-simple-cepstrum/README out/simple-cepstrum_README.txt && \
+        cp vamp-simple-cepstrum/COPYING out/simple-cepstrum_COPYING.txt
 }
 
 SOURCES += \

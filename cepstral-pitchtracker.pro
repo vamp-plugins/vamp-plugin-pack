@@ -39,7 +39,8 @@ QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
     QMAKE_POST_LINK += && \
         cp cepstral-pitchtracker/cepstral-pitchtracker.cat out/ && \
         cp cepstral-pitchtracker/cepstral-pitchtracker.n3 out/ && \
-        cp cepstral-pitchtracker/README out/cepstral-pitchtracker_README.txt
+        cp cepstral-pitchtracker/README out/cepstral-pitchtracker_README.txt && \
+        cp cepstral-pitchtracker/COPYING out/cepstral-pitchtracker_COPYING.txt
 }
 
 SOURCES += \

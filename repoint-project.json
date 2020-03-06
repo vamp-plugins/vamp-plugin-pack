@@ -86,12 +86,12 @@
         "vamp-simple-cepstrum": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "a488dd5e4fb8"
+            "pin": "a17bca16933a"
         },
         "cepstral-pitchtracker": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "759ea6e988fe"
+            "pin": "84d1a0647ce5"
         },
         "match-vamp": {
             "vcs": "hg",

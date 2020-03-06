@@ -15,6 +15,7 @@
   <file>out/beatroot-vamp_README.txt</file>
   <file>out/beatroot-vamp@SUFFIX@</file>
   <file>out/cepstral-pitchtracker.cat</file>
+  <file>out/cepstral-pitchtracker_COPYING.txt</file>
   <file>out/cepstral-pitchtracker_README.txt</file>
   <file>out/cepstral-pitchtracker@SUFFIX@</file>
   <file>out/cqvamp.cat</file>
@@ -60,6 +61,8 @@
   <file>out/silvet_README.txt</file>
   <file>out/silvet@SUFFIX@</file>
   <file>out/simple-cepstrum.cat</file>
+  <file>out/simple-cepstrum_COPYING.txt</file>
+  <file>out/simple-cepstrum_README.txt</file>
   <file>out/simple-cepstrum@SUFFIX@</file>
   <file>out/tempogram.cat</file>
   <file>out/tempogram_CITATION.txt</file>
@@ -123,6 +126,7 @@
   <file>rdf/plugins/simple-cepstrum.n3</file>
   <file>rdf/plugins/tempogram.n3</file>
   <file>rdf/plugins/tipic.n3</file>
+  <file>rdf/plugins/tuning-difference.n3</file>
   <file>rdf/plugins/ua-vamp-plugins.n3</file>
   <file>rdf/plugins/vamp-aubio.n3</file>
   <file>rdf/plugins/vamp-example-plugins.n3</file>

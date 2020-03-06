@@ -40,10 +40,10 @@
       "pin": "c7d41e60930d"
     },
     "vamp-simple-cepstrum": {
-      "pin": "a488dd5e4fb8"
+      "pin": "a17bca16933a"
     },
     "cepstral-pitchtracker": {
-      "pin": "759ea6e988fe"
+      "pin": "84d1a0647ce5"
     },
     "match-vamp": {
       "pin": "4b272c839f7e"
@@ -91,7 +91,7 @@
       "pin": "08ae793730bd"
     },
     "rdf": {
-      "pin": "6e08f1136c49"
+      "pin": "720decd4ceff"
     }
   }
 }
