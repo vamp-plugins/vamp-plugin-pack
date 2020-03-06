@@ -78,6 +78,7 @@ INCLUDEPATH += \
         sv-dependency-builds/src/sord-0.12.0/src/
 
 linux* {
+    QMAKE_CFLAGS += -std=c99
     LIBS += -ldl
 }
 
