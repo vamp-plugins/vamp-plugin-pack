@@ -1,42 +1,19 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/tipic
 
 OBJECTS_DIR = tipic/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/tipic/qm-dsp $$PWD/tipic/qm-dsp/ext/kissfft $$PWD/tipic/qm-dsp/ext/kissfft/tools
-
-QMAKE_CXXFLAGS -= -Werror
+INCLUDEPATH += $$PWD/tipic/qm-dsp $$PWD/tipic/qm-dsp/ext/kissfft $$PWD/tipic/qm-dsp/ext/kissfft/tools
 
 DEFINES += kiss_fft_scalar=double
 
 win32-msvc* {
     DEFINES += __restrict__=__restrict
-    LIBS += -EXPORT:vampGetPluginDescriptor
 }
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/tipic/vamp-plugin.map
-}
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/tipic/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/tipic/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

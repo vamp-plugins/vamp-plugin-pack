@@ -1,40 +1,14 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/vamp-aubio
 OBJECTS_DIR = vamp-aubio-plugins/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/aubio $$PWD/aubio-link $$PWD/aubio/src $$PWD/vamp-aubio-plugins/plugins
-
-QMAKE_CXXFLAGS -= -Werror
+INCLUDEPATH += $$PWD/aubio $$PWD/aubio-link $$PWD/aubio/src $$PWD/vamp-aubio-plugins/plugins
 
 DEFINES += HAVE_STDLIB_H HAVE_STDIO_H HAVE_MATH_H HAVE_STRING_H HAVE_ERRNO_H HAVE_LIMITS_H HAVE_STDARG_H
-
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/vamp-aubio-plugins/vamp-plugin.map
-}
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/vamp-aubio-plugins/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/vamp-aubio-plugins/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

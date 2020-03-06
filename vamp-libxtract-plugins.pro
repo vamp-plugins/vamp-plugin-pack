@@ -1,43 +1,27 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/vamp-libxtract
 
 OBJECTS_DIR = vamp-libxtract-plugins/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/vamp-libxtract-plugins/LibXtract
-
-QMAKE_CXXFLAGS -= -Werror
+INCLUDEPATH += $$PWD/vamp-libxtract-plugins/LibXtract
 
 win32-msvc* {
     DEFINES += XTRACT_FFT=1 USE_OOURA=1 NDEBUG
-    LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
     DEFINES += XTRACT_FFT=1 USE_OOURA=1 NDEBUG
-    LIBS += -Wl,--version-script=$$PWD/vamp-libxtract-plugins/vamp-plugin.map
 }
 linux* {
     DEFINES += XTRACT_FFT=1 USE_OOURA=1 NDEBUG
-    LIBS += -Wl,--version-script=$$PWD/vamp-libxtract-plugins/vamp-plugin.map
 }
 macx* {
     DEFINES += XTRACT_FFT=1 NDEBUG
-    LIBS += -exported_symbols_list $$PWD/vamp-libxtract-plugins/vamp-plugin.list -framework Accelerate
+    LIBS += -framework Accelerate
 }
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

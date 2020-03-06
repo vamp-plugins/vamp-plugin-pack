@@ -1,41 +1,15 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/segmentino
 
 OBJECTS_DIR = segmentino/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/qm-vamp-plugins/lib $$PWD/qm-vamp-plugins/lib/qm-dsp $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft/tools $$PWD/segmentino/armadillo-3.900.4/include
-
-QMAKE_CXXFLAGS -= -Werror
+INCLUDEPATH += $$PWD/qm-vamp-plugins/lib $$PWD/qm-vamp-plugins/lib/qm-dsp $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft/tools $$PWD/segmentino/armadillo-3.900.4/include
 
 DEFINES += kiss_fft_scalar=double
-
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/segmentino/segmentino/vamp-plugin.map
-}
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/segmentino/segmentino/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/segmentino/segmentino/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

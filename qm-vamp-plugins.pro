@@ -1,49 +1,29 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/qm-vamp-plugins
 
 OBJECTS_DIR = qm-vamp-plugins/o
 
 INCLUDEPATH += \
-    $$PWD/vamp-plugin-sdk \
     $$PWD/qm-vamp-plugins/lib/qm-dsp \
     $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft \
     $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/kissfft/tools \
     $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/clapack/include \
     $$PWD/qm-vamp-plugins/lib/qm-dsp/ext/cblas/include
 
-QMAKE_CXXFLAGS -= -Werror
-
 DEFINES += NO_BLAS_WRAP ADD_ kiss_fft_scalar=double 
 
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/qm-vamp-plugins/vamp-plugin.map
-}
 linux* {
     DEFINES += USE_PTHREADS
-    LIBS += -Wl,--version-script=$$PWD/qm-vamp-plugins/vamp-plugin.map -lpthread
+    LIBS += -lpthread
 }
 macx* {
     DEFINES += USE_PTHREADS
-    LIBS += -exported_symbols_list $$PWD/qm-vamp-plugins/vamp-plugin.list -lpthread
+    LIBS += -lpthread
 }
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

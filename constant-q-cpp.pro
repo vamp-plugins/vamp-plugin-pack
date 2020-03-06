@@ -1,39 +1,15 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/cqvamp
 
 OBJECTS_DIR = constant-q-cpp/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools
+INCLUDEPATH += $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools
 
 DEFINES += kiss_fft_scalar=double
-
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/constant-q-cpp/vamp/vamp-plugin.map
-}
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/constant-q-cpp/vamp/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/constant-q-cpp/vamp/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

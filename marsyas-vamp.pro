@@ -1,41 +1,20 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/mvamp
 
 OBJECTS_DIR = marsyas/src/mvamp/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/marsyas-link $$PWD/marsyas/src $$PWD/marsyas/src/marsyas/marsystems $$PWD/marsyas/src/otherlibs/libsvm $$PWD/marsyas/src/otherlibs/liblinear
-
-QMAKE_CXXFLAGS -= -Werror
+INCLUDEPATH += $$PWD/marsyas-link $$PWD/marsyas/src $$PWD/marsyas/src/marsyas/marsystems $$PWD/marsyas/src/otherlibs/libsvm $$PWD/marsyas/src/otherlibs/liblinear
 
 win32-msvc* {
     DEFINES += MARSYAS_WIN32
-    LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
     DEFINES += MARSYAS_WIN32
-    LIBS += -Wl,--version-script=$$PWD/marsyas/src/mvamp/vamp-plugin.map
 }
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/marsyas/src/mvamp/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/skeleton/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

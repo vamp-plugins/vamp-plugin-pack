@@ -1,39 +1,19 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/silvet
 
 OBJECTS_DIR = silvet/o
 
-INCLUDEPATH += $$PWD/vamp-plugin-sdk $$PWD/silvet $$PWD/silvet/bqvec $$PWD/silvet/bqvec/bqvec $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools $$PWD/silvet/flattendynamics
+INCLUDEPATH += $$PWD/silvet $$PWD/silvet/bqvec $$PWD/silvet/bqvec/bqvec $$PWD/constant-q-cpp $$PWD/constant-q-cpp/cq $$PWD/constant-q-cpp/src/ext/kissfft $$PWD/constant-q-cpp/src/ext/kissfft/tools $$PWD/silvet/flattendynamics
 
 DEFINES += kiss_fft_scalar=double
 
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/silvet/vamp-plugin.map
-}
 linux* {
-    LIBS += -Wl,--version-script=$$PWD/silvet/vamp-plugin.map -lpthread
+    LIBS += -lpthread
 }
-macx* {
-    LIBS += -exported_symbols_list $$PWD/silvet/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \

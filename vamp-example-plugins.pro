@@ -1,39 +1,11 @@
 
 TEMPLATE = lib
 
-exists(config.pri) {
-    include(config.pri)
-}
-
-!exists(config.pri) {
-    include(noconfig.pri)
-}
-
-CONFIG -= qt
-CONFIG += dll no_plugin_name_prefix release warn_on
+include(plugin.pri)
 
 TARGET = out/vamp-example-plugins
 
 OBJECTS_DIR = vamp-plugin-sdk/o
-
-INCLUDEPATH += $$PWD/vamp-plugin-sdk
-
-QMAKE_CXXFLAGS -= -Werror
-
-win32-msvc* {
-    LIBS += -EXPORT:vampGetPluginDescriptor
-}
-win32-g++* {
-    LIBS += -Wl,--version-script=$$PWD/vamp-plugin-sdk/build/vamp-plugin.map
-}
-linux* {
-    LIBS += -Wl,--version-script=$$PWD/vamp-plugin-sdk/build/vamp-plugin.map
-}
-macx* {
-    LIBS += -exported_symbols_list $$PWD/vamp-plugin-sdk/build/vamp-plugin.list
-}
-
-QMAKE_POST_LINK += $$DEPLOYDIR/mark-for-signing out
 
 !win* {
     QMAKE_POST_LINK += && \
