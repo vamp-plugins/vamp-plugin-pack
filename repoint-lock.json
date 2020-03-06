@@ -37,7 +37,7 @@
       "pin": "4a97f7638ffd"
     },
     "azi": {
-      "pin": "230562aa012d"
+      "pin": "c7d41e60930d"
     },
     "vamp-simple-cepstrum": {
       "pin": "a488dd5e4fb8"
@@ -91,7 +91,7 @@
       "pin": "08ae793730bd"
     },
     "rdf": {
-      "pin": "810e0ce05d50"
+      "pin": "6e08f1136c49"
     }
   }
 }

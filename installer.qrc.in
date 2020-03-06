@@ -98,6 +98,7 @@
   <file>rdf/vamp.n3</file>
   <file>rdf/vamp.rdf</file>
   <file>rdf/plugins/availability.n3</file>
+  <file>rdf/plugins/azi.n3</file>
   <file>rdf/plugins/bbc-vamp-plugins.n3</file>
   <file>rdf/plugins/beatroot-vamp.n3</file>
   <file>rdf/plugins/cepstral-pitchtracker.n3</file>
