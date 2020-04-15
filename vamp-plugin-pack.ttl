@@ -1,0 +1,48 @@
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix vamp:     <http://purl.org/ontology/vamp/> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix dc:       <http://purl.org/dc/elements/1.1/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix cc:       <http://web.resource.org/cc/> .
+@prefix doap: 	  <http://usefulinc.com/ns/doap#> .
+@prefix plugs:    <http://vamp-plugins.org/rdf/plugins/> .
+@prefix packbase: <http://vamp-plugins.org/rdf/pack/> .
+@prefix :         <#> .
+
+:maker
+    foaf:name "Queen Mary, University of London" ;
+    foaf:logo <http://vamp-plugins.org/rdf/plugins/makers/qm.png> ;
+    foaf:page <http://c4dm.eecs.qmul.ac.uk/> .
+
+<> foaf:maker :maker ;
+    foaf:primaryTopic packbase:vamp-plugin-pack .
+
+packbase:vamp-plugin-pack a vamp:PluginPack ;
+    dc:title "Vamp Plugin Pack" ;
+    dc:description "A cross-platform binary distribution, with platform-appropriate installer, of a bundle of Vamp audio analysis plugins." ;
+    foaf:page <https://code.soundsoftware.ac.uk/projects/vamp-plugin-pack> ;
+    foaf:maker :maker ;
+    vamp:available_library plugs:azi ;
+    vamp:available_library plugs:bbc-vamp-plugins ;
+    vamp:available_library plugs:beatroot-vamp ;
+    vamp:available_library plugs:cepstral-pitchtracker ;
+    vamp:available_library plugs:cqvamp ;
+    vamp:available_library plugs:fanchirp ;
+    vamp:available_library plugs:match-vamp-plugin ;
+    vamp:available_library plugs:mvamp ;
+    vamp:available_library plugs:nnls-chroma ;
+    vamp:available_library plugs:pyin ;
+    vamp:available_library plugs:qm-vamp-plugins ;
+    vamp:available_library plugs:segmentino ;
+    vamp:available_library plugs:silvet ;
+    vamp:available_library plugs:simple-cepstrum ;
+    vamp:available_library plugs:tempogram ;
+    vamp:available_library plugs:tipic ;
+    vamp:available_library plugs:tuning-difference ;
+    vamp:available_library plugs:ua-vamp-plugins ;
+    vamp:available_library plugs:vamp-aubio ;
+    vamp:available_library plugs:vamp-example-plugins ;
+    vamp:available_library plugs:vamp-libxtract
+    .
+
