@@ -23,26 +23,26 @@ packbase:vamp-plugin-pack a vamp:PluginPack ;
     dc:description "A cross-platform binary distribution, with platform-appropriate installer, of a bundle of Vamp audio analysis plugins." ;
     foaf:page <https://code.soundsoftware.ac.uk/projects/vamp-plugin-pack> ;
     foaf:maker :maker ;
-    vamp:available_library plugs:azi ;
-    vamp:available_library plugs:bbc-vamp-plugins ;
-    vamp:available_library plugs:beatroot-vamp ;
-    vamp:available_library plugs:cepstral-pitchtracker ;
-    vamp:available_library plugs:cqvamp ;
-    vamp:available_library plugs:fanchirp ;
-    vamp:available_library plugs:match-vamp-plugin ;
-    vamp:available_library plugs:mvamp ;
-    vamp:available_library plugs:nnls-chroma ;
-    vamp:available_library plugs:pyin ;
-    vamp:available_library plugs:qm-vamp-plugins ;
-    vamp:available_library plugs:segmentino ;
-    vamp:available_library plugs:silvet ;
-    vamp:available_library plugs:simple-cepstrum ;
-    vamp:available_library plugs:tempogram ;
-    vamp:available_library plugs:tipic ;
-    vamp:available_library plugs:tuning-difference ;
-    vamp:available_library plugs:ua-vamp-plugins ;
-    vamp:available_library plugs:vamp-aubio ;
-    vamp:available_library plugs:vamp-example-plugins ;
-    vamp:available_library plugs:vamp-libxtract
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/azi#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/bbc-vamp-plugins#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/beatroot-vamp#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/cepstral-pitchtracker#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/cqvamp#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/FChT_f0gram#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/match-vamp-plugin#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/mvamp#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/nnls-chroma#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/pyin#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/qm-vamp-plugins#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/segmentino#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/silvet#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/simple-cepstrum#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/tempogram#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/tipic#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/tuning-difference#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/ua-vamp-plugins#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/vamp-aubio#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/vamp-example-plugins#library> ;
+    vamp:available_library <http://vamp-plugins.org/rdf/plugins/vamp-libxtract#library>
     .
 
