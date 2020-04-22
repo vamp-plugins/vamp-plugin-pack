@@ -37,7 +37,7 @@
       "pin": "4a97f7638ffd"
     },
     "azi": {
-      "pin": "c7d41e60930d"
+      "pin": "230562aa012d"
     },
     "vamp-simple-cepstrum": {
       "pin": "a17bca16933a"
@@ -85,13 +85,13 @@
       "pin": "cd235ecbeb31"
     },
     "svcore": {
-      "pin": "a4dce53b3353"
+      "pin": "37ffea1e50ec"
     },
     "sv-dependency-builds": {
       "pin": "08ae793730bd"
     },
     "rdf": {
-      "pin": "720decd4ceff"
+      "pin": "31f00b5e3a5f"
     }
   }
 }
