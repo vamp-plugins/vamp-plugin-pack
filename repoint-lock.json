@@ -85,13 +85,13 @@
       "pin": "cd235ecbeb31"
     },
     "svcore": {
-      "pin": "37ffea1e50ec"
+      "pin": "14747f24ad04"
     },
     "sv-dependency-builds": {
       "pin": "08ae793730bd"
     },
     "rdf": {
-      "pin": "31f00b5e3a5f"
+      "pin": "e6ff5aa79370"
     }
   }
 }
