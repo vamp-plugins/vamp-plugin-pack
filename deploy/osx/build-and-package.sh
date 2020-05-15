@@ -63,9 +63,14 @@ echo "Building plugins..."
 make -j3 -f Makefile.plugins
 echo "Done"
 
+echo
+echo "Building get-version..."
+make -j3 -f Makefile.get-version
+echo "Done"
+
 echo 
-echo "Signing plugins..."
-codesign -s "$identity" -fv --timestamp --options runtime out/*.dylib
+echo "Signing plugins and get-version..."
+codesign -s "$identity" -fv --timestamp --options runtime out/*.dylib out/get-version
 echo "Done"
 
 if [ "$notarize" = no ]; then
@@ -73,7 +78,7 @@ if [ "$notarize" = no ]; then
     echo "The --no-notarization flag was set: not submitting for notarization"
 else
     echo
-    echo "Notarizing plugins..."
+    echo "Notarizing plugins and get-version..."
     rm -f plugins.zip
     ditto -c -k out plugins.zip
     deploy/osx/notarize.sh plugins.zip
