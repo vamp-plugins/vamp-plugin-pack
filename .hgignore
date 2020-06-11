@@ -37,6 +37,7 @@ out/*_CITATION.txt
 out/*_COPYING.txt
 out/*.exe
 build_win64
+build_win32
 *.orig
 out/.something-to-sign
 out/.signed
@@ -56,3 +57,4 @@ packages/
 *.vcproj
 *.sln
 signtest.exe
+*.bak

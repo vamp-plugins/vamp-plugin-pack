@@ -9,8 +9,6 @@ INCLUDEPATH += $$PWD/vamp-plugin-sdk
 
 win32-msvc* {
 
-    # This config is actually used only for 64-bit Windows builds.
-
     DEPLOYDIR = $$PWD/deploy/win64
 
     INCLUDEPATH += /Libraries/boost_1_69_0 $$PWD/../boost_1_69_0/ $$PWD/sv-dependency-builds/win64-msvc/include

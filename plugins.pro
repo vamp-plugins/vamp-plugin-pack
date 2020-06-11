@@ -23,8 +23,7 @@ SUBDIRS += \
         sub_tempogram \
         sub_tipic \
         sub_tuning_difference \
-        sub_ua \
-        sub_vampy
+        sub_ua
         
 sub_sdk.file = vamp-plugin-sdk.pro
 
