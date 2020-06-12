@@ -17,7 +17,7 @@ set VERSION=%VERSION:"=%
 @echo Building 32-bit
 del /q /s out
 del /q /s build_win32
-call .\deploy\win64\build-32.bat sign
+call .\deploy\win32\build-32.bat sign
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 @echo Building 64-bit
