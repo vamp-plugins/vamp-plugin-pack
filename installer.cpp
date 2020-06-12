@@ -768,9 +768,15 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     int statusColumn = 2;
     int infoColumn = 4; // column 3 is a small sliver of spacing
 
+    QString additionalNote = "";
+    if (sizeof(char *) == 4) {
+        additionalNote = QObject::tr("(32-bit)");
+    }
+    
     selectionLayout->addWidget
-        (new QLabel(QObject::tr("<b>Vamp Plugin Pack</b> v%1")
-                    .arg(PACK_VERSION)),
+        (new QLabel(QObject::tr("<b>Vamp Plugin Pack</b> v%1 %2")
+                    .arg(PACK_VERSION)
+                    .arg(additionalNote)),
          selectionRow, titleColumn, 1, 3);
     ++selectionRow;
 

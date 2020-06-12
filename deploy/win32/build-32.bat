@@ -70,7 +70,10 @@ PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& 'deploy\win64\copy-met
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 rem So is this
-call .\deploy\win64\generate-qrc installer.qrc
+call .\deploy\win64\generate-qrc installer_a.qrc
+if %errorlevel% neq 0 exit /b %errorlevel%
+
+call .\deploy\win64\generate-qrc installer_b.qrc
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 mkdir build_win32
@@ -99,7 +102,10 @@ signtool verify /pa ..\out\*.dll ..\out\*.exe
 if %errorlevel% neq 0 exit /b %errorlevel%
 )
 
-%QTDIR%\bin\rcc ..\installer.qrc -o o\qrc_installer.cpp
+%QTDIR%\bin\rcc --name A ..\installer_a.qrc -o o\qrc_installer_a.cpp
+if %errorlevel% neq 0 exit /b %errorlevel%
+
+%QTDIR%\bin\rcc --name B ..\installer_b.qrc -o o\qrc_installer_b.cpp
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 qmake -spec win32-msvc -r -tp vc ..\installer.pro

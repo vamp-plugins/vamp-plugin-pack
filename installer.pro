@@ -28,28 +28,37 @@ RCC_DIR = o
 ICON = icons/sv-macicon.icns
 RC_FILE = icons/sv.rc
 
-qrc.target = $$PWD/installer.qrc
-qrc.depends = $$PWD/installer.qrc.in
-qrc.commands = $$DEPLOYDIR/generate-qrc $$PWD/installer.qrc
+qrc_a.target = $$PWD/installer_a.qrc
+qrc_a.depends = $$PWD/installer_a.qrc.in
+qrc_a.commands = $$DEPLOYDIR/generate-qrc $$qrc_a.target
 
-QMAKE_EXTRA_TARGETS += qrc
-PRE_TARGETDEPS += $$qrc.target
+qrc_b.target = $$PWD/installer_b.qrc
+qrc_b.depends = $$PWD/installer_b.qrc.in
+qrc_b.commands = $$DEPLOYDIR/generate-qrc $$qrc_b.target
+
+QMAKE_EXTRA_TARGETS += qrc_a qrc_b
+PRE_TARGETDEPS += $$qrc_a.target $$qrc_b.target
 
 # We can't use use RESOURCES += installer.qrc here, as qmake will
 # reject a resource file that hasn't been generated yet
 
 qtPrepareTool(QMAKE_RCC, rcc)
 
-qrc_cpp.target = $${RCC_DIR}/qrc_installer.cpp
-qrc_cpp.depends = $$qrc.target
-qrc_cpp.commands = $$QMAKE_RCC $$qrc.target -o $$qrc_cpp.target
+qrc_cpp_a.target = $${RCC_DIR}/qrc_installer_a.cpp
+qrc_cpp_a.depends = $$qrc_a.target
+qrc_cpp_a.commands = $$QMAKE_RCC --name A $$qrc_a.target -o $$qrc_cpp_a.target
 
-QMAKE_EXTRA_TARGETS += qrc_cpp
-PRE_TARGETDEPS += $$qrc_cpp.target
+qrc_cpp_b.target = $${RCC_DIR}/qrc_installer_b.cpp
+qrc_cpp_b.depends = $$qrc_b.target
+qrc_cpp_b.commands = $$QMAKE_RCC --name B $$qrc_b.target -o $$qrc_cpp_b.target
+
+QMAKE_EXTRA_TARGETS += qrc_cpp_a qrc_cpp_b
+PRE_TARGETDEPS += $$qrc_cpp_a.target $$qrc_cpp_b.target
 
 SOURCES += \
         installer.cpp \
-        $$qrc_cpp.target \
+        $$qrc_cpp_a.target \
+        $$qrc_cpp_b.target \
         svcore/base/Debug.cpp \
         svcore/base/ResourceFinder.cpp \
         svcore/system/System.cpp \

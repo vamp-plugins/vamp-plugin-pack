@@ -48,6 +48,8 @@ o/
 *.dmg
 *.app
 installer.qrc
+installer_a.qrc
+installer_b.qrc
 Dockerfile*.gen
 plugins.zip
 get-version

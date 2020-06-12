@@ -1,55 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-  <file>icons/scalable/info.svg</file>
-  <file>out/get-version@EXESUFFIX@</file>
-  <file>out/azi.cat</file>
-  <file>out/azi_COPYING.txt</file>
-  <file>out/azi@SUFFIX@</file>
-  <file>out/bbc-vamp-plugins.cat</file>
-  <file>out/bbc-vamp-plugins_COPYING.txt</file>
-  <file>out/bbc-vamp-plugins_README.md</file>
-  <file>out/bbc-vamp-plugins@SUFFIX@</file>
-  <file>out/beatroot-vamp.cat</file>
-  <file>out/beatroot-vamp_CITATION.txt</file>
-  <file>out/beatroot-vamp_COPYING.txt</file>
-  <file>out/beatroot-vamp_README.txt</file>
-  <file>out/beatroot-vamp@SUFFIX@</file>
-  <file>out/cepstral-pitchtracker.cat</file>
-  <file>out/cepstral-pitchtracker_COPYING.txt</file>
-  <file>out/cepstral-pitchtracker_README.txt</file>
-  <file>out/cepstral-pitchtracker@SUFFIX@</file>
-  <file>out/cqvamp.cat</file>
-  <file>out/cqvamp_CITATION.txt</file>
-  <file>out/cqvamp_COPYING.txt</file>
-  <file>out/cqvamp_README.txt</file>
-  <file>out/cqvamp@SUFFIX@</file>
-  <file>out/fanchirp.cat</file>
-  <file>out/fanchirp_CITATION.txt</file>
-  <file>out/fanchirp_COPYING.txt</file>
-  <file>out/fanchirp_README.md</file>
-  <file>out/fanchirp@SUFFIX@</file>
-  <file>out/match-vamp-plugin.cat</file>
-  <file>out/match-vamp-plugin_CITATION.txt</file>
-  <file>out/match-vamp-plugin_COPYING.txt</file>
-  <file>out/match-vamp-plugin_README.txt</file>
-  <file>out/match-vamp-plugin@SUFFIX@</file>
-  <file>out/mvamp.cat</file>
-  <file>out/mvamp_COPYING.txt</file>
-  <file>out/mvamp_README.txt</file>
-  <file>out/mvamp@SUFFIX@</file>
-  <file>out/nnls-chroma.cat</file>
-  <file>out/nnls-chroma_CITATION.txt</file>
-  <file>out/nnls-chroma_COPYING.txt</file>
-  <file>out/nnls-chroma_README.txt</file>
-  <file>out/nnls-chroma@SUFFIX@</file>
-  <file>out/pyin.cat</file>
-  <file>out/pyin_COPYING.txt</file>
-  <file>out/pyin_README.txt</file>
-  <file>out/pyin@SUFFIX@</file>
-  <file>out/qm-vamp-plugins.cat</file>
-  <file>out/qm-vamp-plugins_COPYING.txt</file>
-  <file>out/qm-vamp-plugins_README.md</file>
-  <file>out/qm-vamp-plugins@SUFFIX@</file>
   <file>out/segmentino.cat</file>
   <file>out/segmentino_CITATION.txt</file>
   <file>out/segmentino_COPYING.txt</file>
