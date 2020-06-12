@@ -100,10 +100,10 @@ signtool verify /pa ..\out\*.dll ..\out\*.exe
 if %errorlevel% neq 0 exit /b %errorlevel%
 )
 
-%QTDIR%\bin\rcc ..\installer_a.qrc -o o\qrc_installer_a.cpp
+%QTDIR%\bin\rcc --name A ..\installer_a.qrc -o o\qrc_installer_a.cpp
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-%QTDIR%\bin\rcc ..\installer_b.qrc -o o\qrc_installer_b.cpp
+%QTDIR%\bin\rcc --name B ..\installer_b.qrc -o o\qrc_installer_b.cpp
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 qmake -spec win32-msvc -r -tp vc ..\installer.pro
