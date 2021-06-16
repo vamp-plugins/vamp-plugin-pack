@@ -29,7 +29,7 @@ macx* {
 
     DEPLOYDIR = $$PWD/deploy/osx
 
-    INCLUDEPATH += /usr/local/opt/boost/include $$PWD/sv-dependency-builds/osx/include
+    INCLUDEPATH += /opt/boost/include /usr/local/opt/boost/include $$PWD/sv-dependency-builds/osx/include
     LIBS += -L$$PWD -L$$PWD/sv-dependency-builds/osx/lib
 
     QMAKE_CXXFLAGS_RELEASE += -O3 -flto
