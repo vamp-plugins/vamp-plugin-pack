@@ -46,11 +46,11 @@ qtPrepareTool(QMAKE_RCC, rcc)
 
 qrc_cpp_a.target = $${RCC_DIR}/qrc_installer_a.cpp
 qrc_cpp_a.depends = $$qrc_a.target
-qrc_cpp_a.commands = $$QMAKE_RCC --name A $$qrc_a.target -o $$qrc_cpp_a.target
+qrc_cpp_a.commands = $$QMAKE_RCC --no-compress --name A $$qrc_a.target -o $$qrc_cpp_a.target
 
 qrc_cpp_b.target = $${RCC_DIR}/qrc_installer_b.cpp
 qrc_cpp_b.depends = $$qrc_b.target
-qrc_cpp_b.commands = $$QMAKE_RCC --name B $$qrc_b.target -o $$qrc_cpp_b.target
+qrc_cpp_b.commands = $$QMAKE_RCC --no-compress --name B $$qrc_b.target -o $$qrc_cpp_b.target
 
 QMAKE_EXTRA_TARGETS += qrc_cpp_a qrc_cpp_b
 PRE_TARGETDEPS += $$qrc_cpp_a.target $$qrc_cpp_b.target
