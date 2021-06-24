@@ -11,7 +11,7 @@ exists(config.pri) {
 
 CONFIG += console release warn_on c++14
 
-QT -= gui widgets svg
+QT -= core gui widgets svg
 
 win32-x-g++:QMAKE_LFLAGS += -Wl,-subsystem,console
 macx*: CONFIG -= app_bundle

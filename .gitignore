@@ -68,3 +68,5 @@ packages/
 *.sln
 signtest.exe
 *.bak
+out_arm64
+out_x86_64
