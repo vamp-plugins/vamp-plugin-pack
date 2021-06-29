@@ -37,7 +37,7 @@
       "pin": "4a97f7638ffd"
     },
     "azi": {
-      "pin": "230562aa012d"
+      "pin": "c7d41e60930d"
     },
     "vamp-simple-cepstrum": {
       "pin": "a17bca16933a"
@@ -82,13 +82,13 @@
       "pin": "a38d318c85a9"
     },
     "bqvec": {
-      "pin": "cd235ecbeb31"
+      "pin": "a6cb2dc34ad9"
     },
     "svcore": {
-      "pin": "14747f24ad04"
+      "pin": "f803d3c33f76"
     },
     "sv-dependency-builds": {
-      "pin": "08ae793730bd"
+      "pin": "223a55898ab9"
     },
     "rdf": {
       "pin": "c0afe853924a"
