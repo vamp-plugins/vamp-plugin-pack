@@ -116,9 +116,11 @@ done
 echo
 echo "Constructing fat plugin and get-version binaries..."
 mkdir -p out
-for file in out_x86_64/*.dylib out_x86_64/get-version; do
+for file in out_x86_64/*.dylib; do
     lipo "$file" out_arm64/"$(basename $file)" -create -output out/"$(basename $file)"
 done
+cp out_x86_64/get-version out/get-version-x86_64
+cp out_arm64/get-version out/get-version-arm64
 for file in out_x86_64/*.txt out_x86_64/*.md out_x86_64/*.n3 out_x86_64/*.cat; do
     cp "$file" out/
 done

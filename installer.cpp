@@ -67,6 +67,11 @@
 
 #include "base/Debug.h"
 
+#if defined (Q_OS_MAC)
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
+
 #include "version.h"
 
 using namespace std;
@@ -131,6 +136,7 @@ loadLibrariesRdf()
 
     for (auto d: dirs) {
         for (auto e: QDir(d).entryList({ "*.ttl", "*.n3" })) {
+            SVCERR << "Loading plugin RDF from " << (d + "/" + e) << endl;
             loadLibraryRdf(*store, d + "/" + e);
         }
     }
@@ -258,10 +264,14 @@ getLibraryInfo(const Store &store, QStringList libraries)
                                            store.expand("vamp:identifier"),
                                            Node()));
         if (libId.type != Node::Literal) {
+            SVCERR << "No literal vamp:identifier for " << t.subject() << endl;
             continue;
         }
         auto wi = wanted.find(libId.value);
         if (wi == wanted.end()) {
+            SVCERR << "RDF definition for identifier " << t.subject()
+                   << " (library " << libId
+                   << ") matches no library in our expected list" << endl;
             continue;
         }
 
@@ -269,6 +279,7 @@ getLibraryInfo(const Store &store, QStringList libraries)
                                            store.expand("dc:title"),
                                            Node()));
         if (title.type != Node::Literal) {
+            SVCERR << "No literal dc:title for " << t.subject() << endl;
             continue;
         }
 
@@ -318,7 +329,7 @@ getLibraryInfo(const Store &store, QStringList libraries)
         }
 
         info.licence = identifyLicence(libId.value);
-        SVCERR << "licence = " << info.licence << endl;
+//        SVCERR << "licence = " << info.licence << endl;
         
         results.push_back(info);
         wanted.erase(libId.value);
@@ -331,15 +342,6 @@ getLibraryInfo(const Store &store, QStringList libraries)
     
     return results;
 }
-
-struct TempFileDeleter {
-    ~TempFileDeleter() {
-        if (tempFile != "") {
-            QFile(tempFile).remove();
-        }
-    }
-    QString tempFile;
-};
 
 bool
 unbundleFile(QString filePath, QString targetPath, bool isExecutable)
@@ -392,12 +394,51 @@ unbundleFile(QString filePath, QString targetPath, bool isExecutable)
     return true;
 }
 
-map<QString, int>
+struct TempFileDeleter {
+    TempFileDeleter(QString name) : tempFile(name) { }
+    TempFileDeleter(TempFileDeleter &&other) : tempFile(other.tempFile) {
+        other.tempFile = "";
+    }
+    ~TempFileDeleter() {
+        if (tempFile != "") {
+            QFile(tempFile).remove();
+        }
+    }
+    QString tempFile;
+
+    TempFileDeleter(const TempFileDeleter &other) =delete;
+    TempFileDeleter &operator=(const TempFileDeleter &other) =delete;
+    TempFileDeleter &operator=(TempFileDeleter &&other) =delete;
+};
+
+#if defined (Q_OS_MAC)
+static bool processIsTranslated() {
+    int ret = 0;
+    size_t size = sizeof(ret);
+    if (sysctlbyname("sysctl.proc_translated", &ret, &size, NULL, 0) == -1) {
+        if (errno == ENOENT) {
+            SVCERR << "processIsTranslated: no, it's native" << endl;
+            return false;
+        }
+        SVCERR << "processIsTranslated: an unexpected error occurred (errno = "
+               << errno << ")" << endl;
+        return false;
+    }
+    SVCERR << "processIsTranslated: sysctl returns " << ret << endl;
+    return ret ? true : false;
+}
+#endif
+
+struct InstalledStatus {
+    bool isNative;
+    map<QString, int> pluginVersions;
+};
+
+InstalledStatus
 getLibraryPluginVersions(QString libraryFilePath)
 {
     static QMutex mutex;
-    static QString tempFileName;
-    static TempFileDeleter deleter;
+    static vector<pair<QString, shared_ptr<TempFileDeleter>>> helperFiles;
     static bool initHappened = false, initSucceeded = false;
 
     QMutexLocker locker (&mutex);
@@ -405,30 +446,57 @@ getLibraryPluginVersions(QString libraryFilePath)
     if (!initHappened) {
         initHappened = true;
 
-        QTemporaryFile tempFile;
-        tempFile.setAutoRemove(false);
-        if (!tempFile.open()) {
-            SVCERR << "ERROR: Failed to open a temporary file" << endl;
-            return {};
+        QStringList bundledHelperPaths; // in order of preference
+#if defined (Q_OS_WIN)
+        SVCERR << "getLibraryPluginVersions: looks like Windows" << endl;
+        bundledHelperPaths << ":out/get-version.exe";
+#elif defined (Q_OS_MAC)
+#if (defined(__aarch64__) || defined(__arm__) || defined(_M_ARM64))
+        SVCERR << "getLibraryPluginVersions: looks like an ARM Mac" << endl;
+        bundledHelperPaths << ":out/get-version-arm64";
+        bundledHelperPaths << ":out/get-version-x86_64";
+#elif (defined(__x86_64__) || defined(__i386__) || defined(_M_IX86) || defined(_M_X64))
+        if (processIsTranslated()) {
+            SVCERR << "getLibraryPluginVersions: looks like an Intel binary running under translation" << endl;
+            bundledHelperPaths << ":out/get-version-arm64";
+            bundledHelperPaths << ":out/get-version-x86_64";
+        } else {
+            SVCERR << "getLibraryPluginVersions: looks like an Intel Mac" << endl;
+            bundledHelperPaths << ":out/get-version-x86_64";
         }
-
-        // We can't make the QTemporaryFile static, as it will hold
-        // the file open and that prevents us from executing it. Hence
-        // the separate deleter.
-        
-        tempFileName = tempFile.fileName();
-        deleter.tempFile = tempFileName;
-        
-#ifdef Q_OS_WIN32
-        QString helperPath = ":out/get-version.exe";
-#else
-        QString helperPath = ":out/get-version";
+#else  // ! ARM64 and ! x86_64 (we don't know what to do)
+        SVCERR << "getLibraryPluginVersions: a Mac, but I don't know what sort" << endl;
+        bundledHelperPaths << ":out/get-version";
+#endif
+#else  // ! Q_OS_WIN32 and ! Q_OS_MAC
+        SVCERR << "getLibraryPluginVersions: not Windows or Mac" << endl;
+        bundledHelperPaths << ":out/get-version";
 #endif
 
-        tempFile.close();
-        if (!unbundleFile(helperPath, tempFileName, true)) {
-            SVCERR << "ERROR: Failed to unbundle helper code" << endl;
-            return {};
+        for (auto path: bundledHelperPaths) {
+        
+            QTemporaryFile tempFile;
+            tempFile.setAutoRemove(false);
+            if (!tempFile.open()) {
+                SVCERR << "ERROR: Failed to open a temporary file" << endl;
+                return {};
+            }
+
+            // We can't make the QTemporaryFile static, as it will
+            // hold the file open and that prevents us from executing
+            // it. Hence the separate deleter.
+        
+            QString tempFileName = tempFile.fileName();
+            auto deleter = make_shared<TempFileDeleter>(tempFileName);
+
+            tempFile.close();
+            if (!unbundleFile(path, tempFileName, true)) {
+                SVCERR << "ERROR: Failed to unbundle helper from \"" << path
+                       << "\"" << endl;
+                return {};
+            }
+
+            helperFiles.push_back({ tempFileName, deleter });
         }
 
         initSucceeded = true;
@@ -438,60 +506,74 @@ getLibraryPluginVersions(QString libraryFilePath)
         return {};
     }
 
-    QProcess process;
-    process.start(tempFileName, { libraryFilePath });
+    bool native = true;
+    
+    for (const auto &h: helperFiles) {
 
-    if (!process.waitForStarted()) {
-        QProcess::ProcessError err = process.error();
-        if (err == QProcess::FailedToStart) {
-            SVCERR << "Unable to start helper process " << tempFileName << endl;
-        } else if (err == QProcess::Crashed) {
-            SVCERR << "Helper process " << tempFileName
-                   << " crashed on startup" << endl;
-        } else {
-            SVCERR << "Helper process " << tempFileName
-                   << " failed on startup with error code " << err << endl;
-        }
-        return {};
-    }
-    process.waitForFinished();
+        QString helper = h.first;
+        
+        QProcess process;
+        process.start(helper, { libraryFilePath });
 
-    QByteArray stdOut = process.readAllStandardOutput();
-    QByteArray stdErr = process.readAllStandardError();
-
-    QString errStr = QString::fromUtf8(stdErr);
-    if (!errStr.isEmpty()) {
-        SVCERR << "Note: Helper process stderr follows:" << endl;
-        SVCERR << errStr << endl;
-        SVCERR << "Note: Helper process stderr ends" << endl;
-    }
-
-    QStringList lines = QString::fromUtf8(stdOut).split
-        (QRegExp("[\\r\\n]+"), QString::SkipEmptyParts);
-    map<QString, int> versions;
-    for (QString line: lines) {
-        QStringList parts = line.split(":");
-        if (parts.size() != 2) {
-            SVCERR << "Unparseable output line: " << line << endl;
+        if (!process.waitForStarted()) {
+            QProcess::ProcessError err = process.error();
+            if (err == QProcess::FailedToStart) {
+                SVCERR << "Unable to start helper process " << helper << endl;
+            } else if (err == QProcess::Crashed) {
+                SVCERR << "Helper process " << helper
+                       << " crashed on startup" << endl;
+            } else {
+                SVCERR << "Helper process " << helper
+                       << " failed on startup with error code " << err << endl;
+            }
             continue;
         }
-        bool ok = false;
-        int version = parts[1].toInt(&ok);
-        if (!ok) {
-            SVCERR << "Unparseable version number in line: " << line << endl;
-            continue;
+        process.waitForFinished();
+
+        QByteArray stdOut = process.readAllStandardOutput();
+        QByteArray stdErr = process.readAllStandardError();
+
+        QString errStr = QString::fromUtf8(stdErr);
+        if (!errStr.isEmpty()) {
+            SVCERR << "Note: Helper process stderr follows:" << endl;
+            SVCERR << errStr << endl;
+            SVCERR << "Note: Helper process stderr ends" << endl;
         }
-        versions[parts[0]] = version;
+        
+        QStringList lines = QString::fromUtf8(stdOut).split
+            (QRegExp("[\\r\\n]+"), QString::SkipEmptyParts);
+
+        map<QString, int> versions;
+        for (QString line: lines) {
+            QStringList parts = line.split(":");
+            if (parts.size() != 2) {
+                SVCERR << "Unparseable output line: " << line << endl;
+                continue;
+            }
+            bool ok = false;
+            int version = parts[1].toInt(&ok);
+            if (!ok) {
+                SVCERR << "Unparseable version number in line: " << line << endl;
+                continue;
+            }
+            versions[parts[0]] = version;
+        }
+
+        if (!versions.empty()) {
+            return { native, versions };
+        }
+
+        native = false;
     }
 
-    return versions;
+    return {};
 }
 
-map<QString, int>
+InstalledStatus
 getBundledLibraryPluginVersions(QString libraryFileName)
 {
     QString tempFileName;
-    TempFileDeleter deleter;
+    unique_ptr<TempFileDeleter> deleter;
 
     {
         QTemporaryFile tempFile;
@@ -506,7 +588,7 @@ getBundledLibraryPluginVersions(QString libraryFileName)
         // the separate deleter.
         
         tempFileName = tempFile.fileName();
-        deleter.tempFile = tempFileName;
+        deleter = unique_ptr<TempFileDeleter>(new TempFileDeleter(tempFileName));
         tempFile.close();
     }
 
@@ -584,6 +666,7 @@ enum class RelativeStatus {
     Same,
     Upgrade,
     Downgrade,
+    UpgradeArchitecture,
     TargetNotLoadable
 };
 
@@ -594,7 +677,8 @@ relativeStatusLabel(RelativeStatus status) {
     case RelativeStatus::Same: return QObject::tr("Already installed");
     case RelativeStatus::Upgrade: return QObject::tr("Update");
     case RelativeStatus::Downgrade: return QObject::tr("Newer version installed");
-    case RelativeStatus::TargetNotLoadable: return QObject::tr("Installed version not working");
+    case RelativeStatus::UpgradeArchitecture: return QObject::tr("Installed version is not native");
+    case RelativeStatus::TargetNotLoadable: return QObject::tr("Installed version not loadable");
     default: return {};
     }
 }
@@ -616,20 +700,28 @@ getRelativeStatus(LibraryInfo info, QString targetDir)
     auto packaged = getBundledLibraryPluginVersions(info.fileName);
     auto installed = getLibraryPluginVersions(destination);
 
-    SVCERR << " * installed: " << versionsString(installed)
-           << "\n * packaged:  " << versionsString(packaged)
+    SVCERR << " * installed: "
+           << versionsString(installed.pluginVersions)
+           << (installed.isNative ? "" : "(non-native)")
+           << "\n * packaged:  "
+           << versionsString(packaged.pluginVersions)
+           << (packaged.isNative ? "" : "(non-native)")
            << endl;
 
-    if (installed.empty()) {
+    if (installed.pluginVersions.empty()) {
         status = RelativeStatus::TargetNotLoadable;
     }
 
-    if (isLibraryNewer(installed, packaged)) {
+    if (isLibraryNewer(installed.pluginVersions, packaged.pluginVersions)) {
         status = RelativeStatus::Downgrade;
     }
 
-    if (isLibraryNewer(packaged, installed)) {
+    if (isLibraryNewer(packaged.pluginVersions, installed.pluginVersions)) {
         status = RelativeStatus::Upgrade;
+    }
+
+    if (!installed.isNative) {
+        status = RelativeStatus::UpgradeArchitecture;
     }
 
     SVCERR << " - relative status: " << relativeStatusLabel(status) << endl;
@@ -832,6 +924,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     auto shouldCheck = [](RelativeStatus status) {
                            return (status == RelativeStatus::New ||
                                    status == RelativeStatus::Upgrade ||
+                                   status == RelativeStatus::UpgradeArchitecture ||
                                    status == RelativeStatus::TargetNotLoadable);
                        };
     

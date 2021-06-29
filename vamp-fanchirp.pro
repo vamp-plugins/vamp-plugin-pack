@@ -14,7 +14,8 @@ INCLUDEPATH += $$PWD/vamp-fanchirp/bqvec
         cp vamp-fanchirp/fanchirp.cat out/ && \
         cp vamp-fanchirp/README.md out/fanchirp_README.md && \
         cp vamp-fanchirp/CITATION  out/fanchirp_CITATION.txt && \
-        cp vamp-fanchirp/COPYING   out/fanchirp_COPYING.txt
+        cp vamp-fanchirp/COPYING   out/fanchirp_COPYING.txt && \
+        cp rdf/plugins/FChT_f0gram.n3 out/fanchirp.n3
 }
 
 SOURCES += \

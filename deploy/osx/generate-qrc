@@ -5,4 +5,8 @@ if [ ! -f "$qrc".in ]; then
     exit 2
 fi
 set -eu
-cat "$qrc".in | sed -e 's/@SUFFIX@/.dylib/g' -e 's/@EXESUFFIX@//g' > "$qrc"
+cat "$qrc".in | \
+    sed -e 's/@GETVERSION_PRIMARY@/-arm64/g' | \
+    sed -e 's/@GETVERSION_ALTERNATE@/-x86_64/g' | \
+    sed -e 's/@SUFFIX@/.dylib/g' -e 's/@EXESUFFIX@//g' \
+	> "$qrc"

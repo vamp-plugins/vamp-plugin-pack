@@ -1,7 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
   <file>icons/scalable/info.svg</file>
-  <file>out/get-version@EXESUFFIX@</file>
+  <file>out/get-version@GETVERSION_PRIMARY@@EXESUFFIX@</file>
+  <file>out/get-version@GETVERSION_ALTERNATE@@EXESUFFIX@</file>
   <file>out/azi.cat</file>
   <file>out/azi_COPYING.txt</file>
   <file>out/azi@SUFFIX@</file>

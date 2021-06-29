@@ -48,4 +48,6 @@ cp vamp-plugin-sdk/examples/vamp-example-plugins.cat out/
 
 cp ua-vamp-plugins/LICENSE out/ua-vamp-plugins_COPYING.txt 
 
+cp rdf/plugins/FChT_f0gram.n3 out/fanchirp.n3
+
 del out/vamp-example-plugins_README.txt # it's about the SDK not the plugins
