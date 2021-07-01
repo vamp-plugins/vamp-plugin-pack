@@ -785,16 +785,22 @@ installLibrary(LibraryInfo info, QString targetDir)
     }
     
     QString base = QFileInfo(library).baseName();
-    QDir dir(source);
-    auto entries = dir.entryList({ base + "*" });
-    for (auto e: entries) {
-        if (e == library) continue;
-        QString destination = targetDir + "/" + e;
-        if (!backup(destination, backupDir)) {
-            continue;
-        }
-        if (!unbundleFile(source + "/" + e, destination, false)) {
-            continue;
+
+    QList<QDir> from;
+    from << QDir(source);
+    from << QDir(":rdf/plugins");
+
+    for (auto dir: from) {
+        auto entries = dir.entryList({ base + "*" });
+        for (auto e: entries) {
+            if (e == library) continue;
+            QString destination = targetDir + "/" + e;
+            if (!backup(destination, backupDir)) {
+                continue;
+            }
+            if (!unbundleFile(dir.filePath(e), destination, false)) {
+                continue;
+            }
         }
     }
 
