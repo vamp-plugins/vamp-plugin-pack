@@ -30,6 +30,9 @@
     "tipic": {
       "pin": "b7df86feb20c6b4d1bb13ad68d5d7862bc8003fb"
     },
+    "tipic/qm-dsp": {
+      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
+    },
     "tuning-difference": {
       "pin": "5216a8858e8931c0d707192366488303bfb5a169"
     },
