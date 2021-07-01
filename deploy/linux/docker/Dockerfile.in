@@ -44,7 +44,13 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
-RUN hg clone -r[[REVISION]] https://code.soundsoftware.ac.uk/hg/vamp-plugin-pack
+# The explicit revision number here is to make sure the following git
+# clone is not cached from a different revision
+RUN echo Cloning revision [[REVISION]]
+
+RUN git clone https://github.com/sonic-visualiser/vamp-plugin-pack
+WORKDIR vamp-plugin-pack
+RUN git checkout [[REVISION]]
 
 WORKDIR /root
 
@@ -57,7 +63,7 @@ RUN ( echo '[ui]' ; echo 'ssh = ssh -i /root/.ssh/id_rsa_build' ) > .hgrc
 WORKDIR /vamp-plugin-pack
 ENV QTDIR /opt/qt510
 ENV PATH /opt/qt510/bin:$PATH
-RUN ./repoint install
+RUN REPOINT_INSECURE=1 ./repoint install
 RUN qmake -r
 RUN make -j3
 

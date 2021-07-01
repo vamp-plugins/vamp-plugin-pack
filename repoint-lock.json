@@ -1,13 +1,13 @@
 {
   "libraries": {
     "vamp-plugin-sdk": {
-      "pin": "45b2bd15d8ae"
+      "pin": "c3ef877327f1b081b95a1d05349c297f8c4454f0"
     },
     "dataquay": {
       "pin": "95def499e10f"
     },
     "icons/scalable": {
-      "pin": "fd0ace21dce3"
+      "pin": "9dfacf743c6d7df6a891406f2c8c0f9548b396e1"
     },
     "qm-vamp-plugins": {
       "pin": "8f3c51f96eb5fb2d576d1cd6cdab3449d50c3225"
@@ -22,16 +22,16 @@
       "pin": "8e45a0652740"
     },
     "nnls-chroma": {
-      "pin": "1efe67570b75"
+      "pin": "4c5f214a75cb354f8d8c933e161377c5b4d83713"
     },
     "silvet": {
-      "pin": "af71cbdab621"
+      "pin": "830d348f8571749745040af1325409932fd25cb1"
     },
     "tipic": {
-      "pin": "1ea2aed23d4a"
+      "pin": "b7df86feb20c6b4d1bb13ad68d5d7862bc8003fb"
     },
     "tuning-difference": {
-      "pin": "8fd1c994f937"
+      "pin": "5216a8858e8931c0d707192366488303bfb5a169"
     },
     "pyin": {
       "pin": "4a97f7638ffd"
@@ -46,7 +46,7 @@
       "pin": "84d1a0647ce5"
     },
     "match-vamp": {
-      "pin": "4b272c839f7e"
+      "pin": "5a41031e0ee11da9d5746d4309a53dd3ad785408"
     },
     "bbc-vamp-plugins": {
       "pin": "96c3c812c8f34910ee941521a666f37a12d93d76"
@@ -85,10 +85,10 @@
       "pin": "a6cb2dc34ad9"
     },
     "svcore": {
-      "pin": "f803d3c33f76"
+      "pin": "3dc3797e90316f45500926e7f8787d56c020e628"
     },
     "sv-dependency-builds": {
-      "pin": "223a55898ab9"
+      "pin": "8e4f885b8b49db63fec4488231d00b7685ad91a5"
     },
     "rdf": {
       "pin": "c0afe853924a"

@@ -15,9 +15,9 @@
     },
     "libraries": {
         "vamp-plugin-sdk": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "45b2bd15d8ae"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "dataquay": {
             "vcs": "hg",
@@ -25,9 +25,11 @@
             "owner": "breakfastquay"
         },
         "icons/scalable": {
-            "vcs": "hg",
-	    "service": "soundsoftware",
-	    "repository": "sv-iconset"
+            "vcs": "git",
+            "service": "github",
+            "owner": "sonic-visualiser",
+            "repository": "sv-iconset",
+            "branch": "default"
         },
         "qm-vamp-plugins": {
             "vcs": "git",
@@ -54,24 +56,24 @@
             "pin": "8e45a0652740"
         },
         "nnls-chroma": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "1efe67570b75"
+            "vcs": "git",
+	    "service": "github",
+            "owner": "c4dm"
         },
         "silvet": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "af71cbdab621"
+            "vcs": "git",
+	    "service": "github",
+            "owner": "cannam"
         },
         "tipic": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "1ea2aed23d4a"
+            "vcs": "git",
+	    "service": "github",
+            "owner": "cannam"
         },
         "tuning-difference": {
-            "vcs": "hg",
-	    "service": "soundsoftware",
-            "pin": "8fd1c994f937"
+            "vcs": "git",
+	    "service": "github",
+            "owner": "cannam"
         },
         "pyin": {
             "vcs": "hg",
@@ -94,9 +96,9 @@
             "pin": "84d1a0647ce5"
         },
         "match-vamp": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "4b272c839f7e"
+            "vcs": "git",
+	    "service": "github",
+            "owner": "c4dm"
         },
         "bbc-vamp-plugins": {
             "vcs": "git",
@@ -165,12 +167,16 @@
             "owner": "breakfastquay"
         },
         "svcore": {
-            "vcs": "hg",
-            "service": "soundsoftware"
+            "vcs": "git",
+            "service": "github",
+            "owner": "sonic-visualiser",
+            "branch": "default"
         },
         "sv-dependency-builds": {
-            "vcs": "hg",
-            "service": "soundsoftware"
+            "vcs": "git",
+            "service": "github",
+            "owner": "sonic-visualiser",
+            "branch": "default"
         },
         "rdf": {
             "vcs": "hg",
