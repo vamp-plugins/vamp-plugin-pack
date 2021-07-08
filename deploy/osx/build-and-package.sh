@@ -31,7 +31,7 @@ for arch in $archs; do
 	arm64) qtdir="$qtdir_arm64";;
 	*) echo "(internal error, unknown arch)"; exit 1;;
     esac
-    echo "* for arch $arch: Qt dir $qtdir"
+    echo "-> for arch $arch: Qt dir $qtdir"
     if [ ! -d "$qtdir" ]; then
 	echo "*** ERROR: Qt dir $qtdir does not exist"
 	exit 1
