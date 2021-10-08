@@ -364,7 +364,7 @@ unbundleFile(QString filePath, QString targetPath, bool isExecutable)
 
     QFile target(targetPath);
     if (!target.open(QFile::WriteOnly)) {
-        SVCERR << "ERROR: Failed to read target file " << targetPath << endl;
+        SVCERR << "ERROR: Failed to write target file " << targetPath << endl;
         return {};
     }
     if (target.write(content) != content.size()) {
@@ -773,7 +773,9 @@ installLibrary(LibraryInfo info, QString targetDir)
     QString backupDir = targetDir + "/" + backupDirName;
 
     if (!QDir(targetDir).exists()) {
-        QDir().mkpath(targetDir);
+        if (!QDir().mkpath(targetDir)) {
+            return QObject::tr("Failed to create target directory");
+        }
     }
 
     if (!backup(destination, backupDir)) {
