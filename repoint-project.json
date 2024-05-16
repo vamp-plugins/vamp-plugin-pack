@@ -136,7 +136,7 @@
         "vamp-libxtract-plugins": {
             "vcs": "hg",
             "service": "soundsoftware",
-            "pin": "81146373f024"
+            "pin": "08d9660e57e8"
         },
         "beatroot-vamp": {
             "vcs": "hg",
