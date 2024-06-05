@@ -161,6 +161,12 @@
             "owner": "breakfastquay",
             "pin": "cd235ecbeb31"
         },
+        "expressive-means": {
+            "vcs": "git",
+            "service": "github",
+            "owner": "cannam",
+            "pin": "v1.0.0"
+        },
         "vampy": {
             "vcs": "hg",
             "service": "soundsoftware",

@@ -95,6 +95,9 @@
     },
     "rdf": {
       "pin": "c0afe853924a"
+    },
+    "expressive-means": {
+      "pin": "34c1d2d2d62c0591210f536bc3940e8d5e38766e"
     }
   }
 }
