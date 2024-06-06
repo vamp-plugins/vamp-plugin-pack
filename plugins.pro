@@ -10,6 +10,7 @@ SUBDIRS += \
         sub_cepstral_pitchtracker \
         sub_cq \
         sub_examples \
+        sub_expressive_means \
         sub_fanchirp \
         sub_libxtract \
         sub_marsyas \
@@ -34,6 +35,7 @@ sub_bbc.file = bbc-vamp-plugins.pro
 sub_cepstral_pitchtracker.file = cepstral-pitchtracker.pro
 sub_cq.file = constant-q-cpp.pro
 sub_examples.file = vamp-example-plugins.pro
+sub_expressive_means.file = expressive-means.pro
 sub_fanchirp.file = vamp-fanchirp.pro
 sub_libxtract.file = vamp-libxtract-plugins.pro
 sub_marsyas.file = marsyas-vamp.pro

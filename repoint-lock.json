@@ -98,6 +98,18 @@
     },
     "expressive-means": {
       "pin": "34c1d2d2d62c0591210f536bc3940e8d5e38766e"
+    },
+    "expressive-means/qm-dsp": {
+      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
+    },
+    "expressive-means/pyin": {
+      "pin": "a7d9c6142f8f"
+    },
+    "expressive-means/ext/qm-dsp": {
+      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
+    },
+    "expressive-means/ext/pyin": {
+      "pin": "a7d9c6142f8f"
     }
   }
 }

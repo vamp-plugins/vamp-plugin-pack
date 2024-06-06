@@ -55,6 +55,9 @@
 #include <QThread>
 #include <QDateTime>
 #include <QTimer>
+#include <QRegularExpression>
+
+#include "base/Debug.h"
 
 #include <vamp-hostsdk/PluginHostAdapter.h>
 
@@ -65,8 +68,6 @@
 #include <memory>
 #include <set>
 
-#include "base/Debug.h"
-
 #if defined (Q_OS_MAC)
 #include <sys/types.h>
 #include <sys/sysctl.h>
@@ -74,8 +75,16 @@
 
 #include "version.h"
 
-using namespace std;
 using namespace Dataquay;
+
+using std::vector;
+using std::map;
+using std::set;
+using std::pair;
+using std::unique_ptr;
+using std::function;
+using std::shared_ptr;
+using std::make_shared;
 
 QString
 getDefaultInstallDirectory()
@@ -541,7 +550,7 @@ getLibraryPluginVersions(QString libraryFilePath)
         }
         
         QStringList lines = QString::fromUtf8(stdOut).split
-            (QRegExp("[\\r\\n]+"), QString::SkipEmptyParts);
+            (QRegularExpression("[\\r\\n]+"), Qt::SkipEmptyParts);
 
         map<QString, int> versions;
         for (QString line: lines) {
@@ -852,7 +861,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     dialog.setLayout(mainLayout);
 
     int mainRow = 0;
-    
+
     auto selectionFrame = new QWidget;
     mainLayout->addWidget(selectionFrame, mainRow, 0);
     ++mainRow;
@@ -1144,7 +1153,7 @@ int main(int argc, char **argv)
 {
     if (argc == 2 && (QString(argv[1]) == "--version" ||
                       QString(argv[1]) == "-v")) {
-        cerr << PACK_VERSION << std::endl; // std:: needed here for MSVC for some reason
+        std::cerr << PACK_VERSION << std::endl;
         exit(0);
     }
     
@@ -1153,8 +1162,6 @@ int main(int argc, char **argv)
     QApplication::setOrganizationName("sonic-visualiser");
     QApplication::setOrganizationDomain("sonicvisualiser.org");
     QApplication::setApplicationName(QApplication::tr("Vamp Plugin Pack Installer"));
-
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 #ifdef Q_OS_WIN32
     QFont font(QApplication::font());
