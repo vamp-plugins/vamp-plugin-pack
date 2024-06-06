@@ -56,6 +56,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QRegularExpression>
+#include <QScrollArea>
 
 #include "base/Debug.h"
 
@@ -862,10 +863,14 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
 
     int mainRow = 0;
 
-    auto selectionFrame = new QWidget;
-    mainLayout->addWidget(selectionFrame, mainRow, 0);
+    auto selectionScroll = new QScrollArea;
+    selectionScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    selectionScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    selectionScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+    mainLayout->addWidget(selectionScroll, mainRow, 0);
     ++mainRow;
     
+    auto selectionFrame = new QWidget;
     auto selectionLayout = new QGridLayout;
     selectionLayout->setContentsMargins(0, 0, 0, 0);
     selectionLayout->setSpacing(fontHeight / 6);
@@ -1046,6 +1051,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
                          }
                      });
 
+    selectionScroll->setWidget(selectionFrame);
+    
     mainLayout->addItem(new QSpacerItem(1, fontHeight), mainRow, 0);
     ++mainRow;
     
