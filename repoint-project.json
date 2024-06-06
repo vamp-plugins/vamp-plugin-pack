@@ -199,8 +199,9 @@
             "branch": "default"
         },
         "rdf": {
-            "vcs": "hg",
-            "service": "soundsoftware",
+            "vcs": "git",
+            "service": "github",
+            "owner": "vamp-plugins",
             "repository": "vamp-known-plugins-rdf"
         }
     }

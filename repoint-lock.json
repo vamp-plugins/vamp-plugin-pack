@@ -93,9 +93,6 @@
     "sv-dependency-builds": {
       "pin": "2d7667f145b5758eb277423e451bd5c2374dfb22"
     },
-    "rdf": {
-      "pin": "c0afe853924a"
-    },
     "expressive-means": {
       "pin": "34c1d2d2d62c0591210f536bc3940e8d5e38766e"
     },
@@ -110,6 +107,9 @@
     },
     "expressive-means/ext/pyin": {
       "pin": "a7d9c6142f8f"
+    },
+    "rdf": {
+      "pin": "7a89792c1bf8a23fd8926c3ae4fc1a0f504e59e2"
     }
   }
 }
