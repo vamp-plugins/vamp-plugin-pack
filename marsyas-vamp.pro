@@ -16,6 +16,8 @@ win32-g++* {
     DEFINES += MARSYAS_WIN32
 }
 
+DEFINES += register=
+
 !win* {
     QMAKE_POST_LINK += && \
         cp marsyas/src/mvamp/mvamp.n3 out/ && \
