@@ -1,5 +1,5 @@
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG += release
 
@@ -32,8 +32,8 @@ macx* {
     INCLUDEPATH += /opt/boost/include /usr/local/opt/boost/include $$PWD/sv-dependency-builds/osx/include
     LIBS += -L$$PWD -L$$PWD/sv-dependency-builds/osx/lib
 
-    QMAKE_CXXFLAGS_RELEASE += -O3 -flto
-    QMAKE_LFLAGS_RELEASE += -O3 -flto
+    QMAKE_CXXFLAGS_RELEASE += -O3
+    QMAKE_LFLAGS_RELEASE += -O3
 }
 
 linux* {
@@ -42,7 +42,7 @@ linux* {
 
     INCLUDEPATH += $$PWD/sv-dependency-builds/src/serd-0.18.2 $$PWD/sv-dependency-builds/src/sord-0.12.0
     
-    QMAKE_CXXFLAGS_RELEASE += -O3 -flto
-    QMAKE_LFLAGS_RELEASE += -O3 -flto -Wl,--no-undefined
+    QMAKE_CXXFLAGS_RELEASE += -O3
+    QMAKE_LFLAGS_RELEASE += -O3 -Wl,--no-undefined
 }
 

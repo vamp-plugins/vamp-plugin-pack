@@ -110,6 +110,9 @@
     },
     "rdf": {
       "pin": "7a89792c1bf8a23fd8926c3ae4fc1a0f504e59e2"
+    },
+    "vamp-libxtract-plugins/LibXtract": {
+      "pin": "03eb9cf0800c26c48e0369158f7058d3ae555fde"
     }
   }
 }

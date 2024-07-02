@@ -132,6 +132,12 @@
             "service": "github",
             "owner": "c4dm"
         },
+        "vamp-libxtract-plugins/LibXtract": {
+            "vcs": "git",
+            "service": "github",
+            "owner": "jamiebullock",
+            "pin": "03eb9cf0800c26c48e0369158f7058d3ae555fde"
+        },
         "beatroot-vamp": {
             "vcs": "git",
             "service": "github",

@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD/svcore $$PWD/bqvec $$PWD/dataquay $$PWD/dataquay/dataquay
 QMAKE_CXXFLAGS_RELEASE -= -flto
 QMAKE_LFLAGS_RELEASE -= -flto
 
-CONFIG += release warn_on c++14 c++17
+CONFIG += release warn_on c++17
 
 QT += gui widgets svg
 
@@ -40,9 +40,13 @@ QMAKE_EXTRA_TARGETS += qrc_a qrc_b
 PRE_TARGETDEPS += $$qrc_a.target $$qrc_b.target
 
 # We can't use use RESOURCES += installer.qrc here, as qmake will
-# reject a resource file that hasn't been generated yet
+# reject a resource file that hasn't been generated yet.
 
-qtPrepareTool(QMAKE_RCC, rcc)
+# If this gets the wrong path, override with "qmake QMAKE_RCC=/path/to/rcc"
+
+!defined(QMAKE_RCC) {
+    qtPrepareTool(QMAKE_RCC, rcc)
+}
 
 qrc_cpp_a.target = $${RCC_DIR}/qrc_installer_a.cpp
 qrc_cpp_a.depends = $$qrc_a.target
