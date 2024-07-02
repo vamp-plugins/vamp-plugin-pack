@@ -3,15 +3,10 @@
         "extdir": "."
     },
     "services": {
-	"soundsoftware": {
-	    "vcs": ["hg", "git"],
-	    "anonymous": "https://code.soundsoftware.ac.uk/{vcs}/{repository}",
-	    "authenticated": "https://{account}@code.soundsoftware.ac.uk/{vcs}/{repository}"
-	},
-	"aubio": {
-	    "vcs": ["git"],
-	    "anonymous": "https://git.aubio.org/aubio/{repository}"
-	}
+        "aubio": {
+            "vcs": ["git"],
+            "anonymous": "https://git.aubio.org/aubio/{repository}"
+        }
     },
     "libraries": {
         "vamp-plugin-sdk": {
@@ -39,7 +34,7 @@
         },
         "qm-vamp-plugins/lib/qm-dsp": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "c4dm",
             "pin": "qm-vamp-plugins-v1.8.0"
         },
@@ -50,59 +45,58 @@
             "pin": "7ac84048e3e43c433d88e12d221af15e50f41591"
         },
         "segmentino": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "repository": "segmenter-vamp-plugin",
-            "pin": "8e45a0652740"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "nnls-chroma": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "c4dm"
         },
         "silvet": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "cannam"
         },
         "tipic": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "cannam"
         },
         "tipic/qm-dsp": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "c4dm"
         },
         "tuning-difference": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "cannam"
         },
         "pyin": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "v1.2"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "azi": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "v1.0"
+            "vcs": "git",
+            "service": "github",
+            "owner": "cannam"
         },
         "vamp-simple-cepstrum": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "a17bca16933a"
+            "vcs": "git",
+            "service": "github",
+            "owner": "cannam"
         },
         "cepstral-pitchtracker": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "84d1a0647ce5"
+            "vcs": "git",
+            "service": "github",
+            "owner": "cannam"
         },
         "match-vamp": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "c4dm"
         },
         "bbc-vamp-plugins": {
@@ -134,14 +128,14 @@
             "pin": "5867554d82feb486eef67efde9ea540450097b5f"
         },
         "vamp-libxtract-plugins": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "08d9660e57e8"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "beatroot-vamp": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "1f175ae200a6"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "marsyas": {
             "vcs": "git",
@@ -150,16 +144,15 @@
             "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
         },
         "vamp-fanchirp": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "branch": "spect",
-            "pin": "b21704074c9c"
+            "vcs": "git",
+            "service": "github",
+            "owner": "cannam",
+            "branch": "spect"
         },
         "vamp-fanchirp/bqvec": {
             "vcs": "hg",
             "service": "sourcehut",
-            "owner": "breakfastquay",
-            "pin": "cd235ecbeb31"
+            "owner": "breakfastquay"
         },
         "expressive-means": {
             "vcs": "git",
@@ -169,17 +162,18 @@
         },
         "expressive-means/ext/qm-dsp": {
             "vcs": "git",
-	    "service": "github",
+            "service": "github",
             "owner": "c4dm"
         },
         "expressive-means/ext/pyin": {
-            "vcs": "hg",
-	    "service": "soundsoftware"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "vampy": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "a38d318c85a9"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "bqvec": {
             "vcs": "hg",

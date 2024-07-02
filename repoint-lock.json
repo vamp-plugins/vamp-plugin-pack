@@ -19,7 +19,7 @@
       "pin": "7ac84048e3e43c433d88e12d221af15e50f41591"
     },
     "segmentino": {
-      "pin": "8e45a0652740"
+      "pin": "6d98439dd37ab0ea3fb0efe0c57491bb9664eeea"
     },
     "nnls-chroma": {
       "pin": "4c5f214a75cb354f8d8c933e161377c5b4d83713"
@@ -37,16 +37,16 @@
       "pin": "5216a8858e8931c0d707192366488303bfb5a169"
     },
     "pyin": {
-      "pin": "4a97f7638ffd"
+      "pin": "1d68cac9c5ecb1d81054d25d90158e5838dd78c2"
     },
     "azi": {
-      "pin": "c7d41e60930d"
+      "pin": "f4c2c3f682d1ed049671dbfd3ff9d5bb58e7406b"
     },
     "vamp-simple-cepstrum": {
-      "pin": "a17bca16933a"
+      "pin": "c77ee4bd5f9ade68f198140d88cd2dc81434e1ce"
     },
     "cepstral-pitchtracker": {
-      "pin": "84d1a0647ce5"
+      "pin": "965f46f3880ed7dcbb5aaa5e9914a761cb983bca"
     },
     "match-vamp": {
       "pin": "5a41031e0ee11da9d5746d4309a53dd3ad785408"
@@ -67,22 +67,22 @@
       "pin": "5867554d82feb486eef67efde9ea540450097b5f"
     },
     "vamp-libxtract-plugins": {
-      "pin": "08d9660e57e8"
+      "pin": "74704a75aaae39b25c400b251c3b26f16c187ce7"
     },
     "beatroot-vamp": {
-      "pin": "1f175ae200a6"
+      "pin": "21c8f721d3bb7c2edbfd1d9caf51b815ec703a1e"
     },
     "marsyas": {
       "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
     },
     "vamp-fanchirp": {
-      "pin": "b21704074c9c"
+      "pin": "83a24aaef97eca33cdcbdebf8416050c94817c03"
     },
     "vamp-fanchirp/bqvec": {
-      "pin": "cd235ecbeb31"
+      "pin": "291cde50db9d"
     },
     "vampy": {
-      "pin": "a38d318c85a9"
+      "pin": "d24af65e3589735e0213ecc82102cc05fa203178"
     },
     "bqvec": {
       "pin": "291cde50db9d"
@@ -106,7 +106,7 @@
       "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
     },
     "expressive-means/ext/pyin": {
-      "pin": "a7d9c6142f8f"
+      "pin": "1d68cac9c5ecb1d81054d25d90158e5838dd78c2"
     },
     "rdf": {
       "pin": "7a89792c1bf8a23fd8926c3ae4fc1a0f504e59e2"
