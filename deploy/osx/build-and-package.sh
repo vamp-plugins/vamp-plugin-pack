@@ -4,9 +4,11 @@
 # single argument --no-notarization to skip the notarize step
 
 archs="x86_64 arm64"
-qtdir_x86_64="/Users/cannam/Qt/5.12.10/clang_64"
-qtdir_arm64="/Users/cannam/Qt/5.15.2-arm64"
-identity="Developer ID Application: Particular Programs Ltd (73F996B92S)"
+
+qtdir_x86_64="/Users/cannam/Qt/6.6.3/macos"
+qtdir_arm64="$qtdir_x86_64"
+
+identity="Developer ID Application"
 
 set -e
 
@@ -36,12 +38,14 @@ for arch in $archs; do
 	echo "*** ERROR: Qt dir $qtdir does not exist"
 	exit 1
     fi
-    if [ ! -f "$qtdir/bin/qmake" ]; then
+    qmake="$qtdir/bin/qmake"
+    if [ ! -f "$qmake" ]; then
 	echo "*** ERROR: qmake not found in $qmake (for Qt dir $qtdir)"
 	exit 1
     fi
-    qmake_arch=$(lipo -archs "$qtdir/bin/qmake")
-    if [ t"$qmake_arch" != t"$arch" ]; then
+    qmake_arch=$(lipo -archs "$qmake")
+    if echo "$qmake_arch" | grep -q "$arch" ; then :;
+    else 
 	echo "*** ERROR: wrong arch $qmake_arch for qmake $qmake (expected $arch)"
 	exit 1
     fi
@@ -90,7 +94,7 @@ for arch in $archs; do
     
     rm -rf .qmake.stash
     rm -rf o
-    PATH="$qtdir/bin:$PATH" "$qmake" -r
+    PATH="$qtdir/bin:$PATH" arch -"$arch" "$qmake" -r
     make clean
     rm -rf "out_$arch"
 

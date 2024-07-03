@@ -53,6 +53,7 @@ SOURCES += \
     marsyas/src/marsyas/sched/TmControlValue.cpp \
     marsyas/src/marsyas/sched/TmRealTime.cpp \
     marsyas/src/marsyas/sched/EvEvent.cpp \
+    marsyas/src/marsyas/sched/EvExpr.cpp \
     marsyas/src/marsyas/sched/EvValUpd.cpp \
     marsyas/src/marsyas/system/MarControl.cpp \
     marsyas/src/marsyas/system/MarControlValue.cpp \
