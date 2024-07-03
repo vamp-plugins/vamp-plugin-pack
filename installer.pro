@@ -44,7 +44,7 @@ PRE_TARGETDEPS += $$qrc_a.target $$qrc_b.target
 
 # If this gets the wrong path, override with "qmake QMAKE_RCC=/path/to/rcc"
 
-!defined(QMAKE_RCC) {
+!defined(QMAKE_RCC, var) {
     qtPrepareTool(QMAKE_RCC, rcc)
 }
 

@@ -150,14 +150,16 @@ fi
 
 echo 
 echo "Building installer..."
-# This is still just an Intel binary, not a fat file
+# This is a directly-created universal binary (we wanted separate
+# compilation above mainly for get-version, for which we do actually
+# want more than one file)
 qtdir="$qtdir_x86_64"
 qmake="$qtdir/bin/qmake"
 rm -rf .qmake.stash
 rm -rf o
-PATH="$qtdir/bin:$PATH" "$qmake" -r
+PATH="$qtdir/bin:$PATH" "$qmake" -r QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" QMAKE_RCC="$qtdir/libexec/rcc"
 make -f Makefile.installer clean
-PATH="$qtdir/bin:$PATH" arch -x86_64 make -j3 -f Makefile.installer
+PATH="$qtdir/bin:$PATH" make -j3 -f Makefile.installer
 echo "Done"
 
 echo
