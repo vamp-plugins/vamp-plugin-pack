@@ -9,53 +9,28 @@ if [ -z "$app" ]; then
 	exit 2
 fi
 
-frameworks="QtCore QtNetwork QtGui QtXml QtSvg QtWidgets QtPrintSupport QtDBus"
-
-plugins="gif icns ico jpeg tga tiff wbmp webp cocoa minimal offscreen macstyle"
-
-qtdir=$(grep "Command:" Makefile | head -1 | awk '{ print $3; }' | sed s,/bin/.*,,)
-
-if [ ! -d "$qtdir" ]; then
-    echo "Failed to discover Qt installation directory from Makefile, exiting"
+if [ -z "$QTDIR" ]; then
+    echo "Error: QTDIR is not set"
     exit 2
 fi
 
-fdir="$app.app/Contents/Frameworks"
-pdir="$app.app/Contents/plugins"
+if [ ! -d "$QTDIR" ]; then
+    echo "Error: QTDIR ($QTDIR) is not set to a directory that exists"
+    exit 2
+fi
 
-mkdir -p "$fdir"
-mkdir -p "$pdir"
+macdeployqt="$QTDIR/bin/macdeployqt"
 
-echo
-echo "Copying frameworks..."
-for fwk in $frameworks; do
-    if [ ! -d "$qtdir/lib/$fwk.framework" ]; then
-	if [ "$fwk" = "QtDBus" ]; then
-	    echo "QtDBus.framework not found, assuming Qt was built without DBus support"
-	    continue
-	fi
-    fi
-    cp -v "$qtdir/lib/$fwk.framework/$fwk" "$fdir" || exit 2
-done
+if [ ! -x "$macdeployqt" ]; then
+    echo "Error: macdeployqt program not found in $macdeployqt"
+    exit 1
+fi
 
-echo "Done"
+"$macdeployqt" "$app.app" 
 
-echo
-echo "Copying plugins..."
-for plug in $plugins; do
-    pfile=$(ls "$qtdir"/plugins/*/libq"$plug".dylib)
-    if [ ! -f "$pfile" ]; then
-	echo "Failed to find plugin $plug, exiting"
-	exit 2
-    fi
-    target="$pdir"/${pfile##?*plugins/}
-    tdir=`dirname "$target"`
-    mkdir -p "$tdir"
-    cp -v "$pfile" "$target" || exit 2
-done
-
-# Sometimes the copied-in files are read-only: correct that
-chmod -R u+w "$app.app"
+# If this shows up it has all kinds of dependencies we don't want, so
+# eliminate it
+rm -f "$app.app"/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
 
 echo "Done"
 

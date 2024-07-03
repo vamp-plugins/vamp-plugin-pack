@@ -176,7 +176,7 @@ mkdir "$volume" || exit 1
 #cp COPYING "$volume/COPYING.txt"
 #cp CHANGELOG "$volume/CHANGELOG.txt"
 #cp CITATION "$volume/CITATION.txt"
-cp -rp "$source" "$target"
+cp -a "$source" "$target"
 
 # update file timestamps so as to make the build date apparent
 find "$volume" -exec touch \{\} \;
@@ -185,10 +185,13 @@ echo "Done"
 echo
 echo "Signing installer..."
 find "$target" -name \*.dylib -print | while read fr; do
-    codesign -s "$identity" -fv --deep --timestamp --options runtime --entitlements "$entitlements" "$fr"
+    codesign -s "$identity" -fv --timestamp --options runtime --entitlements "$entitlements" "$fr"
 done
-codesign -s "$identity" -fv --deep --timestamp --options runtime --entitlements "$entitlements" "$target/Contents/MacOS/$app"
-codesign -s "$identity" -fv --deep --timestamp --options runtime --entitlements "$entitlements" "$target"
+find "$target/Contents/Frameworks" -type f -print | while read f; do
+    codesign -s "$identity" -fv --timestamp --options runtime --entitlements "$entitlements" "$f"
+done
+codesign -s "$identity" -fv --timestamp --options runtime --entitlements "$entitlements" "$target/Contents/MacOS/$app"
+codesign -s "$identity" -fv --timestamp --options runtime --entitlements "$entitlements" "$target"
 echo "Done"
 
 echo
