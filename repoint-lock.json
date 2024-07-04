@@ -54,9 +54,6 @@
     "bbc-vamp-plugins": {
       "pin": "96c3c812c8f34910ee941521a666f37a12d93d76"
     },
-    "vamp-tempogram": {
-      "pin": "ac1a75151fc9"
-    },
     "vamp-aubio-plugins": {
       "pin": "07f81171b195748e5b1919fb5d24d33fb918928b"
     },
@@ -113,6 +110,9 @@
     },
     "vamp-libxtract-plugins/LibXtract": {
       "pin": "03eb9cf0800c26c48e0369158f7058d3ae555fde"
+    },
+    "vamp-tempogram": {
+      "pin": "4efdfe95ceca54b810a939604ad50e6e8aa6869f"
     }
   }
 }

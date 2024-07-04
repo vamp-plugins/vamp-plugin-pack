@@ -106,9 +106,9 @@
             "pin": "v1.1"
         },
         "vamp-tempogram": {
-            "vcs": "hg",
-            "service": "soundsoftware",
-            "pin": "ac1a75151fc9"
+            "vcs": "git",
+            "service": "github",
+            "owner": "c4dm"
         },
         "vamp-aubio-plugins": {
             "vcs": "git",
