@@ -56,6 +56,7 @@
   <file>rdf/plugins/beatroot-vamp.n3</file>
   <file>rdf/plugins/cepstral-pitchtracker.n3</file>
   <file>rdf/plugins/cqvamp.n3</file>
+  <file>rdf/plugins/expressive-means.n3</file>
   <file>rdf/plugins/extra-categories.n3</file>
   <file>rdf/plugins/FChT_f0gram.n3</file>
   <file>rdf/plugins/featured.n3</file>

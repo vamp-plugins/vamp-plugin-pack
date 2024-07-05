@@ -29,6 +29,10 @@
   <file>out/fanchirp_COPYING.txt</file>
   <file>out/fanchirp_README.md</file>
   <file>out/fanchirp@SUFFIX@</file>
+  <file>out/expressive-means.cat</file>
+  <file>out/expressive-means_COPYING.txt</file>
+  <file>out/expressive-means_README.md</file>
+  <file>out/expressive-means@SUFFIX@</file>
   <file>out/match-vamp-plugin.cat</file>
   <file>out/match-vamp-plugin_CITATION.txt</file>
   <file>out/match-vamp-plugin_COPYING.txt</file>
