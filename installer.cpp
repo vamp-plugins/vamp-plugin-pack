@@ -866,7 +866,8 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     auto selectionScroll = new QScrollArea;
     selectionScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     selectionScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    selectionScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+    selectionScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    selectionScroll->setWidgetResizable(true);
     mainLayout->addWidget(selectionScroll, mainRow, 0);
     ++mainRow;
     
@@ -1040,7 +1041,7 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     ++selectionRow;
 
     selectionLayout->addWidget
-        (new QLabel(QObject::tr("Installation will be to: %1").arg(targetDir)),
+        (new QLabel(QObject::tr("Installation will be to:\n%1").arg(targetDir)),
          selectionRow, titleColumn, 1, 3);
     ++selectionRow; 
 
@@ -1067,10 +1068,10 @@ getUserApprovedPluginLibraries(vector<LibraryInfo> libraries,
     mainLayout->setRowStretch(0, 10);
     mainLayout->setColumnStretch(0, 10);
     selectionLayout->setColumnMinimumWidth(0, 50);
-#ifdef Q_OS_MAC
+//#ifdef Q_OS_MAC
     selectionLayout->setColumnMinimumWidth(3, 10);
     selectionLayout->setColumnMinimumWidth(5, 12);
-#endif
+//#endif
     selectionLayout->setColumnStretch(1, 10);
 
     QObject::connect
