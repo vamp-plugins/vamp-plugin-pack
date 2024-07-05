@@ -92,6 +92,9 @@ getDefaultInstallDirectory()
 {
     auto pathList = Vamp::PluginHostAdapter::getPluginPath();
     if (pathList.empty()) {
+        // Build note: if the endl on the next line gives you an
+        // ambiguous overload error, that could mean you are building
+        // against Qt5 (we now expect Qt6)
         SVCERR << "Failed to look up Vamp plugin path" << endl;
         return QString();
     }
