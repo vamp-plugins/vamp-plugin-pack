@@ -11,14 +11,14 @@ win32-msvc* {
 
     DEPLOYDIR = $$PWD/deploy/win64
 
-    INCLUDEPATH += /Libraries/boost_1_69_0 $$PWD/../boost_1_69_0/ $$PWD/sv-dependency-builds/win64-msvc/include
+    INCLUDEPATH += $$PWD/../boost_1_85_0/ $$PWD/sv-dependency-builds/win64-msvc/include
     LIBS += -L$$PWD -L$$PWD/sv-dependency-builds/win64-msvc/lib
 
     CONFIG(release) {
         LIBS += -NODEFAULTLIB:MSVCRT -Lrelease
     }
 
-    DEFINES += NOMINMAX _USE_MATH_DEFINES HAVE_C99_VARARGS_MACROS _HAS_STD_BYTE=0
+    DEFINES += NOMINMAX _USE_MATH_DEFINES HAVE_C99_VARARGS_MACROS
 
     DEFINES += AVOID_WINRT_DEPENDENCY
 }

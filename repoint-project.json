@@ -124,8 +124,7 @@
             "vcs": "git",
             "service": "github",
             "owner": "cannam",
-            "repository": "UAVampPlugins",
-            "pin": "5867554d82feb486eef67efde9ea540450097b5f"
+            "repository": "UAVampPlugins"
         },
         "vamp-libxtract-plugins": {
             "vcs": "git",
@@ -136,7 +135,7 @@
             "vcs": "git",
             "service": "github",
             "owner": "jamiebullock",
-            "pin": "03eb9cf0800c26c48e0369158f7058d3ae555fde"
+            "pin": "f5423497d2d4718fc3385003329a135ee8078615"
         },
         "beatroot-vamp": {
             "vcs": "git",

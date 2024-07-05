@@ -13,4 +13,4 @@ if not exist %IN% (
 
 @echo on
 
-powershell -Command "(Get-Content %IN%) -replace '@GETVERSION_PRIMARY@', -replace '@SUFFIX@', '.dll' -replace '@EXESUFFIX@', '.exe' | Out-File -encoding ASCII %QRC%"
+powershell -Command "(Get-Content %IN%) -replace '@GETVERSION_PRIMARY@', '' -replace '@SUFFIX@', '.dll' -replace '@EXESUFFIX@', '.exe' | Select-String -Pattern '@GETVERSION_ALTERNATE@' -NotMatch | Out-File -encoding ASCII %QRC%"

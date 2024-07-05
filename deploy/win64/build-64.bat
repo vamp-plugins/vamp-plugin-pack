@@ -15,15 +15,15 @@ rem  c:\qt\5.14.1-static\bin\qmake.exe qtsvg.pro -r -spec win32-msvc
 rem  nmake
 rem  nmake install
 
-set QTDIR=C:\Qt\5.14.1-static-msvc2015
+set QTDIR=C:\QtOpenSource\6.7.2-static-msvc2022-64bit
 if not exist %QTDIR% (
-@   echo Could not find 64-bit Qt in %QTDIR%
+@   echo Could not find Qt in %QTDIR%
 @   exit /b 2
 )
 
 rem  Not 2019! Its APIs are too new for use in our static build
 rem set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
-set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+set vcvarsall="c:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat"
 
 if not exist %vcvarsall% (
 @   echo "Could not find MSVC vars batch file"

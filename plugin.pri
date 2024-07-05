@@ -22,8 +22,9 @@ QMAKE_CXXFLAGS -= -Werror
 
 INCLUDEPATH += $$PWD/vamp-plugin-sdk
 
-# 
 win32-msvc* {
+    QMAKE_CXXFLAGS += '/wd4305'
+    DEFINES += _HAS_STD_BYTE=0
     LIBS += -EXPORT:vampGetPluginDescriptor
 }
 win32-g++* {
