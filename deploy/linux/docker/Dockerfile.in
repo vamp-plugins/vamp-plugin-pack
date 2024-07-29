@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:22.04
 MAINTAINER Chris Cannam <cannam@all-day-breakfast.com>
 RUN apt-get update && \
     apt-get install -y \
@@ -21,22 +21,27 @@ RUN apt-get update && \
     libsndfile-dev \
     libsord-dev \
     libxml2-utils \
-    libgl1-mesa-dev \
-    raptor-utils \
-    librubberband-dev \
-    libboost-all-dev \
-    python-numpy-dev \
+    qt6-base-dev \
+    qt6-pdf-dev \
+    qt6-base-dev-tools \
+    libqt6svg6-dev \
+    raptor2-utils \
     git \
     mercurial \
-    curl wget \
-    mlton \
-    autoconf automake libtool lintian
+    autoconf \
+    automake \
+    libtool \
+    lintian \
+    curl \
+    wget \
+    unzip \
+    smlnj \
+    capnproto \
+    libcapnp-dev \
+    ninja-build \
+    libglib2.0-dev \
+    python3-pip
 
-RUN apt-add-repository -y ppa:beineri/opt-qt-5.10.1-trusty
-RUN apt-get update && \
-    apt-get install -y \
-    qt510base \
-    qt510svg
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8
@@ -48,7 +53,7 @@ ENV LC_ALL en_US.UTF-8
 # clone is not cached from a different revision
 RUN echo Cloning revision [[REVISION]]
 
-RUN git clone https://github.com/sonic-visualiser/vamp-plugin-pack
+RUN git clone https://github.com/vamp-plugins/vamp-plugin-pack
 WORKDIR vamp-plugin-pack
 RUN git checkout [[REVISION]]
 
@@ -61,8 +66,7 @@ RUN echo '{"accounts": {"sourcehut": "~breakfastquay"}}' > .repoint.json
 RUN ( echo '[ui]' ; echo 'ssh = ssh -i /root/.ssh/id_rsa_build' ) > .hgrc
 
 WORKDIR /vamp-plugin-pack
-ENV QTDIR /opt/qt510
-ENV PATH /opt/qt510/bin:$PATH
+
 RUN REPOINT_INSECURE=1 ./repoint install
 RUN qmake -r
 RUN make -j3
