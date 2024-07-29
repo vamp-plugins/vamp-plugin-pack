@@ -24,6 +24,7 @@ RUN apt-get update && \
     qt6-base-dev \
     qt6-pdf-dev \
     qt6-base-dev-tools \
+    libboost-all-dev \
     libqt6svg6-dev \
     raptor2-utils \
     git \
