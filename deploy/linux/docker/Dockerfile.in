@@ -68,7 +68,7 @@ RUN ( echo '[ui]' ; echo 'ssh = ssh -i /root/.ssh/id_rsa_build' ) > .hgrc
 WORKDIR /vamp-plugin-pack
 
 RUN REPOINT_INSECURE=1 ./repoint install
-RUN qmake6 -r
+RUN qmake6 -r QMAKE_RCC="/usr/lib/qt6/libexec/rcc"
 RUN make -j3
 
 RUN deploy/linux/deploy-appimage.sh
