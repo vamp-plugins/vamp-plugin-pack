@@ -26,6 +26,7 @@ RUN apt-get update && \
     qt6-base-dev-tools \
     libboost-all-dev \
     libqt6svg6-dev \
+    libgl-dev \
     raptor2-utils \
     git \
     mercurial \
