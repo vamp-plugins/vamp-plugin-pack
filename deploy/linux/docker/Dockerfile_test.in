@@ -1,4 +1,4 @@
-FROM rockylinux:8
+FROM rockylinux:9
 
 # Ensure that everything subsequent is re-run when a new revision is
 # being built (rather than being cached) - so as to avoid potential
@@ -7,7 +7,8 @@ FROM rockylinux:8
 RUN echo [[REVISION]]
 
 RUN yum -y update
-RUN yum -y groupinstall "X Window System"
+RUN yum -y groupinstall GNOME
+RUN yum -y install libglvnd-opengl
 RUN yum -y install wget
 ADD output/VampPluginPackInstaller-[[REVISION]]-x86_64.AppImage Pack.AppImage
 RUN chmod +x Pack.AppImage
