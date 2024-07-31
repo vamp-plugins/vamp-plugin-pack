@@ -14,12 +14,6 @@ set VERSION=%VERSION:"=%
 
 @echo Proceeding
 
-@echo Building 32-bit
-del /q /s out
-del /q /s build_win32
-call .\deploy\win32\build-32.bat sign
-if %errorlevel% neq 0 exit /b %errorlevel%
-
 @echo Building 64-bit
 del /q /s out
 del /q /s build_win64
@@ -27,7 +21,6 @@ call .\deploy\win64\build-64.bat sign
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 mkdir packages
-copy "build_win32\release\Vamp Plugin Pack Installer.exe" "packages\Vamp Plugin Pack Installer %VERSION% 32-bit.exe"
 copy "build_win64\release\Vamp Plugin Pack Installer.exe" "packages\Vamp Plugin Pack Installer %VERSION%.exe"
 
 @echo(
