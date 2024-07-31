@@ -54,6 +54,9 @@
     "bbc-vamp-plugins": {
       "pin": "96c3c812c8f34910ee941521a666f37a12d93d76"
     },
+    "vamp-tempogram": {
+      "pin": "4efdfe95ceca54b810a939604ad50e6e8aa6869f"
+    },
     "vamp-aubio-plugins": {
       "pin": "07f81171b195748e5b1919fb5d24d33fb918928b"
     },
@@ -64,7 +67,10 @@
       "pin": "aa90948e0380085323ecef245a2962eb4d371576"
     },
     "vamp-libxtract-plugins": {
-      "pin": "74704a75aaae39b25c400b251c3b26f16c187ce7"
+      "pin": "8b5af3256a0e9c1616abfbba267ced85eef62483"
+    },
+    "vamp-libxtract-plugins/LibXtract": {
+      "pin": "f5423497d2d4718fc3385003329a135ee8078615"
     },
     "beatroot-vamp": {
       "pin": "21c8f721d3bb7c2edbfd1d9caf51b815ec703a1e"
@@ -73,10 +79,19 @@
       "pin": "051771c38f801682c315b84fdd1d9ec8a3c71340"
     },
     "vamp-fanchirp": {
-      "pin": "83a24aaef97eca33cdcbdebf8416050c94817c03"
+      "pin": "8e5dfaf201dfbb83f0f78043fbd83085e5241dfb"
     },
     "vamp-fanchirp/bqvec": {
       "pin": "291cde50db9d"
+    },
+    "expressive-means": {
+      "pin": "34c1d2d2d62c0591210f536bc3940e8d5e38766e"
+    },
+    "expressive-means/ext/qm-dsp": {
+      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
+    },
+    "expressive-means/ext/pyin": {
+      "pin": "1d68cac9c5ecb1d81054d25d90158e5838dd78c2"
     },
     "vampy": {
       "pin": "d24af65e3589735e0213ecc82102cc05fa203178"
@@ -85,34 +100,13 @@
       "pin": "291cde50db9d"
     },
     "svcore": {
-      "pin": "a173a54cd5e7c61bf71332ebb6ab1417b4319e27"
+      "pin": "9a6763ad2867f9f72ed0a86a3458b3cb1bc10a87"
     },
     "sv-dependency-builds": {
-      "pin": "2d7667f145b5758eb277423e451bd5c2374dfb22"
-    },
-    "expressive-means": {
-      "pin": "34c1d2d2d62c0591210f536bc3940e8d5e38766e"
-    },
-    "expressive-means/qm-dsp": {
-      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
-    },
-    "expressive-means/pyin": {
-      "pin": "a7d9c6142f8f"
-    },
-    "expressive-means/ext/qm-dsp": {
-      "pin": "e34a3cc188332ed7c33cd9257ef164de5b587191"
-    },
-    "expressive-means/ext/pyin": {
-      "pin": "1d68cac9c5ecb1d81054d25d90158e5838dd78c2"
+      "pin": "01bb14514cdbed5f7741ddad8d0a0e1021fbbcbc"
     },
     "rdf": {
       "pin": "7a89792c1bf8a23fd8926c3ae4fc1a0f504e59e2"
-    },
-    "vamp-libxtract-plugins/LibXtract": {
-      "pin": "f5423497d2d4718fc3385003329a135ee8078615"
-    },
-    "vamp-tempogram": {
-      "pin": "4efdfe95ceca54b810a939604ad50e6e8aa6869f"
     }
   }
 }
