@@ -21,8 +21,6 @@ if not exist %QTDIR% (
 @   exit /b 2
 )
 
-rem  Not 2019! Its APIs are too new for use in our static build
-rem set vcvarsall="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"
 set vcvarsall="c:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat"
 
 if not exist %vcvarsall% (
@@ -41,7 +39,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 
 set ORIGINALPATH=%PATH%
 set PATH=%PATH%;%SMLNJDIR%\bin;%QTDIR%\bin
-set NAME=Open Source Developer, Christopher Cannam
+set NAME=Christopher Cannam
 
 set ARG=%1
 shift
@@ -111,17 +109,6 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 
 msbuild "Vamp Plugin Pack Installer.vcxproj" /t:Build /p:Configuration=Release
 if %errorlevel% neq 0 exit /b %errorlevel%
-
-rem copy %QTDIR%\bin\Qt5Core.dll .\release
-rem copy %QTDIR%\bin\Qt5Gui.dll .\release
-rem copy %QTDIR%\bin\Qt5Widgets.dll .\release
-rem copy %QTDIR%\bin\Qt5Network.dll .\release
-rem copy %QTDIR%\bin\Qt5Xml.dll .\release
-rem copy %QTDIR%\bin\Qt5Svg.dll .\release
-rem copy %QTDIR%\bin\Qt5Test.dll .\release
-rem copy %QTDIR%\plugins\platforms\qminimal.dll .\release
-rem copy %QTDIR%\plugins\platforms\qwindows.dll .\release
-rem copy %QTDIR%\plugins\styles\qwindowsvistastyle.dll .\release
 
 if "%ARG%" == "sign" (
 @echo Signing application
