@@ -164,7 +164,7 @@ echo "Done"
 
 echo
 echo "Deploying installer..."
-deploy/osx/deploy.sh "$app" || exit 1
+QTDIR="$qtdir_arm64" deploy/osx/deploy.sh "$app" || exit 1
 echo "Done"
 
 echo

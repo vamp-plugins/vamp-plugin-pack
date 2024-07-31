@@ -32,6 +32,10 @@ fi
 # eliminate it
 rm -f "$app.app"/Contents/PlugIns/platforminputcontexts/libqtvirtualkeyboardplugin.dylib
 
+# This also has Qt framework dependencies not required by the app and
+# so not copied in - and we don't use it
+rm -f "$app.app"/Contents/PlugIns/imageformats/libqpdf.dylib
+
 echo "Done"
 
 
