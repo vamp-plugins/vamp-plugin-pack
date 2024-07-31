@@ -195,7 +195,8 @@
             "vcs": "git",
             "service": "github",
             "owner": "sonic-visualiser",
-            "branch": "default"
+            "branch": "default",
+            "pin": "2d7667f145b5758eb277423e451bd5c2374dfb22"
         },
         "rdf": {
             "vcs": "git",
